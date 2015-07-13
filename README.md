@@ -35,5 +35,7 @@ export function myAsyncActionCreator() {
 }
 ```
 
+The middleware returns a [FSA compliant](https://github.com/acdlite/flux-standard-action) action for both rejected and resolved/fulfilled promises. In the case of a rejected promise, an `error` is returned.
+
 ---
 Licensed MIT. Copyright 2015 Patrick Burtchaell.

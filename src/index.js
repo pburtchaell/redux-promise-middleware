@@ -28,7 +28,7 @@ export default function promiseMiddleware(next) {
         type: FULFILLED
       }),
       error => next({
-        error,
+        payload: error,
         type: REJECTED
       })
     );
