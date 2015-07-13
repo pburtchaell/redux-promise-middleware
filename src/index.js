@@ -12,16 +12,15 @@ export default function promiseMiddleware(next) {
 
     /**
      * Dispatch the first async handler. This tells the
-     * reducer that a async action has been dispatched.
+     * reducer that an async action has been dispatched.
      */
     next({
       type: PENDING
     });
 
     /**
-     * Return the promise. This will allow us to return
-     * either the fulfilled promise object or the rehjected
-     * promise object.
+     * Return either the fulfilled action object or the rejected
+     * action object.
      */
     return promise.then(
       payload => next({
