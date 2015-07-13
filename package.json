@@ -1,0 +1,33 @@
+{
+  "name": "redux-promise-middleware",
+  "version": "0.0.0",
+  "description": "Redux middleware for handling promises",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "make test-all",
+    "prepublish": "npm test && make js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pburtchaell/redux-promise-middleware.git"
+  },
+  "keywords": [
+    "redux",
+    "middleware",
+    "promise",
+    "promises"
+  ],
+  "author": "Patrick Burtchaell <patrick@pburtchaell.com> (pburtchaell.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pburtchaell/redux-promise-middleware/issues"
+  },
+  "homepage": "https://github.com/pburtchaell/redux-promise-middleware",
+  "devDependencies": {
+    "babel": "^5.6.14",
+    "babel-eslint": "^3.1.23",
+    "eslint": "^0.24.1",
+    "eslint-config-airbnb": "0.0.6",
+    "eslint-plugin-react": "^2.7.0"
+  }
+}
