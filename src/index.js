@@ -1,7 +1,7 @@
 import isPromise from './isPromise';
 
-export default function promiseMiddleware(next) {
-  return action => {
+export default function promiseMiddleware() {
+  return next => action => {
     if (!isPromise(action.payload)) {
       return next(action);
     }
