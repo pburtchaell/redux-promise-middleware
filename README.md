@@ -18,19 +18,22 @@ export default createStore(reducers, {}, [
 ]);
 ```
 
-To use the middleware, dispatch a promise as the `payload` of the action and specify a `types` array.
+To use the middleware, dispatch a promise within the `payload` of the action and specify a `types` array. You may pass an optional `data` object. This is dispatched from the pending action and is useful for optimistic updates.
 
 The pending action is dispatched immediately. The fulfilled action is dispatched only if the promise is resolved, e.g., if it was successful; and the rejected action is dispatched only if the promise is rejected, e.g., if an error occurred.
 
 ```js
-export function myAsyncActionCreator() {
+export function myAsyncActionCreator(data) {
   return {
     types: [
       'ACTION_PENDING',
       'ACTION_FULFILLED',
       'ACTION_REJECTED'
     ],
-    payload: doSomethingAyncAndReturnPromise()
+    payload: {
+      promise: doSomethingAyncAndReturnPromise(data),
+      data: data
+    }
   };
 }
 ```

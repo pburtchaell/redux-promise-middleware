@@ -1,3 +1,5 @@
 export default function isPromise(value) {
-  return value && typeof value.then === 'function';
+  if (value !== null && typeof value === 'object') {
+    return value.promise && typeof value.promise.then === 'function';
+  }
 }
