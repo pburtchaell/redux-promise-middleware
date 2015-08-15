@@ -7,7 +7,7 @@ export default function promiseMiddleware() {
     }
 
     const { types } = action;
-    const promise = action.payload;
+    const { promise, data } = action.payload;
     const [ PENDING, FULFILLED, REJECTED ] = types;
 
     /**
@@ -15,7 +15,8 @@ export default function promiseMiddleware() {
      * reducer that an async action has been dispatched.
      */
     next({
-      type: PENDING
+      type: PENDING,
+      payload: data
     });
 
     /**
