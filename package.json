@@ -1,6 +1,6 @@
 {
   "name": "redux-promise-middleware",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Redux middleware for handling promises",
   "main": "dist/index.js",
   "scripts": {
