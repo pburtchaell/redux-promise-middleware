@@ -8,14 +8,15 @@ Install with npm: `npm i redux-promise-middleware -S`
 
 ## Usage
 
-First, import the middleware and include it when creating the Redux store:
+First, import the middleware and include it in `applyMiddleware` when creating the Redux store:
 
 ```js
 import promiseMiddleware from 'redux-promise-middleware';
 
-export default createStore(reducers, {}, [
-  promiseMiddleware,
-]);
+composeStoreWithMiddleware = applyMiddleware(
+  promiseMiddleware
+)(createStore);
+
 ```
 
 To use the middleware, dispatch a promise within the `payload` of the action and specify a `types` array. You may pass an optional `data` object. This is dispatched from the pending action and is useful for optimistic updates.
