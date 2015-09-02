@@ -32,7 +32,7 @@ export function myAsyncActionCreator(data) {
       'ACTION_REJECTED'
     ],
     payload: {
-      promise: doSomethingAyncAndReturnPromise(data),
+      promise: doSomethingAsyncAndReturnPromise(data),
       data: data
     }
   };
