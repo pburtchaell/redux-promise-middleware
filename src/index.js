@@ -1,21 +1,24 @@
 import isPromise from './isPromise';
 
-export default function promiseMiddleware() {
+const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED']
+
+export default function promiseMiddleware(config) {
+  const promiseTypes = config.promiseTypes || defaultTypes;
   return next => action => {
     if (!isPromise(action.payload)) {
       return next(action);
     }
 
-    const { types, meta } = action;
-    const { promise, data } = action.payload;
-    const [ PENDING, FULFILLED, REJECTED ] = types;
+    const { type, payload, meta } = action;
+    const { promise, data } = payload;
+    const [ PENDING, FULFILLED, REJECTED ] = meta.promiseTypes || promiseTypes
 
     /**
      * Dispatch the first async handler. This tells the
      * reducer that an async action has been dispatched.
      */
     next({
-      type: PENDING,
+      type: `${type}_${PENDING}`,
       payload: data,
       meta
     });
@@ -26,14 +29,14 @@ export default function promiseMiddleware() {
      */
     return promise.then(
       payload => next({
-        type: FULFILLED,
         payload,
-        meta
+        meta,
+        type: `${type}_${FULFILLED}`,
       }),
       error => next({
         payload: error,
         error: true,
-        type: REJECTED
+        type: `${type}_${REJECTED}`,
       })
     );
   };
