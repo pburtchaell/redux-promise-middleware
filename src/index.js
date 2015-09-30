@@ -17,18 +17,19 @@ export default function promiseMiddleware(config={}) {
       next({
         type: `${type}_${PENDING}`,
         payload: data,
-        meta
+        ...meta || {}
       });
 
       return promise.then(
         payload => next({
           payload,
-          meta,
+          ...meta || {},
           type: `${type}_${FULFILLED}`,
         }),
         error => next({
           payload: error,
           error: true,
+          ...meta || {},
           type: `${type}_${REJECTED}`,
         })
       );
