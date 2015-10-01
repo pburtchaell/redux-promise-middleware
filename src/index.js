@@ -10,7 +10,7 @@ export default function promiseMiddleware(config={}) {
         return next(action);
       }
 
-      const { type, payload, meta={} } = action;
+      const { type, payload, meta } = action;
       const { promise, data } = payload;
       const [ PENDING, FULFILLED, REJECTED ] = meta.promiseTypes || promiseTypes;
 
@@ -21,7 +21,7 @@ export default function promiseMiddleware(config={}) {
       next({
         type: `${type}_${PENDING}`,
         payload: data,
-        ...meta || {}
+        ...meta ? { meta } : {},
       });
 
       /**
@@ -30,15 +30,15 @@ export default function promiseMiddleware(config={}) {
        */
       return promise.then(
         payload => next({
-          type: `${type}_${FULFILLED}`,
           payload,
-          ...meta || {},
+          type: `${type}_${FULFILLED}`,
+          ...meta ? { meta } : {},
         }),
         error => next({
-          type: `${type}_${REJECTED}`,
           payload: error,
           error: true,
-          ...meta || {}
+          type: `${type}_${REJECTED}`,
+          ...meta ? { meta } : {},
         })
       );
     };
