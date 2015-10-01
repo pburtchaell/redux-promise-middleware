@@ -12,7 +12,7 @@ export default function promiseMiddleware(config={}) {
 
       const { type, payload, meta } = action;
       const { promise, data } = payload;
-      const [ PENDING, FULFILLED, REJECTED ] = meta.promiseTypes || promiseTypes;
+      const [ PENDING, FULFILLED, REJECTED ] = (meta || {}).promiseTypes || promiseTypes;
 
       next({
         type: `${type}_${PENDING}`,
