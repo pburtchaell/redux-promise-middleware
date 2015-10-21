@@ -6,7 +6,7 @@ export default function promiseMiddleware() {
       return next(action);
     }
 
-    const { types, meta } = action;
+    const { type, meta } = action;
     const { promise, data } = action.payload;
     const [ PENDING, FULFILLED, REJECTED ] = type;
 
