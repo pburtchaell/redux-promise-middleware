@@ -29,5 +29,8 @@
     "eslint": "^0.24.1",
     "eslint-config-airbnb": "0.0.6",
     "eslint-plugin-react": "^2.7.0"
+  },
+  "peerDependencies": {
+    "redux": "^2.0.0 || ^3.0.0"
   }
 }
