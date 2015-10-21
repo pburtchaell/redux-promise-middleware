@@ -26,7 +26,7 @@ The pending action is dispatched immediately. The fulfilled action is dispatched
 ```js
 export function myAsyncActionCreator(data) {
   return {
-    types: [
+    type: [
       'ACTION_PENDING',
       'ACTION_FULFILLED',
       'ACTION_REJECTED'
