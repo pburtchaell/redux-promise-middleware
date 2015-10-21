@@ -8,7 +8,7 @@ export default function promiseMiddleware() {
 
     const { types, meta } = action;
     const { promise, data } = action.payload;
-    const [ PENDING, FULFILLED, REJECTED ] = types;
+    const [ PENDING, FULFILLED, REJECTED ] = type;
 
     /**
      * Dispatch the first async handler. This tells the
