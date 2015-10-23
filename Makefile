@@ -10,8 +10,3 @@ $(DIST_JS): dist/%.js: src/%.js
 # Task: js
 # Builds distribution JS files for publishing to npm.
 js: $(DIST_JS)
-
-# Task: test-all
-# Runs all unit tests and linters
-test-all:
-	@$(BIN)/eslint ./src/*.js
