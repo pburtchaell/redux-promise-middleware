@@ -1,6 +1,6 @@
 import isPromise from './isPromise';
 
-const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED']
+const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
 
 export default function promiseMiddleware(config={}) {
   const promiseTypeSuffixes = config.promiseTypeSuffixes || defaultTypes;
@@ -21,7 +21,7 @@ export default function promiseMiddleware(config={}) {
       next({
         type: `${type}_${PENDING}`,
         payload: data,
-        ...meta ? { meta } : {},
+        ...meta ? { meta } : {}
       });
 
       /**
@@ -29,18 +29,18 @@ export default function promiseMiddleware(config={}) {
        * action object.
        */
       return promise.then(
-        payload => next({
+        payload => next({ // eslint-disable-line no-shadow
           payload,
           type: `${type}_${FULFILLED}`,
-          ...meta ? { meta } : {},
+          ...meta ? { meta } : {}
         }),
         error => next({
           payload: error,
           error: true,
           type: `${type}_${REJECTED}`,
-          ...meta ? { meta } : {},
+          ...meta ? { meta } : {}
         })
       );
     };
-  }
+  };
 }
