@@ -39,12 +39,12 @@ The middleware returns a [FSA compliant](https://github.com/acdlite/flux-standar
 
 ## Type Suffix Configuration
 
-When adding the middleware to your middleware composition layer, you can supply an optional options object. This object accepts an array of suffix strings that can be used instead of the default `['PENDING', 'REJECTED', 'FULFILLED']` with a key of `promiseTypeSuffixes`.
+When adding the middleware to your middleware composition layer, you can supply an optional options object. This object accepts an array of suffix strings that can be used instead of the default `['PENDING', 'FULFILLED', 'REJECTED']` with a key of `promiseTypeSuffixes`.
 
 ```js
 applyMiddleware(
   promiseMiddleware({
-    promiseTypeSuffixes: ['START', 'ERROR', 'SUCCESS']
+    promiseTypeSuffixes: ['START', 'SUCCESS', 'ERROR']
   })
 )
 ```
@@ -60,7 +60,7 @@ export function myAsyncActionCreator(data) {
       data: data
     },
     meta: {
-      promiseTypeSuffixes: ['WAIT', '!@£$', 'YAY']
+      promiseTypeSuffixes: ['WAIT', 'YAY', '!@£$']
     }
   };
 }
