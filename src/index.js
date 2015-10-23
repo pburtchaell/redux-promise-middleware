@@ -3,7 +3,7 @@ import isPromise from './isPromise';
 const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED']
 
 export default function promiseMiddleware(config={}) {
-  const promiseTypes = config.promiseTypes || defaultTypes;
+  const promiseTypeSuffixes = config.promiseTypeSuffixes || defaultTypes;
   return () => {
     return next => action => {
       if (!isPromise(action.payload)) {
@@ -12,7 +12,7 @@ export default function promiseMiddleware(config={}) {
 
       const { type, payload, meta } = action;
       const { promise, data } = payload;
-      const [ PENDING, FULFILLED, REJECTED ] = (meta || {}).promiseTypes || promiseTypes;
+      const [ PENDING, FULFILLED, REJECTED ] = (meta || {}).promiseTypeSuffixes || promiseTypeSuffixes;
 
      /**
       * Dispatch the first async handler. This tells the
