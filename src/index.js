@@ -29,15 +29,17 @@ export default function promiseMiddleware(config={}) {
        * action object.
        */
       return promise.then(
-        payload => next({ // eslint-disable-line no-shadow
-          payload,
+        resolved => next({ // eslint-disable-line no-shadow
           type: `${type}_${FULFILLED}`,
-          ...meta ? { meta } : {}
+          ...resolved.meta ? resolved : {
+            resolved: payload,
+            ...meta ? { meta } : {}
+          }
         }),
         error => next({
+          type: `${type}_${REJECTED}`,
           payload: error,
           error: true,
-          type: `${type}_${REJECTED}`,
           ...meta ? { meta } : {}
         })
       );
