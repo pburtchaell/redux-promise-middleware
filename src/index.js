@@ -32,7 +32,7 @@ export default function promiseMiddleware(config={}) {
         resolved => next({ // eslint-disable-line no-shadow
           type: `${type}_${FULFILLED}`,
           ...resolved.meta ? resolved : {
-            resolved: payload,
+            payload: resolved,
             ...meta ? { meta } : {}
           }
         }),
