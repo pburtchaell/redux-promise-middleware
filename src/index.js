@@ -21,7 +21,7 @@ export default function promiseMiddleware(config={}) {
       next({
         type: `${type}_${PENDING}`,
         payload: data,
-        ...meta ? { meta } : {}
+        ...meta && { meta }
       });
 
       /**
@@ -33,14 +33,14 @@ export default function promiseMiddleware(config={}) {
           type: `${type}_${FULFILLED}`,
           ...resolved.meta ? resolved : {
             payload: resolved,
-            ...meta ? { meta } : {}
+            ...meta && { meta }
           }
         }),
         error => next({
           type: `${type}_${REJECTED}`,
           payload: error,
           error: true,
-          ...meta ? { meta } : {}
+          ...meta && { meta }
         })
       );
     };
