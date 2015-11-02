@@ -31,7 +31,7 @@ export default function promiseMiddleware(config={}) {
       return promise.then(
         resolved => next({ // eslint-disable-line no-shadow
           type: `${type}_${FULFILLED}`,
-          ...resolved.meta ? resolved : {
+          ...resolved.meta || resolved.payload ? resolved : {
             payload: resolved,
             ...meta && { meta }
           }
