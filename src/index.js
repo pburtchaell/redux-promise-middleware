@@ -1,9 +1,10 @@
 import isPromise from './isPromise';
 
-const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
-
-export default function promiseMiddleware(config={}) {
-  const promiseTypeSuffixes = config.promiseTypeSuffixes || defaultTypes;
+export default function promiseMiddleware(config = {
+ promiseTypeSuffixes: ['PENDING', 'FULFILLED', 'REJECTED']
+}) {
+  const promiseTypeSuffixes = config.promiseTypeSuffixes;
+  
   return () => {
     return next => action => {
       if (!isPromise(action.payload)) {
