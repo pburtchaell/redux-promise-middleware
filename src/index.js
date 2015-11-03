@@ -20,7 +20,7 @@ export default function promiseMiddleware(config={}) {
       */
       next({
         type: `${type}_${PENDING}`,
-        payload: data,
+        ...data && { payload: data },
         ...meta && { meta }
       });
 
@@ -32,7 +32,7 @@ export default function promiseMiddleware(config={}) {
         resolved => next({ // eslint-disable-line no-shadow
           type: `${type}_${FULFILLED}`,
           ...resolved.meta || resolved.payload ? resolved : {
-            payload: resolved,
+            ...resolved && { payload: resolved },
             ...meta && { meta }
           }
         }),
