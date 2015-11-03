@@ -4,8 +4,10 @@ const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
 
 export default function promiseMiddleware(config={}) {
   const promiseTypeSuffixes = config.promiseTypeSuffixes || defaultTypes;
+
   return (_ref) => {
     const dispatch = _ref.dispatch;
+
     return next => action => {
       if (!isPromise(action.payload)) {
         return next(action);
