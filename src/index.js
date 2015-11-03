@@ -21,7 +21,7 @@ export default function promiseMiddleware(config={}) {
       next({
         type: `${type}_${PENDING}`,
         payload: data,
-        ...meta ? { meta } : {}
+        ...meta && { meta }
       });
 
       /**
@@ -29,16 +29,18 @@ export default function promiseMiddleware(config={}) {
        * action object.
        */
       return promise.then(
-        payload => next({ // eslint-disable-line no-shadow
-          payload,
+        resolved => next({ // eslint-disable-line no-shadow
           type: `${type}_${FULFILLED}`,
-          ...meta ? { meta } : {}
+          ...resolved.meta || resolved.payload ? resolved : {
+            payload: resolved,
+            ...meta && { meta }
+          }
         }),
         error => next({
+          type: `${type}_${REJECTED}`,
           payload: error,
           error: true,
-          type: `${type}_${REJECTED}`,
-          ...meta ? { meta } : {}
+          ...meta && { meta }
         })
       );
     };
