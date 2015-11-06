@@ -1,5 +1,6 @@
 import isPromise from './isPromise';
 
+<<<<<<< f01915febfe98c8dd27a97af00473a64030d5e4f
 const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
 
 export default function promiseMiddleware(config={}) {
@@ -8,6 +9,14 @@ export default function promiseMiddleware(config={}) {
   return (_ref) => {
     const dispatch = _ref.dispatch;
 
+=======
+export default function promiseMiddleware(config = {
+ promiseTypeSuffixes: ['PENDING', 'FULFILLED', 'REJECTED']
+}) {
+  const promiseTypeSuffixes = config.promiseTypeSuffixes;
+
+  return () => {
+>>>>>>> Initial tests
     return next => action => {
       if (!isPromise(action.payload)) {
         return next(action);
