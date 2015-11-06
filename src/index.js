@@ -4,7 +4,7 @@ export default function promiseMiddleware(config = {
  promiseTypeSuffixes: ['PENDING', 'FULFILLED', 'REJECTED']
 }) {
   const promiseTypeSuffixes = config.promiseTypeSuffixes;
-  
+
   return () => {
     return next => action => {
       if (!isPromise(action.payload)) {
