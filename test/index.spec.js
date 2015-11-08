@@ -24,23 +24,28 @@ describe('promise middleware', () => {
     const mockRejectedAction = {
       type: 'GET_POST',
       payload: {
-        promise: () => {
-          return new Promise((resolve, reject) => {
-            reject(new Error());
-          });
-        }
+        promise: Promise.reject(new Error())
       }
     };
     const mockFulfilledAction = {
       type: 'GET_POST',
       payload: {
-        promise: () => {
-          return new Promise((resolve, reject) => {
-            resolve({});
-          })
-        }
+        promise: Promise.resolve({})
       }
     };
+
+    const pendingAction = {
+      type: 'GET_POST_PENDING',
+    }
+    const rejectedAction = {
+      type: 'GET_POST_REJECTED',
+      error: true,
+      payload: new Error()
+    }
+    const fulfilledAction = {
+      type: 'GET_POST_FULFILLED',
+      payload: {}
+    }
 
     it('must pass action to next if not a promise', done => {
       const store = mockStore({}, [mockActionWithoutPromise], done);
@@ -48,12 +53,12 @@ describe('promise middleware', () => {
     });
 
     it('must dispatch rejected action if promise is rejected', done => {
-      const store = mockStore({}, [mockRejectedAction], done);
+      const store = mockStore({}, [pendingAction, rejectedAction], done);
       store.dispatch(mockRejectedAction);
     });
 
     it('must dispatch fulfilled action if promise is fulfilled', done => {
-      const store = mockStore({}, [mockFulfilledAction], done);
+      const store = mockStore({}, [pendingAction, fulfilledAction], done);
       store.dispatch(mockFulfilledAction);
     });
   });
