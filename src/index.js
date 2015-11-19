@@ -4,7 +4,8 @@ const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
 
 export default function promiseMiddleware(config={}) {
   const promiseTypeSuffixes = config.promiseTypeSuffixes || defaultTypes;
-  return () => {
+  return (_ref) => {
+    const dispatch = _ref.dispatch;
     return next => action => {
       if (!isPromise(action.payload)) {
         return next(action);
@@ -29,14 +30,14 @@ export default function promiseMiddleware(config={}) {
        * action object.
        */
       return promise.then(
-        (resolved={}) => next({
+        (resolved={}) => dispatch({
           type: `${type}_${FULFILLED}`,
           ...resolved.meta || resolved.payload ? resolved : {
             ...resolved && { payload: resolved },
             ...meta && { meta }
           }
         }),
-        error => next({
+        error => dispatch({
           type: `${type}_${REJECTED}`,
           payload: error,
           error: true,
