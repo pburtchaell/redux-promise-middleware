@@ -3,18 +3,11 @@ import configureStore from 'redux-mock-store';
 import promiseMiddleware from '../src/index';
 
 describe('promise middleware', () => {
-  const nextHandler = promiseMiddleware()();
+  const nextHandler = promiseMiddleware();
 
   it('must return a function to handle next', () => {
     chai.assert.isFunction(nextHandler);
     chai.assert.strictEqual(nextHandler.length, 1);
-  });
-
-  describe('handle next', () => {
-    it('must return a function to handle action', () => {
-      const actionHandler = nextHandler();
-      chai.assert.isFunction(actionHandler);
-    });
   });
 
   describe('handle action', () => {
