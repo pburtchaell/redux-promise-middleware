@@ -1,6 +1,6 @@
 # Redux Promise Middleware
 
-[![npm version](https://img.shields.io/npm/v/redux-promise-middleware.svg?style=flat-square)](https://www.npmjs.com/package/redux-promise-middleware)
+[![npm version](https://img.shields.io/npm/v/redux-promise-middleware.svg?style=flat-square)](https://www.npmjs.com/package/redux-promise-middleware) [![Build Status](https://travis-ci.org/pburtchaell/redux-promise-middleware.svg)](https://travis-ci.org/pburtchaell/redux-promise-middleware)
 
 # Getting Started
 
