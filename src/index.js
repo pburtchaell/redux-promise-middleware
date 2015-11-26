@@ -27,6 +27,9 @@ export default function promiseMiddleware(config = {}) {
         ...meta && { meta }
       });
 
+      const isActionOrThunk = resolved =>
+        typeof resolved === 'function' || resolved.meta || resolved.payload;
+
       /**
        * Return either the fulfilled action object or the rejected
        * action object.
@@ -34,7 +37,7 @@ export default function promiseMiddleware(config = {}) {
       return promise.then(
         (resolved={}) => dispatch({
           type: `${type}_${FULFILLED}`,
-          ...resolved.meta || resolved.payload ? resolved : {
+          ...isActionOrThunk(resolved) ? resolved : {
             ...resolved && { payload: resolved },
             ...meta && { meta }
           }
