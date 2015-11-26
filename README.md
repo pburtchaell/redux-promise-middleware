@@ -21,7 +21,7 @@ composeStoreWithMiddleware = applyMiddleware(
 
 To use the middleware, dispatch a promise within the `payload` of the action and specify a `type` string. You may pass an optional `data` object. This is dispatched from the pending action and is useful for optimistic updates.
 
-The pending action is dispatched immediately with the original type string and a suffix of `_PENDING`. The fulfilled action is dispatched only if the promise is resolved, e.g., if it was successful; and the rejected action is dispatched only if the promise is rejected, e.g., if an error occurred. The fulfilled and rejected suffixes are `_FULFILLED` and `_REJECTED` respectively.
+The pending action is dispatched immediately with the original type string and a suffix of `_PENDING`. The fulfilled action is dispatched only if the promise is resolved, e.g., if it was successful; and the rejected action is dispatched only if the promise is rejected, e.g., if an error occurred. The fulfilled and rejected suffixes are `_FULFILLED` and `_REJECTED` respectively. If necessary, it is possible [to change the value](#type-suffix-configuration) of the type suffixes.
 
 ```js
 export function myAsyncActionCreator(data) {
@@ -45,9 +45,41 @@ The major difference is this middleware dispatches a `_PENDING` action. The pend
 
 One could also argue the API for this middleware is more transparent and easier to integrate, e.g., you do not need to use [redux-actions](https://github.com/acdlite/redux-actions).
 
-## Type Suffix Configuration
+## Dispatching actions when promises are resolved
 
-When adding the middleware to your middleware composition layer, you can supply an optional options object. This object accepts an array of suffix strings that can be used instead of the default `['PENDING', 'FULFILLED', 'REJECTED']` with a key of `promiseTypeSuffixes`.
+Often times when a promise is resolved, one might want to fire a one or more "callback" actions to respond to the resolved promise. One example is changing the route after a user is successfully signed in.
+
+If you need to do this, you can dispatch a second action:
+
+```js
+const actionCreator = () => ({
+  type: 'FIRST_ACTION_TYPE',
+  payload: {
+    promise: Promise.resolve({
+      type: 'SECEOND_ACTION_TYPE'
+      payload: ...
+    })
+   }
+});
+```
+
+It is also possible to use a function:
+
+```js
+const actionCreator = () => ({
+  type: 'FIRST_ACTION_TYPE',
+  payload: {
+    promise: Promise.resolve((dispatch, getState) => {
+      dispatch({ type: 'SECEOND_ACTION_TYPE', payload: ... })
+      dispatch(someActionCreator())
+    })
+   }
+});
+```
+
+## Type suffix configuration
+
+When adding the promise middleware to your middleware stack, you can supply an optional configuration object. This object accepts an array of suffix strings that can be used instead of the default `['PENDING', 'FULFILLED', 'REJECTED']` with a key of `promiseTypeSuffixes`.
 
 ```js
 applyMiddleware(
