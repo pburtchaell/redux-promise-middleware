@@ -35,7 +35,7 @@ export default function promiseMiddleware(config = {}) {
        * action object.
        */
       return promise.then(
-        (resolved={}) => dispatch({
+        (resolved = {}) => dispatch({
           type: `${type}_${FULFILLED}`,
           ...isActionOrThunk(resolved) ? resolved : {
             ...resolved && { payload: resolved },
