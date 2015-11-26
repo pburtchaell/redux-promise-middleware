@@ -28,17 +28,17 @@ describe('promise middleware', () => {
     };
 
     const pendingAction = {
-      type: 'GET_POST_PENDING',
-    }
+      type: 'GET_POST_PENDING'
+    };
     const rejectedAction = {
       type: 'GET_POST_REJECTED',
       error: true,
       payload: new Error()
-    }
+    };
     const fulfilledAction = {
       type: 'GET_POST_FULFILLED',
       payload: {}
-    }
+    };
 
     it('must pass action to next if not a promise', done => {
       const store = mockStore({}, [mockActionWithoutPromise], done);
