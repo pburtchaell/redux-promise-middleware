@@ -27,26 +27,28 @@ export default function promiseMiddleware(config = {}) {
         ...meta && { meta }
       });
 
-      const isActionOrThunk = resolved =>
-        typeof resolved === 'function' || resolved.meta || resolved.payload;
+      const isAction = resolved => resolved.meta || resolved.payload;
 
+      const isThunk = resolved => typeof resolved === 'function';
       /**
        * Return either the fulfilled action object or the rejected
        * action object.
        */
       return promise.then(
-        (resolved = {}) => dispatch({
+        (resolved={}) => isThunk(resolved) ? dispatch(resolved) : dispatch({
           type: `${type}_${FULFILLED}`,
-          ...isActionOrThunk(resolved) ? resolved : {
+          ...isAction(resolved) ? resolved : {
             ...resolved && { payload: resolved },
             ...meta && { meta }
           }
         }),
-        error => dispatch({
+        (resolved={}) => isThunk(resolved) ? dispatch(resolved) : dispatch({
           type: `${type}_${REJECTED}`,
-          payload: error,
-          error: true,
-          ...meta && { meta }
+          ...isAction(resolved) ? resolved : {
+            error: true,
+            ...resolved && { payload: resolved },
+            ...meta && { meta }
+          }
         })
       );
     };
