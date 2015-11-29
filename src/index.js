@@ -29,10 +29,10 @@ export default function promiseMiddleware(config = {}) {
 
       const isAction = resolved => resolved.meta || resolved.payload;
       const isThunk = resolved => typeof resolved === 'function';
-      const getResolveAction = (error) => ({
-        type: `${type}_${error ? REJECTED : FULFILLED}`,
+      const getResolveAction = (isError) => ({
+        type: `${type}_${isError ? REJECTED : FULFILLED}`,
         ...!!meta && { meta },
-        ...!!error && { error: true }
+        ...!!isError && { error: true }
       });
 
       /**
