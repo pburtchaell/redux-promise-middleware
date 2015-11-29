@@ -1,6 +1,6 @@
 {
   "name": "redux-promise-middleware",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "Redux middleware for handling promises",
   "main": "dist/index.js",
   "scripts": {
@@ -19,6 +19,9 @@
     "promises"
   ],
   "author": "Patrick Burtchaell <patrick@pburtchaell.com> (pburtchaell.com)",
+  "contributors": [
+    "Thomas <iammotivated@gmail.com> (tomatao.co.uk)"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/pburtchaell/redux-promise-middleware/issues"
