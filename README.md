@@ -56,7 +56,7 @@ const actionCreator = () => ({
   type: 'FIRST_ACTION_TYPE',
   payload: {
     promise: Promise.resolve({
-      type: 'SECEOND_ACTION_TYPE'
+      type: 'SECOND_ACTION_TYPE'
       payload: ...
     })
    }
