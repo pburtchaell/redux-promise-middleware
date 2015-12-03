@@ -41,10 +41,10 @@ export default function promiseMiddleware(config = {}) {
        *  2. the resolved/rejected object, if it looks like an action, merged into action
        *  3. a resolve/rejected action with the resolve/rejected object as a payload
        */
-      promise.then(
+      action.payload.promise = promise.then(
         (resolved={}) => {
           const resolveAction = getResolveAction();
-          dispatch(isThunk(resolved) ? resolved.bind(null, resolveAction) : {
+          return dispatch(isThunk(resolved) ? resolved.bind(null, resolveAction) : {
             ...resolveAction,
             ...isAction(resolved) ? resolved : {
               ...!!resolved && { payload: resolved }
@@ -53,7 +53,7 @@ export default function promiseMiddleware(config = {}) {
         },
         (rejected={}) => {
           const resolveAction = getResolveAction(true);
-          dispatch(isThunk(rejected) ? rejected.bind(null, resolveAction) : {
+          return dispatch(isThunk(rejected) ? rejected.bind(null, resolveAction) : {
             ...resolveAction,
             ...isAction(rejected) ? rejected : {
               ...!!rejected && { payload: rejected }
@@ -61,6 +61,8 @@ export default function promiseMiddleware(config = {}) {
           });
         },
       );
+
+      return action;
     };
   };
 }
