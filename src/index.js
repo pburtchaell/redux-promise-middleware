@@ -29,7 +29,7 @@ export default function promiseMiddleware(config = {}) {
 
       const isAction = resolved => resolved.meta || resolved.payload;
       const isThunk = resolved => typeof resolved === 'function';
-      const getResolveAction = (isError) => ({
+      const getResolveAction = isError => ({
         type: `${type}_${isError ? REJECTED : FULFILLED}`,
         ...!!meta && { meta },
         ...!!isError && { error: true }
@@ -42,8 +42,9 @@ export default function promiseMiddleware(config = {}) {
        *  3. a resolve/rejected action with the resolve/rejected object as a payload
        */
       action.payload.promise = promise.then(
-        (resolved={}) => {
+        (resolved = {}) => {
           const resolveAction = getResolveAction();
+
           return dispatch(isThunk(resolved) ? resolved.bind(null, resolveAction) : {
             ...resolveAction,
             ...isAction(resolved) ? resolved : {
@@ -51,8 +52,9 @@ export default function promiseMiddleware(config = {}) {
             }
           });
         },
-        (rejected={}) => {
+        (rejected = {}) => {
           const resolveAction = getResolveAction(true);
+
           return dispatch(isThunk(rejected) ? rejected.bind(null, resolveAction) : {
             ...resolveAction,
             ...isAction(rejected) ? rejected : {
