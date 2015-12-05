@@ -1,6 +1,7 @@
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import { createStore, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
 import promiseMiddleware from '../src/index';
 chai.use(sinonChai);
@@ -13,37 +14,54 @@ describe('Redux Promise Middleware', () => {
     chai.assert.strictEqual(nextHandler.length, 1);
   });
 
+  /*
+    Make two fake middleware to surround promiseMiddleware
+    Give both of them a spy property to assert on their usage
+   */
   function firstMiddleware(next) {
     this.spy = sinon.spy((action) => next(action));
     return this.spy;
   }
+  // final middleware returns some dummy data
+  const lastMiddlewareReturn = { test: 'value' };
   function lastMiddleware(next) {
-    this.spy = sinon.spy((action) => next(action));
+    this.spy = sinon.spy((action) => {
+      next(action);
+      return lastMiddlewareReturn;
+    });
     return this.spy;
   }
 
-  const makeMiddlewares = (config) => [
+  /*
+    Function for creating a store using fake middleware stack
+   */
+  const makeStore = (config) => applyMiddleware(
     () => next => firstMiddleware.call(lastMiddleware, next),
     promiseMiddleware(config),
     () => next => lastMiddleware.call(lastMiddleware, next)
-  ];
+  )(createStore)(()=>null);
 
-  let mockStore;
+  let store;
   beforeEach(()=> {
-    mockStore = configureStore(makeMiddlewares());
+    store = makeStore();
   });
 
   context('When Action is Not a Promise', ()=> {
     const mockAction = { type: 'NOT_PROMISE' };
 
-    it('invokes next with the action', done => {
-      const store = mockStore({}, [mockAction], done);
+    it('doesnt dispatch any other actions', done => {
+      const mockStore = configureStore([promiseMiddleware()]);
+      mockStore({}, [mockAction], done).dispatch(mockAction);
+    });
+
+    it('invokes next with the action', () => {
       store.dispatch(mockAction);
       expect(lastMiddleware.spy).to.have.been.calledWith(mockAction);
     });
 
-    it('returns the return from next middleware');
-    it('doesnt dispatch any other actions');
+    it('returns the return from next middleware', () => {
+      expect(store.dispatch(mockAction)).to.equal(lastMiddlewareReturn);
+    });
   });
 
   context('When Action Has Promise Payload', ()=> {
