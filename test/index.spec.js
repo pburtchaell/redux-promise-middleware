@@ -136,48 +136,75 @@ describe('Redux Promise Middleware:', () => {
     });
 
     context('When Promise Rejects:', ()=> {
-      let promiseAction;
+      let rejectingPromiseAction;
       let rejectedAction;
       let rejectValue;
       beforeEach(()=> {
-        rejectValue = { test: 'resolved value' };
-        promiseAction = {
+        rejectValue = { test: 'rejected value' };
+        rejectingPromiseAction = {
           type: 'HAS_REJECTING_PROMISE',
           payload: {
             promise: Promise.reject(rejectValue)
           }
         };
         rejectedAction = {
-          type: `${promiseAction.type}_REJECTED`,
+          type: `${rejectingPromiseAction.type}_REJECTED`,
           error: true,
           payload: rejectValue
         };
       });
 
       it('re-dispatches rejected action with error and payload from error', async () => {
-        await store.dispatch(promiseAction).payload.promise;
+        await store.dispatch(rejectingPromiseAction).payload.promise;
         expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
       });
 
       it('works when resolve is null', async () => {
-        promiseAction.payload.promise = Promise.reject(null);
+        rejectingPromiseAction.payload.promise = Promise.reject(null);
         rejectedAction = {
-          type: `${promiseAction.type}_REJECTED`,
+          type: `${rejectingPromiseAction.type}_REJECTED`,
           error: true
         };
-        await store.dispatch(promiseAction).payload.promise;
+        await store.dispatch(rejectingPromiseAction).payload.promise;
         expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
       });
 
       it('persists meta from original action', async () => {
         const metaData = { fake: 'data' };
-        promiseAction.meta = metaData;
+        rejectingPromiseAction.meta = metaData;
         rejectedAction.meta = metaData;
-        await store.dispatch(promiseAction).payload.promise;
+        await store.dispatch(rejectingPromiseAction).payload.promise;
         expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
       });
 
-      it('allows promise to resolve a new action object and merge into original');
+      it('merges resolved value into rejected action if it has payload', async () => {
+        const newAction = {
+          payload: 'New action payload'
+        };
+        rejectingPromiseAction.payload.promise = Promise.reject(newAction);
+        rejectedAction = {
+          type: `${rejectingPromiseAction.type}_REJECTED`,
+          error: true,
+          ...newAction
+        };
+        await store.dispatch(rejectingPromiseAction).payload.promise;
+        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+      });
+
+      it('merges resolved value into rejected action if it has meta', async () => {
+        const newAction = {
+          meta: { broadcast: 'example' }
+        };
+        rejectingPromiseAction.payload.promise = Promise.reject(newAction);
+        rejectedAction = {
+          type: `${rejectingPromiseAction.type}_REJECTED`,
+          error: true,
+          ...newAction
+        };
+        await store.dispatch(rejectingPromiseAction).payload.promise;
+        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+      });
+
       it('allows promise to resolve thunk, pre-bound to the rejected action');
       it('the returned action.payload.promise resolves the rejected action');
       it('allows customisation of global rejected action.type');
