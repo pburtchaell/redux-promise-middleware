@@ -28,11 +28,14 @@ describe('Redux Promise Middleware:', () => {
     return this.spy;
   }
   // final middleware returns some dummy data
-  const lastMiddlewareReturn = { test: 'value' };
+  const lastMiddlewareMergedObject = { val: 'added-by-last-middleware' };
   function lastMiddleware(next) {
     this.spy = sinon.spy((action) => {
       next(action);
-      return lastMiddlewareReturn;
+      return {
+        ...action,
+        ...lastMiddlewareMergedObject
+      };
     });
     return this.spy;
   }
@@ -65,7 +68,10 @@ describe('Redux Promise Middleware:', () => {
     });
 
     it('returns the return from next middleware', () => {
-      expect(store.dispatch(mockAction)).to.equal(lastMiddlewareReturn);
+      expect(store.dispatch(mockAction)).to.eql({
+        ...mockAction,
+        ...lastMiddlewareMergedObject
+      });
     });
 
     it('doesnt dispatch any other actions', done => {
@@ -205,8 +211,31 @@ describe('Redux Promise Middleware:', () => {
         expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
       });
 
-      it('allows promise to resolve thunk, pre-bound to the rejected action');
-      it('the returned action.payload.promise resolves the rejected action');
+      it('allows promise to resolve thunk, pre-bound to rejected action', async () => {
+        const thunkResolve = (action, dispatch, getState) => {
+          expect(action).to.eql({
+            type: `${rejectingPromiseAction.type}_REJECTED`,
+            error: true
+          });
+          dispatch({ ...action, foo: 'bar' });
+        };
+        rejectingPromiseAction.payload.promise = Promise.reject(thunkResolve);
+        await store.dispatch(rejectingPromiseAction).payload.promise;
+        expect(lastMiddleware.spy).to.have.been.calledWith({
+          type: `${rejectingPromiseAction.type}_REJECTED`,
+          error: true,
+          foo: 'bar'
+        });
+      });
+
+      it('returns action.payload.promise resolving the rejected action', async () => {
+        const resolving = await store.dispatch(rejectingPromiseAction).payload.promise;
+        expect(resolving).to.eql({
+          ...rejectedAction,
+          ...lastMiddlewareMergedObject
+        });
+      });
+
       it('allows customisation of global rejected action.type');
       it('allows customisation of rejected action.type per dispatch');
     });
