@@ -15,11 +15,16 @@ describe('Redux Promise Middleware', () => {
   });
 
   /*
-    Make two fake middleware to surround promiseMiddleware
+    Make two fake middleware to surround promiseMiddleware in chain,
     Give both of them a spy property to assert on their usage
    */
-  function firstMiddleware(next) {
-    this.spy = sinon.spy((action) => next(action));
+  // first middleware mimics redux-thunk
+  function firstMiddlewareThunk(ref, next) {
+    this.spy = sinon.spy((action) =>
+      typeof action === 'function'
+        ? action(ref.dispatch, ref.getState)
+        : next(action)
+    );
     return this.spy;
   }
   // final middleware returns some dummy data
@@ -33,10 +38,10 @@ describe('Redux Promise Middleware', () => {
   }
 
   /*
-    Function for creating a store using fake middleware stack
+    Function for creating a dumb store using fake middleware stack
    */
   const makeStore = (config) => applyMiddleware(
-    () => next => firstMiddleware.call(lastMiddleware, next),
+    ref => next => firstMiddlewareThunk.call(lastMiddleware, ref, next),
     promiseMiddleware(config),
     () => next => lastMiddleware.call(lastMiddleware, next)
   )(createStore)(()=>null);
