@@ -237,6 +237,16 @@ describe('Redux Promise Middleware:', () => {
       });
 
       it('allows customisation of global rejected action.type', async () => {
+        const customPrefix = 'PENDIDDLE';
+        store = makeStore({
+          promiseTypeSuffixes: [ '', '', customPrefix ]
+        });
+        rejectedAction.type = `${rejectingPromiseAction.type}_${customPrefix}`;
+        await store.dispatch(rejectingPromiseAction).payload.promise;
+        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+      });
+
+      it('allows customisation of rejected action.type per dispatch', async () => {
         const customPrefix = 'PENDOODDLE';
         const actionMeta = { promiseTypeSuffixes: [ '', '', customPrefix ] };
         rejectingPromiseAction.meta = actionMeta;
@@ -246,8 +256,6 @@ describe('Redux Promise Middleware:', () => {
         await store.dispatch(rejectingPromiseAction).payload.promise;
         expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
       });
-
-      it('allows customisation of rejected action.type per dispatch');
     });
 
     context('When Promise Resolves', ()=> {
