@@ -169,7 +169,14 @@ describe('Redux Promise Middleware:', () => {
         expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
       });
 
-      it('persists meta from original action');
+      it('persists meta from original action', async () => {
+        const metaData = { fake: 'data' };
+        promiseAction.meta = metaData;
+        rejectedAction.meta = metaData;
+        await store.dispatch(promiseAction).payload.promise;
+        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+      });
+
       it('allows promise to resolve a new action object and merge into original');
       it('allows promise to resolve thunk, pre-bound to the rejected action');
       it('the returned action.payload.promise resolves the rejected action');
