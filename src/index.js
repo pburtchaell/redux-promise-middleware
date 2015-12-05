@@ -17,10 +17,10 @@ export default function promiseMiddleware(config = {}) {
       const { promise, data } = payload;
       const [ PENDING, FULFILLED, REJECTED ] = (meta || {}).promiseTypeSuffixes || promiseTypeSuffixes;
 
-     /**
-      * Dispatch the first async handler. This tells the
-      * reducer that an async action has been dispatched.
-      */
+      /**
+       * Dispatch the first async handler. This tells the
+       * reducer that an async action has been dispatched.
+       */
       next({
         type: `${type}_${PENDING}`,
         ...!!data && { payload: data },

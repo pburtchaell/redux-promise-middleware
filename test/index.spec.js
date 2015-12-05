@@ -120,8 +120,20 @@ describe('Redux Promise Middleware', () => {
       expect(lastMiddleware.spy).to.have.been.calledWith(pendingAction);
     });
 
-    it('allows customisation of pending action.type per dispatch');
-    it('returns the originally dispatched action');
+    it('allows customisation of pending action.type per dispatch', () => {
+      const customPrefix = 'PENDOODDLE';
+      const actionMeta = { promiseTypeSuffixes: [ customPrefix, '', '' ] };
+      promiseAction.meta = actionMeta;
+      pendingAction.type = `${promiseAction.type}_${customPrefix}`;
+      // FIXME: Test leak, should the promiseTypeSuffixes be in other actions?
+      pendingAction.meta = actionMeta;
+      store.dispatch(promiseAction);
+      expect(lastMiddleware.spy).to.have.been.calledWith(pendingAction);
+    });
+
+    it('returns the originally dispatched action', () => {
+      expect(store.dispatch(promiseAction)).to.eql(promiseAction);
+    });
 
     context('When Promise Rejects', ()=> {
       it('re-dispatches a rejected action with error flag and payload from error');
