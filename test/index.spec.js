@@ -158,6 +158,15 @@ describe('Redux Promise Middleware:', () => {
           error: true,
           payload: rejectValue
         };
+        pendingAction = {
+          type: `${rejectingPromiseAction.type}_PENDING`
+        };
+      });
+
+      it('dispatches both pending and rejected', done => {
+        const mockStore = configureStore([promiseMiddleware()]);
+        const s = mockStore({}, [ pendingAction, rejectedAction ], done);
+        s.dispatch(rejectingPromiseAction);
       });
 
       it('re-dispatches rejected action with error and payload from error', async () => {
@@ -275,6 +284,15 @@ describe('Redux Promise Middleware:', () => {
           type: `${fulfillingPromiseAction.type}_FULFILLED`,
           payload: fulfilledValue
         };
+        pendingAction = {
+          type: `${fulfillingPromiseAction.type}_PENDING`
+        };
+      });
+
+      it('dispatches both pending and rejected', done => {
+        const mockStore = configureStore([promiseMiddleware()]);
+        const s = mockStore({}, [ pendingAction, fulfillingAction ], done);
+        s.dispatch(fulfillingPromiseAction);
       });
 
       it('re-dispatches fulfil action with payload from promise', async () => {
