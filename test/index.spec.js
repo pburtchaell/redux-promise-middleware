@@ -259,15 +259,116 @@ describe('Redux Promise Middleware:', () => {
       });
     });
 
-    context('When Promise Resolves', ()=> {
-      it('re-dispatches a fulfilled action with payload from promise');
-      it('works when resolve is null');
-      it('persists meta from original action');
-      it('allows promise to resolve a new action object and merge into original');
-      it('allows promise to resolve thunk, pre-bound to the resolved action');
-      it('the returned action.payload.promise resolves the fulfilled action');
-      it('allows customisation of global fulfilled action.type');
-      it('allows customisation of fulfilled action.type per dispatch');
+    context('When Promise Fulfils', ()=> {
+      let fulfillingPromiseAction;
+      let fulfillingAction;
+      let fulfilledValue;
+      beforeEach(()=> {
+        fulfilledValue = { test: 'fulfilled value' };
+        fulfillingPromiseAction = {
+          type: 'HAS_FULFILLING_PROMISE',
+          payload: {
+            promise: Promise.resolve(fulfilledValue)
+          }
+        };
+        fulfillingAction = {
+          type: `${fulfillingPromiseAction.type}_FULFILLED`,
+          payload: fulfilledValue
+        };
+      });
+
+      it('re-dispatches fulfil action with payload from promise', async () => {
+        await store.dispatch(fulfillingPromiseAction).payload.promise;
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(fulfillingAction);
+      });
+
+      it('works when resolve is null', async () => {
+        fulfillingPromiseAction.payload.promise = Promise.resolve(null);
+        fulfillingAction = {
+          type: `${fulfillingPromiseAction.type}_FULFILLED`
+        };
+        await store.dispatch(fulfillingPromiseAction).payload.promise;
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(fulfillingAction);
+      });
+
+      it('persists meta from original action', async () => {
+        const metaData = { fake: 'data' };
+        fulfillingPromiseAction.meta = metaData;
+        fulfillingAction.meta = metaData;
+        await store.dispatch(fulfillingPromiseAction).payload.promise;
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(fulfillingAction);
+      });
+
+      it('merges resolved value into fulfilled action if it has payload', async () => {
+        const newAction = {
+          payload: 'New action payload'
+        };
+        fulfillingPromiseAction.payload.promise = Promise.resolve(newAction);
+        fulfillingAction = {
+          type: `${fulfillingPromiseAction.type}_FULFILLED`,
+          ...newAction
+        };
+        await store.dispatch(fulfillingPromiseAction).payload.promise;
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(fulfillingAction);
+      });
+
+      it('merges resolved value into fulfilled action if it has meta', async () => {
+        const newAction = {
+          meta: { broadcast: 'example' }
+        };
+        fulfillingPromiseAction.payload.promise = Promise.resolve(newAction);
+        fulfillingAction = {
+          type: `${fulfillingPromiseAction.type}_FULFILLED`,
+          ...newAction
+        };
+        await store.dispatch(fulfillingPromiseAction).payload.promise;
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(fulfillingAction);
+      });
+
+      it('allows promise to resolve thunk, pre-bound to fulfilled action', async () => {
+        const thunkResolve = (action, dispatch, getState) => {
+          expect(action).to.eql({
+            type: `${fulfillingPromiseAction.type}_FULFILLED`
+          });
+          expect(getState()).to.equal(store.getState());
+          dispatch({ ...action, foo: 'bar' });
+        };
+        fulfillingPromiseAction.payload.promise = Promise.resolve(thunkResolve);
+        await store.dispatch(fulfillingPromiseAction).payload.promise;
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith({
+          type: `${fulfillingPromiseAction.type}_FULFILLED`,
+          foo: 'bar'
+        });
+      });
+
+      it('returns action.payload.promise resolving the fulfilled action', async () => {
+        const resolving = await store.dispatch(fulfillingPromiseAction).payload.promise;
+        expect(resolving).to.eql({
+          ...fulfillingAction,
+          ...lastMiddlewareModfiesObject
+        });
+      });
+
+      it('allows customisation of global fulfilled action.type', async () => {
+        const customPrefix = 'PENDIDDLE';
+        store = makeStore({
+          promiseTypeSuffixes: [ '', customPrefix, '' ]
+        });
+        fulfillingAction.type = `${fulfillingPromiseAction.type}_${customPrefix}`;
+        await store.dispatch(fulfillingPromiseAction).payload.promise;
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(fulfillingAction);
+      });
+
+      it('allows customisation of fulfilled action.type per dispatch', async () => {
+        const customPrefix = 'PENDOODDLE';
+        const actionMeta = { promiseTypeSuffixes: [ '', customPrefix, '' ] };
+        fulfillingPromiseAction.meta = actionMeta;
+        fulfillingAction.type = `${fulfillingPromiseAction.type}_${customPrefix}`;
+        // FIXME: Test leak, should the promiseTypeSuffixes be in other actions?
+        fulfillingAction.meta = actionMeta;
+        await store.dispatch(fulfillingPromiseAction).payload.promise;
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(fulfillingAction);
+      });
     });
   });
 });
