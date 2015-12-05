@@ -236,7 +236,17 @@ describe('Redux Promise Middleware:', () => {
         });
       });
 
-      it('allows customisation of global rejected action.type');
+      it('allows customisation of global rejected action.type', async () => {
+        const customPrefix = 'PENDOODDLE';
+        const actionMeta = { promiseTypeSuffixes: [ '', '', customPrefix ] };
+        rejectingPromiseAction.meta = actionMeta;
+        rejectedAction.type = `${rejectingPromiseAction.type}_${customPrefix}`;
+        // FIXME: Test leak, should the promiseTypeSuffixes be in other actions?
+        rejectedAction.meta = actionMeta;
+        await store.dispatch(rejectingPromiseAction).payload.promise;
+        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+      });
+
       it('allows customisation of rejected action.type per dispatch');
     });
 
