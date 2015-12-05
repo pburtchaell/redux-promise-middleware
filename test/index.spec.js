@@ -41,7 +41,7 @@ describe('Redux Promise Middleware', () => {
     Function for creating a dumb store using fake middleware stack
    */
   const makeStore = (config) => applyMiddleware(
-    ref => next => firstMiddlewareThunk.call(lastMiddleware, ref, next),
+    ref => next => firstMiddlewareThunk.call(firstMiddlewareThunk, ref, next),
     promiseMiddleware(config),
     () => next => lastMiddleware.call(lastMiddleware, next)
   )(createStore)(()=>null);
@@ -51,13 +51,13 @@ describe('Redux Promise Middleware', () => {
     store = makeStore();
   });
 
-  context('When Action is Not a Promise', ()=> {
-    const mockAction = { type: 'NOT_PROMISE' };
+  afterEach(()=> {
+    firstMiddlewareThunk.spy.reset();
+    lastMiddleware.spy.reset();
+  });
 
-    it('doesnt dispatch any other actions', done => {
-      const mockStore = configureStore([promiseMiddleware()]);
-      mockStore({}, [mockAction], done).dispatch(mockAction);
-    });
+  context('When Action is Not a Promise', () => {
+    const mockAction = { type: 'NOT_PROMISE' };
 
     it('invokes next with the action', () => {
       store.dispatch(mockAction);
@@ -67,12 +67,49 @@ describe('Redux Promise Middleware', () => {
     it('returns the return from next middleware', () => {
       expect(store.dispatch(mockAction)).to.equal(lastMiddlewareReturn);
     });
+
+    it('doesnt dispatch any other actions', done => {
+      const mockStore = configureStore([promiseMiddleware()]);
+      mockStore({}, [mockAction], done).dispatch(mockAction);
+    });
   });
 
-  context('When Action Has Promise Payload', ()=> {
-    it('dispatches a pending action');
-    it('optionally contains optimistic update payload from data property');
-    it('optionally contains meta data');
+  context('When Action Has Promise Payload', () => {
+    let promiseAction;
+    let pendingAction;
+    beforeEach(()=> {
+      promiseAction = {
+        type: 'HAS_PROMISE',
+        payload: {
+          promise: Promise.resolve()
+        }
+      };
+      pendingAction = {
+        type: `${promiseAction.type}_PENDING`
+      };
+    });
+
+    it('dispatches a pending action', () => {
+      store.dispatch(promiseAction);
+      expect(lastMiddleware.spy).to.have.been.calledWith(pendingAction);
+    });
+
+    it('optionally contains optimistic update payload from data property', () => {
+      const optimisticUpdate = { fake: 'data' };
+      promiseAction.payload.data = optimisticUpdate;
+      pendingAction.payload = optimisticUpdate;
+      store.dispatch(promiseAction);
+      expect(lastMiddleware.spy).to.have.been.calledWith(pendingAction);
+    });
+
+    it('optionally contains meta data', () => {
+      const meta = { fake: 'data' };
+      promiseAction.meta = meta;
+      pendingAction.meta = meta;
+      store.dispatch(promiseAction);
+      expect(lastMiddleware.spy).to.have.been.calledWith(pendingAction);
+    });
+
     it('allows customisation of global pending action.type');
     it('allows customisation of pending action.type per dispatch');
     it('returns the originally dispatched action');
