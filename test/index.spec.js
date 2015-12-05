@@ -110,7 +110,16 @@ describe('Redux Promise Middleware', () => {
       expect(lastMiddleware.spy).to.have.been.calledWith(pendingAction);
     });
 
-    it('allows customisation of global pending action.type');
+    it('allows customisation of global pending action.type', () => {
+      const customPrefix = 'PENDIDDLE';
+      store = makeStore({
+        promiseTypeSuffixes: [ customPrefix, '', '' ]
+      });
+      pendingAction.type = `${promiseAction.type}_${customPrefix}`;
+      store.dispatch(promiseAction);
+      expect(lastMiddleware.spy).to.have.been.calledWith(pendingAction);
+    });
+
     it('allows customisation of pending action.type per dispatch');
     it('returns the originally dispatched action');
 
