@@ -27,14 +27,14 @@ describe('Redux Promise Middleware:', () => {
     );
     return this.spy;
   }
-  // final middleware returns some dummy data
-  const lastMiddlewareMergedObject = { val: 'added-by-last-middleware' };
-  function lastMiddleware(next) {
+  // final middleware returns the action merged with dummy data
+  const lastMiddlewareModfiesObject = { val: 'added-by-last-middleware' };
+  function lastMiddlewareModfies(next) {
     this.spy = sinon.spy((action) => {
       next(action);
       return {
         ...action,
-        ...lastMiddlewareMergedObject
+        ...lastMiddlewareModfiesObject
       };
     });
     return this.spy;
@@ -46,7 +46,7 @@ describe('Redux Promise Middleware:', () => {
   const makeStore = (config) => applyMiddleware(
     ref => next => firstMiddlewareThunk.call(firstMiddlewareThunk, ref, next),
     promiseMiddleware(config),
-    () => next => lastMiddleware.call(lastMiddleware, next)
+    () => next => lastMiddlewareModfies.call(lastMiddlewareModfies, next)
   )(createStore)(()=>null);
 
   let store;
@@ -56,7 +56,7 @@ describe('Redux Promise Middleware:', () => {
 
   afterEach(()=> {
     firstMiddlewareThunk.spy.reset();
-    lastMiddleware.spy.reset();
+    lastMiddlewareModfies.spy.reset();
   });
 
   context('When Action is Not a Promise:', () => {
@@ -64,13 +64,13 @@ describe('Redux Promise Middleware:', () => {
 
     it('invokes next with the action', () => {
       store.dispatch(mockAction);
-      expect(lastMiddleware.spy).to.have.been.calledWith(mockAction);
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(mockAction);
     });
 
     it('returns the return from next middleware', () => {
       expect(store.dispatch(mockAction)).to.eql({
         ...mockAction,
-        ...lastMiddlewareMergedObject
+        ...lastMiddlewareModfiesObject
       });
     });
 
@@ -97,7 +97,7 @@ describe('Redux Promise Middleware:', () => {
 
     it('dispatches a pending action', () => {
       store.dispatch(promiseAction);
-      expect(lastMiddleware.spy).to.have.been.calledWith(pendingAction);
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
     });
 
     it('optionally contains optimistic update payload from data property', () => {
@@ -105,7 +105,7 @@ describe('Redux Promise Middleware:', () => {
       promiseAction.payload.data = optimisticUpdate;
       pendingAction.payload = optimisticUpdate;
       store.dispatch(promiseAction);
-      expect(lastMiddleware.spy).to.have.been.calledWith(pendingAction);
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
     });
 
     it('optionally contains meta data', () => {
@@ -113,7 +113,7 @@ describe('Redux Promise Middleware:', () => {
       promiseAction.meta = meta;
       pendingAction.meta = meta;
       store.dispatch(promiseAction);
-      expect(lastMiddleware.spy).to.have.been.calledWith(pendingAction);
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
     });
 
     it('allows customisation of global pending action.type', () => {
@@ -123,7 +123,7 @@ describe('Redux Promise Middleware:', () => {
       });
       pendingAction.type = `${promiseAction.type}_${customPrefix}`;
       store.dispatch(promiseAction);
-      expect(lastMiddleware.spy).to.have.been.calledWith(pendingAction);
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
     });
 
     it('allows customisation of pending action.type per dispatch', () => {
@@ -134,7 +134,7 @@ describe('Redux Promise Middleware:', () => {
       // FIXME: Test leak, should the promiseTypeSuffixes be in other actions?
       pendingAction.meta = actionMeta;
       store.dispatch(promiseAction);
-      expect(lastMiddleware.spy).to.have.been.calledWith(pendingAction);
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
     });
 
     it('returns the originally dispatched action', () => {
@@ -162,7 +162,7 @@ describe('Redux Promise Middleware:', () => {
 
       it('re-dispatches rejected action with error and payload from error', async () => {
         await store.dispatch(rejectingPromiseAction).payload.promise;
-        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
 
       it('works when resolve is null', async () => {
@@ -172,7 +172,7 @@ describe('Redux Promise Middleware:', () => {
           error: true
         };
         await store.dispatch(rejectingPromiseAction).payload.promise;
-        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
 
       it('persists meta from original action', async () => {
@@ -180,7 +180,7 @@ describe('Redux Promise Middleware:', () => {
         rejectingPromiseAction.meta = metaData;
         rejectedAction.meta = metaData;
         await store.dispatch(rejectingPromiseAction).payload.promise;
-        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
 
       it('merges resolved value into rejected action if it has payload', async () => {
@@ -194,7 +194,7 @@ describe('Redux Promise Middleware:', () => {
           ...newAction
         };
         await store.dispatch(rejectingPromiseAction).payload.promise;
-        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
 
       it('merges resolved value into rejected action if it has meta', async () => {
@@ -208,7 +208,7 @@ describe('Redux Promise Middleware:', () => {
           ...newAction
         };
         await store.dispatch(rejectingPromiseAction).payload.promise;
-        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
 
       it('allows promise to resolve thunk, pre-bound to rejected action', async () => {
@@ -222,7 +222,7 @@ describe('Redux Promise Middleware:', () => {
         };
         rejectingPromiseAction.payload.promise = Promise.reject(thunkResolve);
         await store.dispatch(rejectingPromiseAction).payload.promise;
-        expect(lastMiddleware.spy).to.have.been.calledWith({
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith({
           type: `${rejectingPromiseAction.type}_REJECTED`,
           error: true,
           foo: 'bar'
@@ -233,7 +233,7 @@ describe('Redux Promise Middleware:', () => {
         const resolving = await store.dispatch(rejectingPromiseAction).payload.promise;
         expect(resolving).to.eql({
           ...rejectedAction,
-          ...lastMiddlewareMergedObject
+          ...lastMiddlewareModfiesObject
         });
       });
 
@@ -244,7 +244,7 @@ describe('Redux Promise Middleware:', () => {
         });
         rejectedAction.type = `${rejectingPromiseAction.type}_${customPrefix}`;
         await store.dispatch(rejectingPromiseAction).payload.promise;
-        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
 
       it('allows customisation of rejected action.type per dispatch', async () => {
@@ -255,7 +255,7 @@ describe('Redux Promise Middleware:', () => {
         // FIXME: Test leak, should the promiseTypeSuffixes be in other actions?
         rejectedAction.meta = actionMeta;
         await store.dispatch(rejectingPromiseAction).payload.promise;
-        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+        expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
     });
 
