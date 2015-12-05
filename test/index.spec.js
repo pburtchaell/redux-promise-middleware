@@ -6,7 +6,7 @@ import configureStore from 'redux-mock-store';
 import promiseMiddleware from '../src/index';
 chai.use(sinonChai);
 
-describe('Redux Promise Middleware', () => {
+describe('Redux Promise Middleware:', () => {
   const nextHandler = promiseMiddleware();
 
   it('must return a function to handle next', () => {
@@ -56,7 +56,7 @@ describe('Redux Promise Middleware', () => {
     lastMiddleware.spy.reset();
   });
 
-  context('When Action is Not a Promise', () => {
+  context('When Action is Not a Promise:', () => {
     const mockAction = { type: 'NOT_PROMISE' };
 
     it('invokes next with the action', () => {
@@ -74,7 +74,7 @@ describe('Redux Promise Middleware', () => {
     });
   });
 
-  context('When Action Has Promise Payload', () => {
+  context('When Action Has Promise Payload:', () => {
     let promiseAction;
     let pendingAction;
     beforeEach(()=> {
@@ -135,9 +135,40 @@ describe('Redux Promise Middleware', () => {
       expect(store.dispatch(promiseAction)).to.eql(promiseAction);
     });
 
-    context('When Promise Rejects', ()=> {
-      it('re-dispatches a rejected action with error flag and payload from error');
-      it('works when resolve is null');
+    context('When Promise Rejects:', ()=> {
+      let promiseAction;
+      let rejectedAction;
+      let rejectValue;
+      beforeEach(()=> {
+        rejectValue = { test: 'resolved value' };
+        promiseAction = {
+          type: 'HAS_REJECTING_PROMISE',
+          payload: {
+            promise: Promise.reject(rejectValue)
+          }
+        };
+        rejectedAction = {
+          type: `${promiseAction.type}_REJECTED`,
+          error: true,
+          payload: rejectValue
+        };
+      });
+
+      it('re-dispatches rejected action with error and payload from error', async () => {
+        await store.dispatch(promiseAction).payload.promise;
+        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+      });
+
+      it('works when resolve is null', async () => {
+        promiseAction.payload.promise = Promise.reject(null);
+        rejectedAction = {
+          type: `${promiseAction.type}_REJECTED`,
+          error: true
+        };
+        await store.dispatch(promiseAction).payload.promise;
+        expect(lastMiddleware.spy).to.have.been.calledWith(rejectedAction);
+      });
+
       it('persists meta from original action');
       it('allows promise to resolve a new action object and merge into original');
       it('allows promise to resolve thunk, pre-bound to the rejected action');
