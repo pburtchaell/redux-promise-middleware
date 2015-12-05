@@ -217,6 +217,7 @@ describe('Redux Promise Middleware:', () => {
             type: `${rejectingPromiseAction.type}_REJECTED`,
             error: true
           });
+          expect(getState()).to.equal(store.getState());
           dispatch({ ...action, foo: 'bar' });
         };
         rejectingPromiseAction.payload.promise = Promise.reject(thunkResolve);
