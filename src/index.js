@@ -44,7 +44,6 @@ export default function promiseMiddleware(config = {}) {
       action.payload.promise = promise.then(
         (resolved = {}) => {
           const resolveAction = getResolveAction();
-
           return dispatch(isThunk(resolved) ? resolved.bind(null, resolveAction) : {
             ...resolveAction,
             ...isAction(resolved) ? resolved : {
@@ -54,7 +53,6 @@ export default function promiseMiddleware(config = {}) {
         },
         (rejected = {}) => {
           const resolveAction = getResolveAction(true);
-
           return dispatch(isThunk(rejected) ? rejected.bind(null, resolveAction) : {
             ...resolveAction,
             ...isAction(rejected) ? rejected : {

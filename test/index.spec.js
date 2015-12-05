@@ -2,12 +2,49 @@ import chai from 'chai';
 import configureStore from 'redux-mock-store';
 import promiseMiddleware from '../src/index';
 
-describe('promise middleware', () => {
+describe('Redux Promise Middleware', () => {
   const nextHandler = promiseMiddleware();
 
   it('must return a function to handle next', () => {
     chai.assert.isFunction(nextHandler);
     chai.assert.strictEqual(nextHandler.length, 1);
+  });
+
+  context('When Action is Not a Promise', ()=> {
+    it('invokes next with the action');
+    it('returns the return from next middleware');
+    it('doesnt dispatch any other actions');
+  });
+
+  context('When Action Has Promise Payload', ()=> {
+    it('dispatches a pending action');
+    it('optionally contains optimistic update payload from data property');
+    it('optionally contains meta data');
+    it('allows customisation of global pending action.type');
+    it('allows customisation of pending action.type per dispatch');
+    it('returns the originally dispatched action');
+
+    context('When Promise Rejects', ()=> {
+      it('dispatches a rejected action with error flag and payload from error');
+      it('works when resolve is null');
+      it('persists meta from original action');
+      it('allows promise to resolve a new action object and merge into original');
+      it('allows promise to resolve thunk, pre-bound to the rejected action');
+      it('the returned action.payload.promise resolves the rejected action');
+      it('allows customisation of global rejected action.type');
+      it('allows customisation of rejected action.type per dispatch');
+    });
+
+    context('When Promise Resolves', ()=> {
+      it('dispatches a fulfilled action with payload from promise');
+      it('works when resolve is null');
+      it('persists meta from original action');
+      it('allows promise to resolve a new action object and merge into original');
+      it('allows promise to resolve thunk, pre-bound to the resolved action');
+      it('the returned action.payload.promise resolves the fulfilled action');
+      it('allows customisation of global fulfilled action.type');
+      it('allows customisation of fulfilled action.type per dispatch');
+    });
   });
 
   describe('handle action', () => {
