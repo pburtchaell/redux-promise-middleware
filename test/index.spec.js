@@ -1,6 +1,9 @@
-import chai from 'chai';
+import chai, { expect } from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 import configureStore from 'redux-mock-store';
 import promiseMiddleware from '../src/index';
+chai.use(sinonChai);
 
 describe('Redux Promise Middleware', () => {
   const nextHandler = promiseMiddleware();
@@ -10,8 +13,35 @@ describe('Redux Promise Middleware', () => {
     chai.assert.strictEqual(nextHandler.length, 1);
   });
 
+  function firstMiddleware(next) {
+    this.spy = sinon.spy((action) => next(action));
+    return this.spy;
+  }
+  function lastMiddleware(next) {
+    this.spy = sinon.spy((action) => next(action));
+    return this.spy;
+  }
+
+  const makeMiddlewares = (config) => [
+    () => next => firstMiddleware.call(lastMiddleware, next),
+    promiseMiddleware(config),
+    () => next => lastMiddleware.call(lastMiddleware, next)
+  ];
+
+  let mockStore;
+  beforeEach(()=> {
+    mockStore = configureStore(makeMiddlewares());
+  });
+
   context('When Action is Not a Promise', ()=> {
-    it('invokes next with the action');
+    const mockAction = { type: 'NOT_PROMISE' };
+
+    it('invokes next with the action', done => {
+      const store = mockStore({}, [mockAction], done);
+      store.dispatch(mockAction);
+      expect(lastMiddleware.spy).to.have.been.calledWith(mockAction);
+    });
+
     it('returns the return from next middleware');
     it('doesnt dispatch any other actions');
   });
@@ -25,7 +55,7 @@ describe('Redux Promise Middleware', () => {
     it('returns the originally dispatched action');
 
     context('When Promise Rejects', ()=> {
-      it('dispatches a rejected action with error flag and payload from error');
+      it('re-dispatches a rejected action with error flag and payload from error');
       it('works when resolve is null');
       it('persists meta from original action');
       it('allows promise to resolve a new action object and merge into original');
@@ -36,7 +66,7 @@ describe('Redux Promise Middleware', () => {
     });
 
     context('When Promise Resolves', ()=> {
-      it('dispatches a fulfilled action with payload from promise');
+      it('re-dispatches a fulfilled action with payload from promise');
       it('works when resolve is null');
       it('persists meta from original action');
       it('allows promise to resolve a new action object and merge into original');
@@ -47,7 +77,7 @@ describe('Redux Promise Middleware', () => {
     });
   });
 
-  describe('handle action', () => {
+  describe.skip('handle action', () => {
     const middlewares = [promiseMiddleware()];
     const mockStore = configureStore(middlewares);
     const mockActionWithoutPromise = { type: 'GET_POST' };
