@@ -74,7 +74,7 @@ describe('Redux Promise Middleware:', () => {
       });
     });
 
-    it('doesnt dispatch any other actions', done => {
+    it('does not dispatch any other actions', done => {
       const mockStore = configureStore([promiseMiddleware()]);
       mockStore({}, [mockAction], done).dispatch(mockAction);
     });
@@ -108,7 +108,7 @@ describe('Redux Promise Middleware:', () => {
       expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
     });
 
-    it('optionally contains meta data', () => {
+    it('optionally contains meta property', () => {
       const meta = { fake: 'data' };
       promiseAction.meta = meta;
       pendingAction.meta = meta;
@@ -268,7 +268,7 @@ describe('Redux Promise Middleware:', () => {
       });
     });
 
-    context('When Promise Fulfils', ()=> {
+    context('When Promise Fulfills', ()=> {
       let fulfillingPromiseAction;
       let fulfillingAction;
       let fulfilledValue;
@@ -295,7 +295,7 @@ describe('Redux Promise Middleware:', () => {
         s.dispatch(fulfillingPromiseAction);
       });
 
-      it('re-dispatches fulfil action with payload from promise', async () => {
+      it('re-dispatches fulfilled action with payload from promise', async () => {
         await store.dispatch(fulfillingPromiseAction).payload.promise;
         expect(lastMiddlewareModfies.spy).to.have.been.calledWith(fulfillingAction);
       });
