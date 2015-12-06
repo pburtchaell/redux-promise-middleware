@@ -17,17 +17,17 @@ export default function promiseMiddleware(config = {}) {
       const { promise, data } = payload;
       const [ PENDING, FULFILLED, REJECTED ] = (meta || {}).promiseTypeSuffixes || promiseTypeSuffixes;
 
-     /**
-      * Dispatch the first async handler. This tells the
-      * reducer that an async action has been dispatched.
-      */
+      /**
+       * Dispatch the first async handler. This tells the
+       * reducer that an async action has been dispatched.
+       */
       next({
         type: `${type}_${PENDING}`,
         ...!!data && { payload: data },
         ...!!meta && { meta }
       });
 
-      const isAction = resolved => resolved.meta || resolved.payload;
+      const isAction = resolved => resolved && (resolved.meta || resolved.payload);
       const isThunk = resolved => typeof resolved === 'function';
       const getResolveAction = isError => ({
         type: `${type}_${isError ? REJECTED : FULFILLED}`,
@@ -44,7 +44,6 @@ export default function promiseMiddleware(config = {}) {
       action.payload.promise = promise.then(
         (resolved = {}) => {
           const resolveAction = getResolveAction();
-
           return dispatch(isThunk(resolved) ? resolved.bind(null, resolveAction) : {
             ...resolveAction,
             ...isAction(resolved) ? resolved : {
@@ -54,7 +53,6 @@ export default function promiseMiddleware(config = {}) {
         },
         (rejected = {}) => {
           const resolveAction = getResolveAction(true);
-
           return dispatch(isThunk(rejected) ? rejected.bind(null, resolveAction) : {
             ...resolveAction,
             ...isAction(rejected) ? rejected : {

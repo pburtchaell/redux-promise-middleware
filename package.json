@@ -36,9 +36,12 @@
     "eslint-plugin-react": "^2.7.0",
     "mocha": "^2.3.3",
     "redux": "^3.0.4",
-    "redux-mock-store": "0.0.2"
+    "redux-mock-store": "0.0.2",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0"
   },
   "peerDependencies": {
     "redux": "^2.0.0 || ^3.0.0"
-  }
+  },
+  "dependencies": {}
 }
