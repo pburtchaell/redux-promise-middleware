@@ -289,7 +289,7 @@ describe('Redux Promise Middleware:', () => {
         };
       });
 
-      it('dispatches both pending and rejected', done => {
+      it('dispatches both pending and fulfilled', done => {
         const mockStore = configureStore([promiseMiddleware()]);
         const s = mockStore({}, [ pendingAction, fulfillingAction ], done);
         s.dispatch(fulfillingPromiseAction);
