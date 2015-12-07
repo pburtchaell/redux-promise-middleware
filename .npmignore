@@ -1,3 +1,5 @@
 src/
+test/
+example/
 .eslintrc
 CONTRIBUTING.md
