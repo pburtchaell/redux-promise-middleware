@@ -69,7 +69,7 @@ It is also possible to use a function:
 const actionCreator = () => ({
   type: 'FIRST_ACTION_TYPE',
   payload: {
-    promise: Promise.resolve((dispatch, getState) => {
+    promise: Promise.resolve((action, dispatch, getState) => {
       dispatch({ type: 'SECEOND_ACTION_TYPE', payload: ... })
       dispatch(someActionCreator())
     })
