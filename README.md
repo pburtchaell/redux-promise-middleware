@@ -77,6 +77,8 @@ const actionCreator = () => ({
 });
 ```
 
+Note that this behavior uses thunks, so you will need to include [thunk middleware](https://github.com/gaearon/redux-thunk) in your middleware stack.
+
 ## Type suffix configuration
 
 When adding the promise middleware to your middleware stack, you can supply an optional configuration object. This object accepts an array of suffix strings that can be used instead of the default `['PENDING', 'FULFILLED', 'REJECTED']` with a key of `promiseTypeSuffixes`.
