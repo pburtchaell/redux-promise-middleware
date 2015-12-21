@@ -35,7 +35,7 @@ export function myAsyncActionCreator(data) {
 }
 ```
 
-The middleware returns a [FSA compliant](https://github.com/acdlite/flux-standard-action) action for both rejected and resolved/fulfilled promises. In the case of a rejected promise, an `error` is returned.
+The middleware returns a [FSA compliant](https://github.com/acdlite/flux-standard-action) action for both rejected and resolved/fulfilled promises. In the case of a rejected promise, an `error` is returned. You can access the promise of the action with `payload.promise`. This is useful for chaining actions together or using `async...await` within an action creator.
 
 ## What is the difference between this and other promise middleware?
 
