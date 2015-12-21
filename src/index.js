@@ -21,19 +21,24 @@ export default function promiseMiddleware(config = {}) {
        * Dispatch the first async handler. This tells the
        * reducer that an async action has been dispatched.
        */
-      next({
-        type: `${type}_${PENDING}`,
+      next(Object.assign(
+        {
+          type: `${type}_${PENDING}`
+        },
         ...!!data && { payload: data },
         ...!!meta && { meta }
-      });
+      ));
 
       const isAction = resolved => resolved && (resolved.meta || resolved.payload);
       const isThunk = resolved => typeof resolved === 'function';
-      const getResolveAction = isError => ({
-        type: `${type}_${isError ? REJECTED : FULFILLED}`,
+      
+      const getResolveAction = isError => (Object.assign(
+        {
+          type: `${type}_${isError ? REJECTED : FULFILLED}`
+        },
         ...!!meta && { meta },
         ...!!isError && { error: true }
-      });
+      ));
 
       /**
        * Re-dispatch one of:
