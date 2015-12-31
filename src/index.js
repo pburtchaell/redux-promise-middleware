@@ -23,16 +23,16 @@ export default function promiseMiddleware(config = {}) {
        */
       next({
         type: `${type}_${PENDING}`,
-        ...!!data && { payload: data },
-        ...!!meta && { meta }
+        ...(data ? { payload: data } : { }),
+        ...(meta ? { meta } : { })
       });
 
       const isAction = resolved => resolved && (resolved.meta || resolved.payload);
       const isThunk = resolved => typeof resolved === 'function';
       const getResolveAction = isError => ({
         type: `${type}_${isError ? REJECTED : FULFILLED}`,
-        ...!!meta && { meta },
-        ...!!isError && { error: true }
+        ...(meta ? { meta } : { }),
+        ...(isError ? { error: true } : { })
       });
 
       /**
@@ -47,7 +47,7 @@ export default function promiseMiddleware(config = {}) {
           return dispatch(isThunk(resolved) ? resolved.bind(null, resolveAction) : {
             ...resolveAction,
             ...isAction(resolved) ? resolved : {
-              ...!!resolved && { payload: resolved }
+              ...(resolved ? { payload: resolved } : { })
             }
           });
         },
@@ -56,7 +56,7 @@ export default function promiseMiddleware(config = {}) {
           return dispatch(isThunk(rejected) ? rejected.bind(null, resolveAction) : {
             ...resolveAction,
             ...isAction(rejected) ? rejected : {
-              ...!!rejected && { payload: rejected }
+              ...(rejected ? { payload: rejected } : { })
             }
           });
         },
