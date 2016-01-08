@@ -23,16 +23,16 @@ export default function promiseMiddleware(config = {}) {
        */
       next({
         type: `${type}_${PENDING}`,
-        ...!!data && { payload: data },
-        ...!!meta && { meta }
+        ...!!data ? { payload: data } : {},
+        ...!!meta ? { meta } : {}
       });
 
       const isAction = resolved => resolved && (resolved.meta || resolved.payload);
       const isThunk = resolved => typeof resolved === 'function';
       const getResolveAction = isError => ({
         type: `${type}_${isError ? REJECTED : FULFILLED}`,
-        ...!!meta && { meta },
-        ...!!isError && { error: true }
+        ...!!meta ? { meta } : {},
+        ...!!isError ? { error: true } : {}
       });
 
       /**
