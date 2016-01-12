@@ -63,21 +63,19 @@ const actionCreator = () => ({
 });
 ```
 
-It is also possible to use a function:
+If you include [thunk middleware](https://github.com/gaearon/redux-thunk) in your middleware stack, is also possible to use a function to dispatch multiple actions:
 
 ```js
 const actionCreator = () => ({
   type: 'FIRST_ACTION_TYPE',
   payload: {
-    promise: Promise.resolve((action, dispatch, getState) => {
+    promise: Promise.resolve((dispatch, getState) => {
       dispatch({ type: 'SECEOND_ACTION_TYPE', payload: ... })
       dispatch(someActionCreator())
     })
    }
 });
 ```
-
-Note that this behavior uses thunks, so you will need to include [thunk middleware](https://github.com/gaearon/redux-thunk) in your middleware stack.
 
 ## Type suffix configuration
 
