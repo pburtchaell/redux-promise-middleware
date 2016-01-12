@@ -63,7 +63,7 @@ const actionCreator = () => ({
 });
 ```
 
-If you include [thunk middleware](https://github.com/gaearon/redux-thunk) in your middleware stack, is also possible to use a function to dispatch multiple actions:
+If you include [thunk middleware](https://github.com/gaearon/redux-thunk) in your middleware stack, it is also possible to use a function to dispatch multiple actions:
 
 ```js
 const actionCreator = () => ({
