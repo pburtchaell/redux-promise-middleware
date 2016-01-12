@@ -69,7 +69,7 @@ If you include [thunk middleware](https://github.com/gaearon/redux-thunk) in you
 const actionCreator = () => ({
   type: 'FIRST_ACTION_TYPE',
   payload: {
-    promise: Promise.resolve((dispatch, getState) => {
+    promise: Promise.resolve((action, dispatch, getState) => {
       dispatch({ type: 'SECOND_ACTION_TYPE', payload: ... })
       dispatch(someActionCreator())
     })
