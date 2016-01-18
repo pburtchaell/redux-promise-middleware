@@ -52,15 +52,16 @@ Often times when a promise is resolved, one might want to fire a one or more "ca
 If you need to do this, you can dispatch a second action:
 
 ```js
-const actionCreator = () => ({
-  type: 'FIRST_ACTION_TYPE',
-  payload: {
-    promise: Promise.resolve({
-      type: 'SECOND_ACTION_TYPE'
-      payload: ...
-    })
-   }
-});
+const firstActionCreator = ({firstParams}) => {
+  return {
+    type: 'FIRST_ACTION',
+    payload: {
+      promise: new Promise((resolve, reject) => {
+        asyncFirst(firstParams).then(firstResult => resolve({secondParams: firstResult}));
+      }).then(payload => Promise.resolve({type: 'SECOND_ACTION', payload}))
+    }
+  };
+};
 ```
 
 If you include [thunk middleware](https://github.com/gaearon/redux-thunk) in your middleware stack, it is also possible to use a function to dispatch multiple actions:
