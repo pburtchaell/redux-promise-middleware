@@ -12,9 +12,7 @@ import * as auth from './index';
 function performSupportCheck() {
   return {
     type: types.APPLICATION_SUPPORT_CHECK,
-    payload: {
-      promise: checkBrowser()
-    }
+    payload: checkBrowser(),
   };
 }
 
@@ -26,9 +24,7 @@ function performSupportCheck() {
 function performServerCheck() {
   return {
     type: types.APPLICATION_SERVER_CHECK,
-    payload: {
-      promise: checkServer()
-    },
+    payload: checkServer(),
     meta: {
       request: true
     }
@@ -49,12 +45,10 @@ export function initialize() {
 
     return dispatch({
       type: types.APPLICATION_INITIALIZE_CHECK,
-      payload: {
-        promise: Promise.all([
-          dispatch(performSupportCheck()),
-          dispatch(performServerCheck())
-        ])
-      }
+      payload: Promise.all([
+        dispatch(performSupportCheck()),
+        dispatch(performServerCheck())
+      ])
     })
   };
 }
