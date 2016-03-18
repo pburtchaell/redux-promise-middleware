@@ -7,7 +7,7 @@
     "pretest": "",
     "prestart": "rm -rf example/build && `npm bin`/babel example/server -d example/build",
     "start": "node example/build/server.js",
-    "test": "mocha --compilers js:babel/register --reporter spec test/*.js",
+    "test": "mocha --compilers js:babel-core/register --reporter spec test/polyfills.js test/*.js",
     "build": "`npm bin`/babel src -d dist",
     "prepublish": "npm test && npm run build"
   },
