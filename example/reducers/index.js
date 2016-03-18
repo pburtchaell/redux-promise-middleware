@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
 
 export default combineReducers({
-  posts: require('./posts')
+  feed: require('./feed').default,
+  post: require('./post').default,
+  account: require('./account').default,
+  application: require('./application').default
 });

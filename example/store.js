@@ -1,26 +1,17 @@
 import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers';
+import promiseMiddleware from 'redux-promise-middleware';
+import thunkMiddleware from 'redux-thunk';
 
 const createStoreWithMiddleware = applyMiddleware(
-  require('./utils/middleware/promise')()
+  thunkMiddleware,
+  promiseMiddleware()
 )(createStore);
 
-export default function store(initialState) {
-  const store = createStoreWithMiddleware(reducers, initialState);
-
-  if (module.hot) {
-    require('eventsource-polyfill');
-
-    // Enable Webpack hot module replacement for reducers
-    module.hot.accept('./reducers', () => {
-      const nextRootReducer = require('./reducers');
-      store.replaceReducer(reducers);
-    });
-  }
-
-  if (NODE_ENV === 'development') {
-    window.store = store.getState();
-  }
-
-  return store;
+function configureStore(initialState) {
+  return createStoreWithMiddleware(reducers, initialState);
 }
+
+const store = configureStore({});
+
+export default store;

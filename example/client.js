@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import { renderRouter } from './router';
 import store from './store';
+import './polyfills';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="app-container">
-        <Provider store={store()}>
-          <h1>Hi</h1>
-        </Provider>
-      </div>
-    );
-  }
-}
+const App = () => (
+  <div className="app-container">
+    <Provider store={store}>
+      {renderRouter()}
+    </Provider>
+  </div>
+)
 
 render(<App />, document.querySelector('#mount'));

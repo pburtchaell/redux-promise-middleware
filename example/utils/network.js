@@ -2,21 +2,19 @@ import request from './request';
 import buildURL from './buildURL';
 
 /**
- * @function Server
+ * @function Network
  * @description Factory function to create a object that can send
  * requests to a specific resource on the server.
  * @param {string} resource The resource used for config
  */
-export const Server = (resource) => {
+const Network = resource => {
 
   // Default options used for every request
   const defaultOptions = {
     mode: 'cors',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'X-Parse-Application-Id': PARSE_APPLICATION_ID,
-      'X-Parse-REST-API-Key': PARSE_REST_API_KEY
+      'Content-Type': 'application/json'
     }
   };
 
@@ -85,6 +83,10 @@ export const Server = (resource) => {
         defaultOptions,
         { method: 'DELETE' }
       ));
-    }
+    },
+
+    ping: () => request(buildURL(), { method: 'GET' })
   };
 };
+
+export default Network;

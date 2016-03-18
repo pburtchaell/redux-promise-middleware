@@ -1,5 +1,14 @@
-export default function buildURL(resource, id) {
-  const base = '/api/v1';
+export default function buildURL({ id, resource } = {}) {
+  let parameters = [
+    'http://localhost:8000',
+    'api',
+    'v1'
+  ];
 
-  return id ? `${base}/${resource}/${id}` : `${base}/${resource}`;
+  if (resource) parameters.concat([resource]);
+  if (id) parameters.concat([id]);
+
+  console.log(parameters.join('/'));
+
+  return parameters.join('/');
 };

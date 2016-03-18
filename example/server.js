@@ -1,16 +1,13 @@
 var path = require('path');
 var express = require('express');
 var webpack = require('webpack');
-var config = require('./webpack.local.config');
+var config = require('./webpack.config');
 
-var port = process.env.PORT || config.devPort;
-var address = config.devAddress;
+var port = process.env.PORT || 8000;
+var address = 'localhost';
 
 var app = express();
 var compiler = webpack(config);
-
-// Logging
-app.use(require('morgan')('short'));
 
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
@@ -69,6 +66,5 @@ app.post('/api/v1/posts/:id', function (req, res) {
 
 app.listen(port, address, function (error) {
   if (error) throw error;
-
   console.log('server running at http://%s:%d', address, port);
 });
