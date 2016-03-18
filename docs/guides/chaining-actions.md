@@ -5,7 +5,7 @@ When a promise is resolved, one might want to dispatch additional actions in res
 First, note this behavior uses thunks, so you will need to include [Redux Thunk](https://github.com/gaearon/redux-thunk) in your middleware stack.
 
 ```js
-const foo () => {
+const foo = () => {
   return dispatch => {
 
     return dispatch({
@@ -19,7 +19,7 @@ const foo () => {
 If you need to chain several actions, using `Promise.all` is suggested.
 
 ```js
-const foo () => {
+const foo = () => {
   return dispatch => {
 
     return dispatch({
@@ -28,6 +28,43 @@ const foo () => {
         dispatch(bar()),
         dispatch(baz())
       ])
+    });
+  };
+}
+```
+
+When handling a promise with `then`, you have access to two values as parameters: (1) the "value" (if the promise is fulfilled) or the "reason" (if the promise is rejected) and (2) the object of the dispatched action.
+
+```js
+// fulfilled promise
+const foo = () => {
+  return dispatch => {
+
+    return dispatch({
+      type: 'FOO',
+      payload: new Promise(resolve => {
+        resolve('foo'); // remove the promise with the value 'foo'
+      })
+    }).then((value, action) => {
+      console.log(value); // => 'foo'
+      console.log(action.type); // => 'FOO_FULFILLED'
+    });
+  };
+}
+
+// rejected promise
+const bar = () => {
+  return dispatch => {
+
+    return dispatch({
+      type: 'BAR',
+      payload: new Promise(reject => {
+        reject('bar'); // reject the promise for the reason 'bar'
+      })
+    }).then(() => null, (reason, action) => {
+      console.log(reason); // => 'bar'
+      console.log(action.type); // => 'BAR_REJECTED'
+      console.log(action.error); // => true
     });
   };
 }
