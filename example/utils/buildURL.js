@@ -8,7 +8,5 @@ export default function buildURL({ id, resource } = {}) {
   if (resource) parameters.concat([resource]);
   if (id) parameters.concat([id]);
 
-  console.log(parameters.join('/'));
-
   return parameters.join('/');
 };
