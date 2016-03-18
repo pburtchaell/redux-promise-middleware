@@ -43,7 +43,7 @@ const foo = () => {
     return dispatch({
       type: 'FOO',
       payload: new Promise(resolve => {
-        resolve('foo'); // remove the promise with the value 'foo'
+        resolve('foo'); // resolve the promise with the value 'foo'
       })
     }).then((value, action) => {
       console.log(value); // => 'foo'
