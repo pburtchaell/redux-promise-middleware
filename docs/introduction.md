@@ -39,9 +39,7 @@ A "pending" action is dispatched immediately with the original type string and a
 }
 ```
 
-When the promise is resolved, a second action will be dispatched.
-
-The "fulfilled" action is dispatched if the promise is resolved, e.g., if it was successful. The "rejected" action is dispatched only if the promise is rejected, e.g., if an error occurred. The fulfilled and rejected type suffixes are `_FULFILLED` and `_REJECTED` respectively.
+After the promise is resolved, a second action will be dispatched. If the the promise is resolved, e.g., if it was successful, a "fulfilled" action is dispatched. If the promise is rejected, e.g., if an error occurred, the "rejected" action is dispatched. The fulfilled and rejected type suffixes are `_FULFILLED` and `_REJECTED` respectively.
 
 ```js
 // fulfilled action
@@ -52,7 +50,7 @@ The "fulfilled" action is dispatched if the promise is resolved, e.g., if it was
   }
 }
 
-/// rejected action
+// rejected action
 {
   type: 'FOO_REJECTED'
   error: true,
