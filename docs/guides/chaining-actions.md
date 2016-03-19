@@ -33,7 +33,7 @@ const foo = () => {
 }
 ```
 
-When handling a promise with `then`, you have access to two values as parameters: (1) the "value" (if the promise is fulfilled) or the "reason" (if the promise is rejected) and (2) the object of the dispatched action.
+When handling a promise with `then`, the parameter is an an object with two properties: (1) the "value" (if the promise is fulfilled) or the "reason" (if the promise is rejected) and (2) the object of the dispatched action.
 
 ```js
 // fulfilled promise
@@ -45,7 +45,7 @@ const foo = () => {
       payload: new Promise(resolve => {
         resolve('foo'); // resolve the promise with the value 'foo'
       })
-    }).then((value, action) => {
+    }).then(({ value, action }) => {
       console.log(value); // => 'foo'
       console.log(action.type); // => 'FOO_FULFILLED'
     });
@@ -61,11 +61,36 @@ const bar = () => {
       payload: new Promise(reject => {
         reject('bar'); // reject the promise for the reason 'bar'
       })
-    }).then(() => null, (reason, action) => {
+    }).then(() => null, ({ reason, action }) => {
       console.log(reason); // => 'bar'
       console.log(action.type); // => 'BAR_REJECTED'
       console.log(action.error); // => true
     });
   };
 }
+```
+
+Rejected promises can also be handled with `.catch()`.
+
+```js
+// rejected promise with throw
+const baz = () => {
+  return dispatch => {
+
+    return dispatch({
+      type: 'BAZ',
+      payload: new Promise(reject => {
+        throw new Error(); // throw an error
+      })
+    }).then(({value, action}) => {
+      // handle fulfilled promise as you would normally
+      // ...
+    }).catch(({ reason, action }) => {
+      console.log(typeof reason); // => 'Error'
+      console.log(action.type); // => 'BAZ_REJECTED'
+      console.log(action.error); // => true
+    });
+  };
+}
+```
 ```
