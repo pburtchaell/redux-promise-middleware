@@ -17,7 +17,7 @@ Alternatively, you can locally describe the type suffixes to use.
 ```js
 const foo = () => ({
   type: 'TYPE',
-  payload: new Promise(),
+  payload: Promise.resolve(),
   meta: {
     promiseTypeSuffixes: ['PENDING', 'SUCCESS', 'ERROR']
   }
