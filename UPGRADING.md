@@ -28,7 +28,7 @@ bar().then(({ value }) => {
 });
 ```
 
-**Second, the original promise is not returned**, instead a new promise is created, which allows for `.then()` and `.catch()` to work as expected.
+**Second, a new promise is created** so `.then()` and `.catch()` work as expected.
 
 ``` js
 // before
@@ -75,7 +75,7 @@ bar().catch(({ reason }) => {
 });
 ```
 
-**Third, promises can be explicitly or implicitly in the action object.** This change enables you to cut out an unnecessary property from the payload.
+**Third, promises can be explicitly or implicitly in the action object.**
 
 ```js
 // before
@@ -151,4 +151,4 @@ const bar = () => {
 };
 ```
 
-If you have questions, please feel free to create an issue on GitHub. All changes are further documented in the [regular documentation](https://github.com/pburtchaell/redux-promise-middleware/tree/master/docs).
+If you have questions, please feel free to create an issue on GitHub. All changes are [further documented](https://github.com/pburtchaell/redux-promise-middleware/tree/master/docs).
