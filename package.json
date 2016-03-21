@@ -63,8 +63,7 @@
     "sinon-chai": "^2.8.0",
     "webpack": "^1.12.14",
     "webpack-dev-middleware": "^1.5.1",
-    "webpack-hot-middleware": "^2.10.0",
-    "yayson": "^2.0.1"
+    "webpack-hot-middleware": "^2.10.0"
   },
   "peerDependencies": {
     "redux": "^2.0.0 || ^3.0.0"
