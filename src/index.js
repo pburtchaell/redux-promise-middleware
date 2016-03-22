@@ -41,28 +41,36 @@ export default function promiseMiddleware(config = {}) {
        *  2. the resolved/rejected object, if it looks like an action, merged into action
        *  3. a resolve/rejected action with the resolve/rejected object as a payload
        */
-      action.payload.promise = promise.then(
-        (resolved = {}) => {
-          const resolveAction = getResolveAction();
-          return dispatch(isThunk(resolved) ? resolved.bind(null, resolveAction) : {
-            ...resolveAction,
-            ...isAction(resolved) ? resolved : {
-              ...!!resolved && { payload: resolved }
-            }
-          });
-        },
-        (rejected = {}) => {
-          const resolveAction = getResolveAction(true);
-          return dispatch(isThunk(rejected) ? rejected.bind(null, resolveAction) : {
-            ...resolveAction,
-            ...isAction(rejected) ? rejected : {
-              ...!!rejected && { payload: rejected }
-            }
-          });
-        },
-      );
+      const newPromise = new Promise((resolve, reject) => {
+        action.payload.promise.then(
+          (resolved = {}) => {
+            const resolveAction = getResolveAction();
+            const result = dispatch(isThunk(resolved) ? resolved.bind(null, resolveAction) : {
+              ...resolveAction,
+              ...isAction(resolved) ? resolved : {
+                ...!!resolved && { payload: resolved }
+              }
+            });
+            resolve(result);
+          },
+          (rejected = {}) => {
+            const resolveAction = getResolveAction(true);
+            const error = dispatch(isThunk(rejected) ? rejected.bind(null, resolveAction) : {
+              ...resolveAction,
+              ...isAction(rejected) ? rejected : {
+                ...!!rejected && { payload: rejected }
+              }
+            });
+            reject(error);
+          }
+        );
+      });
 
-      return action;
+      return Object.assign({}, action, {
+        payload: Object.assign({}, action.payload, {
+          promise: newPromise,
+        }),
+      });
     };
   };
 }
