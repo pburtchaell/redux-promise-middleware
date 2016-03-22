@@ -1,12 +1,10 @@
 import chai, { expect } from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import { createStore, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
 import promiseMiddleware from '../src/index';
 chai.use(sinonChai);
-chai.use(chaiAsPromised);
 
 describe('Redux Promise Middleware:', () => {
   const nextHandler = promiseMiddleware();
@@ -139,10 +137,8 @@ describe('Redux Promise Middleware:', () => {
       expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
     });
 
-    it('should not mutate the originally dispatched action', () => {
-      const originalPromiseAction = Object.assign({}, promiseAction);
-      store.dispatch(promiseAction);
-      expect(promiseAction).to.eql(originalPromiseAction);
+    it('returns the originally dispatched action', () => {
+      expect(store.dispatch(promiseAction)).to.eql(promiseAction);
     });
 
     context('When Promise Rejects:', ()=> {
@@ -174,7 +170,7 @@ describe('Redux Promise Middleware:', () => {
       });
 
       it('re-dispatches rejected action with error and payload from error', async () => {
-        await chai.assert.isRejected(store.dispatch(rejectingPromiseAction).payload.promise);
+        await store.dispatch(rejectingPromiseAction).payload.promise;
         expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
 
@@ -184,7 +180,7 @@ describe('Redux Promise Middleware:', () => {
           type: `${rejectingPromiseAction.type}_REJECTED`,
           error: true
         };
-        await chai.assert.isRejected(store.dispatch(rejectingPromiseAction).payload.promise);
+        await store.dispatch(rejectingPromiseAction).payload.promise;
         expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
 
@@ -192,7 +188,7 @@ describe('Redux Promise Middleware:', () => {
         const metaData = { fake: 'data' };
         rejectingPromiseAction.meta = metaData;
         rejectedAction.meta = metaData;
-        await chai.assert.isRejected(store.dispatch(rejectingPromiseAction).payload.promise);
+        await store.dispatch(rejectingPromiseAction).payload.promise;
         expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
 
@@ -206,7 +202,7 @@ describe('Redux Promise Middleware:', () => {
           error: true,
           ...newAction
         };
-        await chai.assert.isRejected(store.dispatch(rejectingPromiseAction).payload.promise);
+        await store.dispatch(rejectingPromiseAction).payload.promise;
         expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
 
@@ -220,7 +216,7 @@ describe('Redux Promise Middleware:', () => {
           error: true,
           ...newAction
         };
-        await chai.assert.isRejected(store.dispatch(rejectingPromiseAction).payload.promise);
+        await store.dispatch(rejectingPromiseAction).payload.promise;
         expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
 
@@ -234,7 +230,7 @@ describe('Redux Promise Middleware:', () => {
           dispatch({ ...action, foo: 'bar' });
         };
         rejectingPromiseAction.payload.promise = Promise.reject(thunkResolve);
-        await chai.assert.isRejected(store.dispatch(rejectingPromiseAction).payload.promise);
+        await store.dispatch(rejectingPromiseAction).payload.promise;
         expect(lastMiddlewareModfies.spy).to.have.been.calledWith({
           type: `${rejectingPromiseAction.type}_REJECTED`,
           error: true,
@@ -242,9 +238,9 @@ describe('Redux Promise Middleware:', () => {
         });
       });
 
-      it('returns action.payload.promise rejecting the rejected action', async () => {
-        const rejecting = await chai.assert.isRejected(store.dispatch(rejectingPromiseAction).payload.promise);
-        expect(rejecting).to.eql({
+      it('returns action.payload.promise resolving the rejected action', async () => {
+        const resolving = await store.dispatch(rejectingPromiseAction).payload.promise;
+        expect(resolving).to.eql({
           ...rejectedAction,
           ...lastMiddlewareModfiesObject
         });
@@ -256,7 +252,7 @@ describe('Redux Promise Middleware:', () => {
           promiseTypeSuffixes: [ '', '', customPrefix ]
         });
         rejectedAction.type = `${rejectingPromiseAction.type}_${customPrefix}`;
-        await chai.assert.isRejected(store.dispatch(rejectingPromiseAction).payload.promise);
+        await store.dispatch(rejectingPromiseAction).payload.promise;
         expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
 
@@ -267,7 +263,7 @@ describe('Redux Promise Middleware:', () => {
         rejectedAction.type = `${rejectingPromiseAction.type}_${customPrefix}`;
         // FIXME: Test leak, should the promiseTypeSuffixes be in other actions?
         rejectedAction.meta = actionMeta;
-        await chai.assert.isRejected(store.dispatch(rejectingPromiseAction).payload.promise);
+        await store.dispatch(rejectingPromiseAction).payload.promise;
         expect(lastMiddlewareModfies.spy).to.have.been.calledWith(rejectedAction);
       });
     });
