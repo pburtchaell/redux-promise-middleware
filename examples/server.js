@@ -1,15 +1,13 @@
 import path from 'path';
-import express from 'express';
+import server from 'json-server';
 import webpack from 'webpack';
-import config from '../webpack.config';
-import * as indexHandlers from './handlers/index';
-import * as apiHandlers from './handlers/api';
-import * as postHandlers from './handlers/post';
+import config from './webpack.config';
 
 const port = process.env.PORT || 8000;
 const address = 'localhost';
 
-const app = express();
+const app = server.create();
+const router = server.router(require('./generate').default());
 const compiler = webpack(config);
 
 app.use(require('webpack-dev-middleware')(compiler, {
@@ -23,12 +21,19 @@ app.use(require('webpack-hot-middleware')(compiler, {
   heartbeat: 10 * 1000
 }));
 
-app.get('/', indexHandlers.handleGet);
-app.get('/api/v1/', apiHandlers.handleGet);
-app.get('/api/v1/posts/', postHandlers.handleGet);
-app.post('/api/v1/posts/:id', postHandlers.handlePost);
+app.get('/complex', (req, res) => {
+  res.sendFile(path.join(__dirname, 'complex', 'index.html'));
+});
 
-app.listen(port, address, function (error) {
+app.get('/simple', (req, res) => {
+  res.sendFile(path.join(__dirname, 'simple', 'index.html'))
+});
+
+// Mock API
+app.use(server.defaults());
+app.use('/api', router);
+
+app.listen(port, address, error => {
   if (error) throw error;
   console.log('server running at http://%s:%d', address, port);
 });

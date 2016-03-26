@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "pretest": "",
-    "prestart": "rm -rf example/build && `npm bin`/babel example/server -d example/build",
-    "start": "node example/build/server.js",
+    "start": "babel-node examples/server.js",
     "test": "mocha --compilers js:babel-core/register --reporter spec test/polyfills.js test/*.js",
     "build": "`npm bin`/babel src -d dist",
     "prepublish": "npm test && npm run build"
@@ -48,8 +47,11 @@
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.1.0",
     "eslint-plugin-react": "^4.2.3",
-    "express": "^4.13.4",
+    "express-urlrewrite": "^1.2.0",
+    "faker": "^3.1.0",
     "isomorphic-fetch": "^2.2.1",
+    "json-server": "^0.8.9",
+    "lodash": "^4.6.1",
     "mocha": "^2.3.3",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",

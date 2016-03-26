@@ -1,20 +1,22 @@
+var fs = require('fs');
 var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
   devtool: 'eval',
 
-  entry: {
-    app: [
-      'webpack-hot-middleware/client',
-      path.resolve(__dirname, './client')
-    ],
-    shared: ['react', 'react-router', 'redux']
-  },
+  entry: fs.readdirSync(__dirname).reduce(function (entries, dir) {
+    if (fs.statSync(path.join(__dirname, dir)).isDirectory()) {
+      entries[dir] = path.join(__dirname, dir, 'index.js');
+    }
+
+    return entries;
+  }, {}),
 
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: __dirname + '/',
     filename: '[name].js',
+    chunkFilename: '[id].chunk.js',
     publicPath: '/'
   },
 
@@ -24,7 +26,7 @@ module.exports = {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    new webpack.optimize.CommonsChunkPlugin('shared', 'shared.js')
+    new webpack.optimize.CommonsChunkPlugin('shared.js')
   ],
 
   module: {
