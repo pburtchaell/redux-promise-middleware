@@ -39,10 +39,10 @@ export default function promiseMiddleware(config = {}) {
        * @param {boolean} Is the action rejected?
        * @returns {object} action
        */
-      const getAction = (payload, isRejected ) => ({
+      const getAction = (newPayload, isRejected) => ({
         type: `${type}_${isRejected ? REJECTED : FULFILLED}`,
-        ...payload ? {
-          payload
+        ...newPayload ? {
+          payload: newPayload
         } : {},
         ...!!meta ? { meta } : {},
         ...isRejected ? {
