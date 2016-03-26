@@ -107,7 +107,7 @@ export default function promiseMiddleware(config = {}) {
        *   }
        * }
        */
-      action = new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         promise.then(
           (value = null) => {
             const resolvedAction = getAction(value, false);
@@ -125,9 +125,6 @@ export default function promiseMiddleware(config = {}) {
           }
         );
       });
-
-      // Always return the original action so other middleware can access it
-      return action;
     };
   };
 }
