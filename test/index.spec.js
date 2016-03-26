@@ -1,3 +1,4 @@
+/* eslint no-unused-vars: 0, no-unused-expressions: 0, no-shadow: 0 */
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -56,11 +57,14 @@ describe('Redux Promise Middleware:', () => {
    */
   // first middleware mimics redux-thunk
   function firstMiddlewareThunk(ref, next) {
-    this.spy = sinon.spy((action) =>
-      typeof action === 'function'
-        ? action(ref.dispatch, ref.getState)
-        : next(action)
-    );
+    this.spy = sinon.spy((action) => {
+      if (typeof action === 'function') {
+        return action(ref.dispatch, ref.getState);
+      }
+
+      return next(action);
+    });
+
     return this.spy;
   }
 
@@ -91,7 +95,7 @@ describe('Redux Promise Middleware:', () => {
     store = makeStore();
   });
 
-  afterEach(()=> {
+  afterEach(() => {
     firstMiddlewareThunk.spy.reset();
     lastMiddlewareModfies.spy.reset();
   });
@@ -176,7 +180,7 @@ describe('Redux Promise Middleware:', () => {
      * in the config when the middleware is constructed.
      */
     it('allows global customisation of action.type suffixes', () => {
-      store = makeStore({ promiseTypeSuffixes: [ customPrefix, '', '' ] });
+      store = makeStore({ promiseTypeSuffixes: [customPrefix, '', ''] });
       store.dispatch(promiseAction);
 
       pendingAction.type = `${promiseAction.type}_${customPrefix}`;
@@ -189,7 +193,7 @@ describe('Redux Promise Middleware:', () => {
      * if the suffix is included in the meta of the action.
      */
     it('allows local customisation of action.type suffixes', () => {
-      const actionMeta = { promiseTypeSuffixes: [ customPrefix, '', '' ] };
+      const actionMeta = { promiseTypeSuffixes: [customPrefix, '', ''] };
 
       store.dispatch({
         ...promiseAction,
@@ -204,7 +208,7 @@ describe('Redux Promise Middleware:', () => {
   });
 
   context('When promise is fulfilled:', () => {
-    beforeEach(()=> {
+    beforeEach(() => {
       promiseAction = {
         type: defaultPromiseAction.type,
         payload: Promise.resolve(promiseValue)
@@ -220,9 +224,9 @@ describe('Redux Promise Middleware:', () => {
       };
 
       it('resolved action.type dispatched', async () => {
-        const action = store.dispatch(nullResolveAction);
+        const actionDispatched = store.dispatch(nullResolveAction);
 
-        await action.then(({ value, action }) => {
+        await actionDispatched.then(({ value, action }) => {
           expect(action).to.eql({
             type: `${nullResolveAction.type}_FULFILLED`
           });
@@ -230,17 +234,17 @@ describe('Redux Promise Middleware:', () => {
       });
 
       it('returns null value', async () => {
-        const action = store.dispatch(nullResolveAction);
+        const actionDispatched = store.dispatch(nullResolveAction);
 
-        await action.then(({ value, action }) => {
+        await actionDispatched.then(({ value, action }) => {
           expect(value).to.be.null;
         });
       });
 
       it('action.payload is undefined', async () => {
-        const action = store.dispatch(nullResolveAction);
+        const actionDispatched = store.dispatch(nullResolveAction);
 
-        await action.then(({ value, action }) => {
+        await actionDispatched.then(({ value, action }) => {
           expect(action.payload).to.be.undefined;
         });
       });
@@ -261,12 +265,12 @@ describe('Redux Promise Middleware:', () => {
     });
 
     it('returns value and action as parameters to `then()`', async () => {
-      const action = store.dispatch({
+      const actionDispatched = store.dispatch({
         type: defaultPromiseAction.type,
         payload: Promise.resolve(promiseValue)
       });
 
-      await action.then(({ value, action }) => {
+      await actionDispatched.then(({ value, action }) => {
         expect(value).to.eql(promiseValue);
         expect(action).to.eql(fulfilledAction);
       });
@@ -274,7 +278,7 @@ describe('Redux Promise Middleware:', () => {
 
     it('allows global customisation of fulfilled action.type', async () => {
       store = makeStore({
-        promiseTypeSuffixes: ['', customPrefix,'']
+        promiseTypeSuffixes: ['', customPrefix, '']
       });
 
       fulfilledAction = {
@@ -282,9 +286,9 @@ describe('Redux Promise Middleware:', () => {
         payload: promiseValue
       };
 
-      const action = store.dispatch(promiseAction);
+      const actionDispatched = store.dispatch(promiseAction);
 
-      await action.then(({ value, action }) => {
+      await actionDispatched.then(({ value, action }) => {
         expect(action).to.eql(fulfilledAction);
         expect(value).to.eql(promiseValue);
       });
@@ -292,7 +296,7 @@ describe('Redux Promise Middleware:', () => {
   });
 
   context('When promise is rejected:', () => {
-    beforeEach(()=> {
+    beforeEach(() => {
       promiseAction = {
         type: defaultPromiseAction.type,
         payload: Promise.reject(promiseReason)
@@ -308,9 +312,9 @@ describe('Redux Promise Middleware:', () => {
       };
 
       it('rejected action.type is dispatched', async () => {
-        const action = store.dispatch(nullRejectAction);
+        const actionDispatched = store.dispatch(nullRejectAction);
 
-        await action.catch(({ reason, action }) => {
+        await actionDispatched.catch(({ reason, action }) => {
           expect(action).to.eql({
             type: `${nullRejectAction.type}_REJECTED`,
             error: true
@@ -319,38 +323,38 @@ describe('Redux Promise Middleware:', () => {
       });
 
       it('returns null reason', async () => {
-        const action = store.dispatch(nullRejectAction);
+        const actionDispatched = store.dispatch(nullRejectAction);
 
-        await action.catch(({ reason, action }) => {
+        await actionDispatched.catch(({ reason, action }) => {
           expect(reason).to.be.null;
         });
       });
 
       it('action.payload is undefined', async () => {
-        const action = store.dispatch(nullRejectAction);
+        const actionDispatched = store.dispatch(nullRejectAction);
 
-        await action.catch(({ reason, action }) => {
+        await actionDispatched.catch(({ reason, action }) => {
           expect(action.payload).to.be.undefined;
         });
       });
     });
 
     it('persists meta from original action', async () => {
-      const action = store.dispatch({
+      const actionDispatched = store.dispatch({
         type: promiseAction.type,
         payload: promiseAction.payload,
         meta: metaData
       });
 
-      await action.catch(({ reason, action }) => {
+      await actionDispatched.catch(({ reason, action }) => {
         expect(action.meta).to.eql(metaData);
       });
     });
 
     it('returns reason and action as parameters to `then()`', async () => {
-      const action = store.dispatch(promiseAction);
+      const actionDispatched = store.dispatch(promiseAction);
 
-      await action.then(() => null, ({ reason, action }) => {
+      await actionDispatched.then(() => null, ({ reason, action }) => {
         expect(action).to.eql(rejectedAction);
         expect(reason).to.eql(promiseReason);
       });
@@ -370,9 +374,9 @@ describe('Redux Promise Middleware:', () => {
         payload: promiseReason
       };
 
-      const action = store.dispatch(promiseAction);
+      const actionDispatched = store.dispatch(promiseAction);
 
-      await action.catch(({reason, action}) => {
+      await actionDispatched.catch(({ reason, action }) => {
         expect(action).to.eql(rejectedAction);
         expect(reason).to.eql(promiseReason);
       });
@@ -389,9 +393,9 @@ describe('Redux Promise Middleware:', () => {
         payload: promiseReason
       };
 
-      const action = store.dispatch(promiseAction);
+      const actionDispatched = store.dispatch(promiseAction);
 
-      await action.catch(({ reason, action }) => {
+      await actionDispatched.catch(({ reason, action }) => {
         expect(action).to.eql(rejectedAction);
         expect(reason).to.eql(promiseReason);
       });
