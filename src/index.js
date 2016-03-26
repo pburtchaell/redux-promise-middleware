@@ -22,6 +22,15 @@ export default function promiseMiddleware(config = {}) {
         return next(action);
       }
 
+      // Deconstruct the properties of the original action object to constants
+      const { type, payload, meta } = action;
+
+      // Assign values for promise type suffixes
+      const [
+        PENDING,
+        FULFILLED,
+        REJECTED
+      ] = (meta || {}).promiseTypeSuffixes || promiseTypeSuffixes;
 
       /**
        * @function getAction
@@ -41,9 +50,6 @@ export default function promiseMiddleware(config = {}) {
         } : {}
       });
 
-      // Deconstruct the properties of the original action object to constants
-      const { type, payload, meta } = action;
-
       /**
        * Assign values for promise and data variables. In the case the payload
        * is an object with a `promise` and `data` property, the values of those
@@ -60,13 +66,6 @@ export default function promiseMiddleware(config = {}) {
         promise = payload;
         data = null;
       }
-
-      // Assign values for promise type suffixes
-      const [
-        PENDING,
-        FULFILLED,
-        REJECTED
-      ] = (meta || {}).promiseTypeSuffixes || promiseTypeSuffixes;
 
       /**
        * First, dispatch the pending action. This flux standard action object
