@@ -22,9 +22,6 @@ export default function promiseMiddleware(config = {}) {
         return next(action);
       }
 
-      // Utility functions for testing action objects
-      const isAction = x => x && (x.meta || x.payload);
-      const isThunk = x => typeof x === 'function';
 
       /**
        * @function getAction
