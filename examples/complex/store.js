@@ -3,15 +3,11 @@ import reducers from './reducers';
 import promiseMiddleware from 'redux-promise-middleware';
 import thunkMiddleware from 'redux-thunk';
 
-const createStoreWithMiddleware = applyMiddleware(
+const store = createStore(reducers, {}, applyMiddleware(
   thunkMiddleware,
-  promiseMiddleware()
-)(createStore);
-
-function configureStore(initialState) {
-  return createStoreWithMiddleware(reducers, initialState);
-}
-
-const store = configureStore({});
+  promiseMiddleware({
+    // optional config
+  })
+));
 
 export default store;

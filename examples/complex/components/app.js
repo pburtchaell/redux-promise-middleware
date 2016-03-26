@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import AppWarning from './appWarning';
 import { application } from '../actions';
@@ -33,7 +33,9 @@ class App extends Component {
     }
 
     // Show nothing while initializing
-    return false;
+    return (
+      <div>application loading...</div>
+    );
   }
 }
 

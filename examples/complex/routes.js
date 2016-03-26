@@ -3,7 +3,7 @@ let routeConfig = [{
   component: require('./components/app').default,
   indexRoute: require('./routes/home').default,
   childRoutes: [
-    require('./routes/sign-in').default
+    
   ]
 }];
 

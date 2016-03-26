@@ -1,17 +1,18 @@
-import React from 'react';
 import { Router, useRouterHistory } from 'react-router';
-import { createHistory, useBasename } from 'history';
-import { locationUpdate } from './actions/location';
+import { Provider } from 'react-redux';
+import { createHistory } from 'history';
 import store from './store';
 
 // Create a history object so it can be used by the location actions
 const history = useRouterHistory(createHistory)();
 
 const renderRouter = () => (
-  <Router
-    routes={require('./routes').default}
-    history={history}
-  />
+  <Provider store={store}>
+    <Router
+      routes={require('./routes').default}
+      history={history}
+    />
+  </Provider>
 );
 
 export {

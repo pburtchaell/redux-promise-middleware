@@ -1,14 +1,29 @@
 import * as types from '../constants/post';
-import * as utils from '../utils/resources/post';
+import network from '../utils/network';
 
-export function getAllPosts() {
-  return dispatch => {
+export const getAllPosts = () => ({
+  type: types.GET_POSTS,
+  payload: network.get({
+    resource: 'posts'
+  })
+});
 
-    return dispatch({
-      type: types.GET_POSTS,
-      payload: {
-        promise: utils.getAllPosts()
-      }
-    });
-  };
-}
+export const getPost = id => ({
+  type: types.GET_POST,
+  payload: network.get({
+    resource: 'posts',
+    id
+  })
+});
+
+export const createPost = post => ({
+  type: types.CREATE_POST,
+  payload: {
+    promise: network.post({
+      delay: 1000,
+      resource: 'posts',
+      body: post
+    }),
+    data: post
+  }
+});

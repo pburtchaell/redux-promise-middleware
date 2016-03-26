@@ -1,5 +1,4 @@
 import request from './request';
-import buildURL from './buildURL';
 
 /**
  * @function Network
@@ -8,6 +7,17 @@ import buildURL from './buildURL';
  * @param {string} resource The resource used for config
  */
 const Network = resource => {
+  let buildURL = ({ id, resource } = {}) => {
+    let parameters = [
+      'http://localhost:8000',
+      'api'
+    ];
+
+    if (resource) parameters.concat([resource]);
+    if (id) parameters.concat([id]);
+
+    return parameters.join('/');
+  }
 
   // Default options used for every request
   const defaultOptions = {

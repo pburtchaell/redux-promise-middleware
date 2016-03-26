@@ -1,45 +1,21 @@
 import * as types from '../constants/application';
 import checkBrowser from '../utils/checkBrowser';
 import checkServer from '../utils/checkServer';
-import * as auth from './index';
 
-/*
- * @function performSupportCheck
- * @description Check if the user's browser is supported.
- * @returns {object} FSA
- * @fires checkBrowserSupport
- */
-function performSupportCheck() {
-  return {
-    type: types.APPLICATION_SUPPORT_CHECK,
-    payload: checkBrowser(),
-  };
-}
+// check if the browser is supported
+const performSupportCheck = () => ({
+  type: types.APPLICATION_SUPPORT_CHECK,
+  payload: checkBrowser()
+})
 
-/*
- * @function performServerCheck
- * @description Check if the Segment API is available.
- * @returns {object} FSA
- */
-function performServerCheck() {
-  return {
-    type: types.APPLICATION_SERVER_CHECK,
-    payload: checkServer(),
-    meta: {
-      request: true
-    }
-  };
-}
+// check if the API is available
+const performServerCheck = () => ({
+  type: types.APPLICATION_SERVER_CHECK,
+  payload: checkServer(),
+  meta: { request: true }
+})
 
-/*
- * @function initialize
- * @description Initialize the application by checking support
- * authorization, if the Segment API (server) is alive and fetching
- * the user profile information.
- * @returns {function} thunk
- * @fires performSupportCheck
- * @fires performAuthorizationCheck
- */
+// initialize the application
 export function initialize() {
   return dispatch => {
 
@@ -47,6 +23,10 @@ export function initialize() {
       type: types.APPLICATION_INITIALIZE_CHECK,
       payload: Promise.all([
         dispatch(performSupportCheck()),
+        dispatch({
+          type: 'APPLICATION_CHECK_DELAY',
+          payload: new Promise(resolve => setTimeout(resolve, 2000))
+        }),
         dispatch(performServerCheck())
       ])
     })

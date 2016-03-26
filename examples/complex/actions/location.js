@@ -5,7 +5,7 @@ import { history } from '../router';
  * @function update
  * @description Update the location of React Router.
  * @param {string} path
- * @returns
+ * @returns {function}
  */
 export function update(path) {
   return dispatch => {
