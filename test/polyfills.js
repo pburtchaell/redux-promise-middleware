@@ -1,2 +1,1 @@
-import 'core-js/shim';
-import 'regenerator/runtime';
+import 'babel-polyfill';
