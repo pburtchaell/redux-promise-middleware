@@ -1,3 +1,4 @@
 node_modules/
 dist/
+example/build
 npm-debug.log
