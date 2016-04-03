@@ -4,23 +4,22 @@ import thunkMiddleware from 'redux-thunk';
 
 describe('Chaining actions:', () => {
   it('should be "thenable" after dispatch', () => {
-    const reducer = (state = 0) => state;
+    const reducer = (state = 0) => state; // Dummy reducer
     const createStoreWithMiddleware = applyMiddleware(
         thunkMiddleware,
         promiseMiddleware
     )(createStore);
     const store = createStoreWithMiddleware(reducer);
 
-    const action = () =>
+    const action = () => // Thunk action creator
       dispatch => {
-        const result = dispatch({
+        return dispatch({
           type: 'TYPE',
-          payload: { promise: Promise.resolve('foo') }
+          payload: { promise: Promise.resolve('foo') } // Dummy promise
         }).then(() => {
             // On resolve
         });
-        return result;
       };
-    store.dispatch(action());
+    store.dispatch(action()); // Call action creator and dispatch
   });
 });
