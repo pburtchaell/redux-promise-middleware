@@ -12,14 +12,13 @@ describe('Chaining actions:', () => {
     const store = createStoreWithMiddleware(reducer);
 
     const action = () => // Thunk action creator
-      dispatch => {
-        return dispatch({
+      dispatch =>
+        dispatch({
           type: 'TYPE',
           payload: { promise: Promise.resolve('foo') } // Dummy promise
         }).then(() => {
             // On resolve
         });
-      };
     store.dispatch(action()); // Call action creator and dispatch
   });
 });
