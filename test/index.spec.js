@@ -6,9 +6,6 @@ import { createStore, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
 import promiseMiddleware from '../src/index';
 
-// test coverage
-require('blanket')({ });
-
 chai.use(sinonChai);
 
 describe('Redux Promise Middleware:', () => {
