@@ -11,7 +11,7 @@ test:
 	test/polyfills.js test/*.js
 
 test_coverage:
-	echo TRAVIS_JOB_ID $(TRAVIS_JOB_ID)
+	@echo TRAVIS_JOB_ID $(TRAVIS_JOB_ID)
 	@$(MAKE) test
 	@NODE_ENV=test `npm bin`/istanbul cover \
 	`npm bin`/_mocha \
