@@ -6,4 +6,5 @@
   - [Custom type suffixes](guides/custom-suffixes.md)
   - [Optimistic updates](guides/optimistic-updates.md)
   - [Reducers](guides/reducers.md)
+  - [Handling actions globally](/guides/gloabl-handling.md)
 - [Introduction](introduction.md)
