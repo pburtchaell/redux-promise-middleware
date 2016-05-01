@@ -4,7 +4,7 @@
   "description": "Redux middleware for handling promises",
   "main": "dist/index.js",
   "scripts": {
-    "pretest": "`npm bin`/eslint ./src/*.js",
+    "pretest": "eslint ./src/*.js",
     "test": "mocha --compilers js:babel/register --reporter spec test/*.js",
     "prepublish": "npm test && make js"
   },
@@ -31,12 +31,15 @@
     "babel": "^5.6.14",
     "babel-eslint": "^3.1.23",
     "chai": "^3.4.0",
+    "escope": "^3.3.0",
     "eslint": "^0.24.1",
     "eslint-config-airbnb": "0.0.6",
     "eslint-plugin-react": "^2.7.0",
     "mocha": "^2.3.3",
     "redux": "^3.0.4",
-    "redux-mock-store": "0.0.2"
+    "redux-mock-store": "^1.0.2",
+    "sinon": "^1.17.3",
+    "sinon-chai": "^2.8.0"
   },
   "peerDependencies": {
     "redux": "^2.0.0 || ^3.0.0"
