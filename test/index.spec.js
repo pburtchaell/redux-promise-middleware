@@ -76,7 +76,7 @@ describe('Promise Middleware:', () => {
 
     it('does not dispatch any other actions', () => {
       const mockStore = configureStore([promiseMiddleware()]);
-      const store = mockStore({});
+      store = mockStore({});
       store.dispatch(mockAction);
       expect(store.getActions()).to.eql([mockAction]);
     });
@@ -169,7 +169,7 @@ describe('Promise Middleware:', () => {
 
       it('dispatches both pending and rejected', () => {
         const mockStore = configureStore([promiseMiddleware()]);
-        const store = mockStore({});
+        store = mockStore({});
         return store.dispatch(rejectingPromiseAction).catch(() => {
           expect(store.getActions()).to.eql([pendingAction, rejectedAction]);
         });
@@ -267,7 +267,7 @@ describe('Promise Middleware:', () => {
 
       it('dispatches both pending and fulfilled', () => {
         const mockStore = configureStore([promiseMiddleware()]);
-        const store = mockStore({});
+        store = mockStore({});
         store.dispatch(fulfillingPromiseAction).then(() => {
           expect(store.getActions()).to.eql([pendingAction, fulfillingAction]);
         });
