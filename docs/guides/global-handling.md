@@ -70,6 +70,8 @@ function middleware() {
 
 This middleware *must follow* the promise middleware to work.
 
+One example of this solution is [`react-redux-loading-bar`](https://github.com/mironov/react-redux-loading-bar) that provides global Loading Bar and middleware that automatically shows and hides it.
+
 ## Solution 2: Reducers
 
 The previous example dispatches new actions. *This solution evaulates actions in reducers using regex.*
