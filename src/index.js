@@ -119,7 +119,12 @@ export default function promiseMiddleware(config = {}) {
           (reason = null) => {
             const rejectedAction = getAction(reason, true);
             dispatch(rejectedAction);
-            reject({ reason, action: rejectedAction });
+
+            const error = new Error();
+            error.reason = reason;
+            error.action = rejectedAction;
+
+            reject(error);
 
             return;
           }
