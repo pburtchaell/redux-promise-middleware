@@ -1,10 +1,6 @@
 REPORTER = spec
 
-lint:
-	@`npm bin`/eslint src/**/*.js test/**/*.js
-
 test:
-	@$(MAKE) lint
 	@NODE_ENV=test `npm bin`/mocha -b \
 	--compilers js:babel-core/register \
 	--reporter $(REPORTER) \

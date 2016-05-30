@@ -9,14 +9,14 @@ const getPost = id => ({
       resolve(response.json());
     }), 1000);
   })
-})
+});
 
 const initialize = () => {
   const mount = document.querySelector('#mount');
 
   // Load the post when button is clicked
   const button = document.querySelector('#load');
-  button.addEventListener('click', e => store.dispatch(getPost(1)));
+  button.addEventListener('click', () => store.dispatch(getPost(1)));
 
   const render = (state = {}) => {
     if (state.isPending) {

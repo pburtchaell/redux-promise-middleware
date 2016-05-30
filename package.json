@@ -5,9 +5,11 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "babel-node examples/server.js",
+    "pretest": "npm run lint",
     "test": "make test_coverage",
     "build": "`npm bin`/babel src -d dist",
-    "prepublish": "npm test && npm run build"
+    "prepublish": "npm test && npm run build",
+    "lint": "`npm bin`/eslint src/**/*.js examples/**/*.js test/**/*.js"
   },
   "repository": {
     "type": "git",

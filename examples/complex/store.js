@@ -5,9 +5,7 @@ import thunkMiddleware from 'redux-thunk';
 
 const store = createStore(reducers, {}, applyMiddleware(
   thunkMiddleware,
-  promiseMiddleware({
-    // optional config
-  })
+  promiseMiddleware()
 ));
 
 export default store;

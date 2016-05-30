@@ -1,3 +1,4 @@
+import React from 'react';
 import { Router, useRouterHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { createHistory } from 'history';

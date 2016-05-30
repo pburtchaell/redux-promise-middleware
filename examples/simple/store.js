@@ -1,3 +1,5 @@
+/* eslint no-extra-semi: "off", no-unreachable: "off", semi: "off" */
+
 import { createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 import thunkMiddleware from 'redux-thunk';
@@ -14,8 +16,9 @@ const reducer = (state = {}, action) => {
         body: action.payload.body
       };
 
-    default: return state;
-  }
+    default:
+      return state;
+  };
 }
 
 const store = createStore(reducer, {}, applyMiddleware(
