@@ -78,6 +78,40 @@ export default function promiseMiddleware(config = {}) {
         ...!!meta ? { meta } : {}
       });
 
+      /*
+       * @function handleReject
+       * @description Dispatch the rejected action and return
+       * an error object. The error object should contain the
+       * reason and the dispatched action.
+       * @params reason The reason the promise was rejected
+       * @returns {object}
+       */
+      const handleReject = (reason = null) => {
+        const rejectedAction = getAction(reason, true);
+        dispatch(rejectedAction);
+
+        const error = new Error();
+        error.reason = reason;
+        error.action = rejectedAction;
+
+        return error;
+      };
+
+      /*
+       * @function handleFulfill
+       * @description Dispatch the fulfilled action and
+       * return the success object. The success object should
+       * contain the value and the dispatched action.
+       * @param value The value the promise was resloved with
+       * @returns {object}
+       */
+      const handleFulfill = (value = null) => {
+        const resolvedAction = getAction(value, false);
+        dispatch(resolvedAction);
+        
+        return { value, action: resolvedAction };
+      };
+
       /**
        * Second, dispatch a rejected or fulfilled action. This flux standard
        * action object will describe the resolved state of the promise. In
@@ -107,29 +141,7 @@ export default function promiseMiddleware(config = {}) {
        *   }
        * }
        */
-      return new Promise((resolve, reject) => {
-        promise.then(
-          (value = null) => {
-            const resolvedAction = getAction(value, false);
-            dispatch(resolvedAction);
-            resolve({ value, action: resolvedAction });
-
-            return;
-          },
-          (reason = null) => {
-            const rejectedAction = getAction(reason, true);
-            dispatch(rejectedAction);
-
-            const error = new Error();
-            error.reason = reason;
-            error.action = rejectedAction;
-
-            reject(error);
-
-            return;
-          }
-        );
-      });
+      return promise.then(handleFulfill, handleReject);
     };
   };
 }
