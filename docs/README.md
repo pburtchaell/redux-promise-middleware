@@ -8,4 +8,5 @@
   - [Reducers](guides/reducers.md)
   - [Handling actions globally](/guides/gloabl-handling.md)
   - [Handing rejected promises](/guides/rejected-promises.md)
+  - [Using with Redux Actions](/guides/redux-actions.md)
 - [Introduction](introduction.md)
