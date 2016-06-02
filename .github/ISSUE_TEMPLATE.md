@@ -1,4 +1,6 @@
 <!--
+WE BEG OF YOU, IF YOU DO ONE THING: PLEASE format your code and issue: help.github.com/categories/writing-on-github/. It will take a small amount of time and makes it much easier to read — and consequently understand — your issue. We respond quicker to formatted issues than to poorly composed, unformated issues.
+  
 This issue template is adopted from React Router.
 
 Think you found a bug?
