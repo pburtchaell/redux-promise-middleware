@@ -1,0 +1,1 @@
+export const SESSION_CREATE = 'SESSION_CREATE';

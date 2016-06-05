@@ -1,12 +1,20 @@
-BIN = `npm bin`
+REPORTER = spec
 
-SRC_JS = $(shell find src -name "*.js")
-DIST_JS = $(patsubst src/%.js, dist/%.js, $(SRC_JS))
+test:
+	@NODE_ENV=test `npm bin`/mocha -b \
+	--compilers js:babel-core/register \
+	--reporter $(REPORTER) \
+	test/polyfills.js test/*.js
 
-$(DIST_JS): dist/%.js: src/%.js
-	@mkdir -p $(dir $@)
-	@$(BIN)/babel $< -o $@
+test_coverage:
+	@echo TRAVIS_JOB_ID $(TRAVIS_JOB_ID)
+	@$(MAKE) test
+	@NODE_ENV=test `npm bin`/istanbul cover \
+	`npm bin`/_mocha \
+	-- -u exports --compilers js:babel-core/register \
+	--report lcovonly \
+	test/polyfills.js test/*.js && \
+	cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js || true \
+	&& rm -rf ./coverage
 
-# Task: js
-# Builds distribution JS files for publishing to npm.
-js: $(DIST_JS)
+.PHONY: test

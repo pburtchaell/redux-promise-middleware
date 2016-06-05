@@ -1,5 +1,6 @@
 {
   "extends": "eslint-config-airbnb",
+  "parser": "babel-eslint",
   "env": {
     "browser": true,
     "node": true,
@@ -15,7 +16,8 @@
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 2,
     "padded-blocks": 0,
-    "block-scoped-var": 0
+    "block-scoped-var": 0,
+    "comma-dangle": 0
   },
   "plugins": [
     "react"
