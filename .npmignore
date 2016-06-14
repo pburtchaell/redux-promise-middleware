@@ -7,3 +7,6 @@ docs/
 .travis.yml
 CONTRIBUTING.md
 Makefile
+.npmignore
+node_modules
+jspm_packages
