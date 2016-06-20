@@ -85,11 +85,11 @@ describe('Redux Promise Middleware:', () => {
   /*
    * Function for creating a dumb store using fake middleware stack
    */
-  const makeStore = (config) => applyMiddleware(
+  const makeStore = (middlewareConfig, reducer = () => null) => applyMiddleware(
     ref => next => firstMiddlewareThunk.call(firstMiddlewareThunk, ref, next),
-    promiseMiddleware(config),
+    promiseMiddleware(middlewareConfig),
     () => next => lastMiddlewareModfies.call(lastMiddlewareModfies, next)
-  )(createStore)(() => null);
+  )(createStore)(reducer);
 
   beforeEach(() => {
     store = makeStore();
@@ -204,6 +204,24 @@ describe('Redux Promise Middleware:', () => {
       pendingAction.meta = actionMeta;
 
       expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
+    });
+
+    /**
+     * When the dispatch(action) call fails (e.g., an exception in a reducer or
+     * in a render), the promise itself should be rejected.
+     */
+    it('works when the dispatch call throws an error', async () => {
+      const error = new Error('exception in action creator');
+      store = makeStore({}, (state = {}, action) => {
+        if (action.type === defaultFulfilledAction.type) {
+          throw error;
+        }
+      });
+      const actionDispatched = store.dispatch(defaultPromiseAction);
+
+      await actionDispatched.catch((reason) => {
+        expect(reason).to.eql(error);
+      });
     });
   });
 

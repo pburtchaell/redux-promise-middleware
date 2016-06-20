@@ -107,24 +107,19 @@ export default function promiseMiddleware(config = {}) {
        *   }
        * }
        */
-      return new Promise((resolve, reject) => {
-        promise.then(
-          (value = null) => {
-            const resolvedAction = getAction(value, false);
-            dispatch(resolvedAction);
-            resolve({ value, action: resolvedAction });
-
-            return;
-          },
-          (reason = null) => {
-            const rejectedAction = getAction(reason, true);
-            dispatch(rejectedAction);
-            reject({ reason, action: rejectedAction });
-
-            return;
-          }
-        );
-      });
+      return promise.then(
+        (value = null) => {
+          const resolvedAction = getAction(value, false);
+          dispatch(resolvedAction);
+          return { value, action: resolvedAction };
+        },
+        (reason = null) => {
+          const rejectedAction = getAction(reason, true);
+          dispatch(rejectedAction);
+          const rejection = { reason, action: rejectedAction };
+          throw rejection;
+        }
+      );
     };
   };
 }
