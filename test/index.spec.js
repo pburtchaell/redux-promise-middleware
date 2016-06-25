@@ -314,7 +314,7 @@ describe('Redux Promise Middleware:', () => {
       it('rejected action.type is dispatched', async () => {
         const actionDispatched = store.dispatch(nullRejectAction);
 
-        await actionDispatched.catch(({ reason, action }) => {
+        await actionDispatched.catch(({ action, reason }) => {
           expect(action).to.eql({
             type: `${nullRejectAction.type}_REJECTED`,
             error: true
@@ -336,6 +336,18 @@ describe('Redux Promise Middleware:', () => {
         await actionDispatched.catch(({ reason, action }) => {
           expect(action.payload).to.be.undefined;
         });
+      });
+    });
+
+    it('argument is instance of error', async () => {
+      const actionDispatched = store.dispatch({
+        type: promiseAction.type,
+        payload: promiseAction.payload,
+        meta: metaData
+      });
+
+      await actionDispatched.catch(error => {
+        expect(error).to.be.instanceOf(Error);
       });
     });
 
