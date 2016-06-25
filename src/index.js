@@ -108,7 +108,7 @@ export default function promiseMiddleware(config = {}) {
       const handleFulfill = (value = null) => {
         const resolvedAction = getAction(value, false);
         dispatch(resolvedAction);
-        
+
         return { value, action: resolvedAction };
       };
 
