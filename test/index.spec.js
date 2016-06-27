@@ -2,6 +2,7 @@
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import Bluebird from 'bluebird';
 import { createStore, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
 import promiseMiddleware from '../src/index';
@@ -215,6 +216,21 @@ describe('Redux Promise Middleware:', () => {
       };
 
       fulfilledAction = defaultFulfilledAction;
+    });
+
+    it('propagates the original promise', async () => {
+      const actionDispatched = store.dispatch({
+        type: defaultPromiseAction.type,
+        payload: Bluebird.resolve(promiseValue)
+      });
+
+      // Expect that the promise returned has bluebird functions available
+      expect(actionDispatched.any).to.be.a('function');
+
+      await actionDispatched.then(({ value, action }) => {
+        expect(value).to.eql(promiseValue);
+        expect(action).to.eql(fulfilledAction);
+      });
     });
 
     context('When resolve reason is null:', () => {
