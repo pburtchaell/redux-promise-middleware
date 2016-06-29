@@ -94,7 +94,7 @@ export default function promiseMiddleware(config = {}) {
         error.reason = reason;
         error.action = rejectedAction;
 
-        return error;
+        throw error;
       };
 
       /*
