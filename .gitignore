@@ -4,3 +4,4 @@ example/build
 npm-debug.log
 .coverage
 .coveralls.yml
+.idea/
