@@ -444,5 +444,23 @@ describe('Redux Promise Middleware:', () => {
         done();
       });
     });
+
+    it('throws original rejected error instance', done => {
+      const baseError = new Error('Base Error');
+
+      const actionDispatched = store.dispatch({
+        type: defaultPromiseAction.type,
+        payload: Promise.reject(baseError)
+      });
+
+      actionDispatched.catch(error => {
+        const { reason, action } = error;
+
+        expect(reason).to.be.equal(baseError);
+        expect(action.payload).to.be.equal(baseError);
+
+        done();
+      }).catch(done);
+    });
   });
 });
