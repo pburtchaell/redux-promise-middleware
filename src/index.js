@@ -90,7 +90,8 @@ export default function promiseMiddleware(config = {}) {
         const rejectedAction = getAction(reason, true);
         dispatch(rejectedAction);
 
-        const error = new Error();
+        const error = reason instanceof Error ? reason : new Error();
+
         error.reason = reason;
         error.action = rejectedAction;
 
