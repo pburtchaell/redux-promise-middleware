@@ -14,16 +14,15 @@ module.exports = function promiseMiddleware(config = {}) {
     const { dispatch } = ref;
 
     return next => action => {
-      if (action.payload) {
-        if (!isPromise(action.payload) && !isPromise(action.payload.promise)) {
-          return next(action);
-        }
-      } else {
-        return next(action);
-      }
-
       // Deconstruct the properties of the original action object to constants
       const { type, payload, meta } = action;
+
+      const validType = typeof type === 'string';
+      const validPayload = payload && (isPromise(payload) || isPromise(payload.promise));
+
+      if (!validType || !validPayload) {
+        return next(action);
+      }
 
       // Assign values for promise type suffixes
       const [
@@ -36,7 +35,8 @@ module.exports = function promiseMiddleware(config = {}) {
        * @function getAction
        * @description Utility function for creating a rejected or fulfilled
        * flux standard action object.
-       * @param {boolean} Is the action rejected?
+       * @param {object} newPayload - payload of new
+       * @param {boolean} isRejected - Is promise rejected?
        * @returns {object} action
        */
       const getAction = (newPayload, isRejected) => ({
