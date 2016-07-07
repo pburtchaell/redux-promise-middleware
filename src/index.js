@@ -35,7 +35,7 @@ module.exports = function promiseMiddleware(config = {}) {
        * @function getAction
        * @description Utility function for creating a rejected or fulfilled
        * flux standard action object.
-       * @param {object} newPayload - payload of new
+       * @param {object} newPayload - payload of new action
        * @param {boolean} isRejected - Is promise rejected?
        * @returns {object} action
        */
