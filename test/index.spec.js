@@ -445,7 +445,7 @@ describe('Redux Promise Middleware:', () => {
       });
     });
 
-    it('throws original rejected error instance', done => {
+    it('throws a new Error with Error#reason as the original error', done => {
       const baseError = new Error('Base Error');
 
       const actionDispatched = store.dispatch({
@@ -456,8 +456,25 @@ describe('Redux Promise Middleware:', () => {
       actionDispatched.catch(error => {
         const { reason, action } = error;
 
-        expect(reason).to.be.equal(baseError);
-        expect(action.payload).to.be.equal(baseError);
+        expect(error).to.not.equal(baseError);
+        expect(reason).to.equal(baseError);
+
+        done();
+      }).catch(done);
+    });
+
+    it('includes the rejected error in the payload when an error is thrown', done => {
+      const baseError = new Error('Base Error');
+
+      const actionDispatched = store.dispatch({
+        type: defaultPromiseAction.type,
+        payload: Promise.reject(baseError)
+      });
+
+      actionDispatched.catch(error => {
+        const { reason, action } = error;
+
+        expect(action.payload).to.equal(baseError);
 
         done();
       }).catch(done);
