@@ -90,8 +90,7 @@ module.exports = function promiseMiddleware(config = {}) {
         const rejectedAction = getAction(reason, true);
         dispatch(rejectedAction);
 
-        const error = reason instanceof Error ? reason : new Error();
-
+        const error = new Error();
         error.reason = reason;
         error.action = rejectedAction;
 
