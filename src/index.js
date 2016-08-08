@@ -81,21 +81,16 @@ module.exports = function promiseMiddleware(config = {}) {
       /*
        * @function handleReject
        * @description Dispatch the rejected action and return
-       * an error object. The error object should contain the
-       * reason and the dispatched action.
+       * an error object. The error object is the original error
+       * that was thrown. The user of the library is responsible for
+       * best practices in ensure that they are throwing an Error object.
        * @params reason The reason the promise was rejected
        * @returns {object}
        */
-      const handleReject = (reason = null) => {
+      const handleReject = reason => {
         const rejectedAction = getAction(reason, true);
         dispatch(rejectedAction);
-
-        const error = reason instanceof Error ? reason : new Error();
-
-        error.reason = reason;
-        error.action = rejectedAction;
-
-        throw error;
+        throw reason;
       };
 
       /*

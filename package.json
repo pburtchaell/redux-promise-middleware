@@ -66,7 +66,7 @@
     "react-redux": "^4.4.1",
     "react-router": "^2.0.1",
     "redux": "^3.0.4",
-    "redux-mock-store": "0.0.2",
+    "redux-mock-store": "1.0.3",
     "redux-thunk": "^2.0.1",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0",
