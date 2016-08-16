@@ -13,12 +13,9 @@ export const rejectPromiseWithGlobalError = message => dispatch => dispatch({
     setTimeout(() => {
       reject(new Error(message))
     }, 2000);
-  }),
-  meta: {
-    globalError: true
-  }
+  })
 }).catch(error => {
-  // There is nothing to catch because an error middleware handles it
+  // There is nothing to catch at the action creator because an error middleware handles it
 });
 
 /**
@@ -36,5 +33,5 @@ export const rejectPromiseWithLocalError = message => dispatch => dispatch({
     }, 2000);
   })
 }).catch(error => {
-  console.warn(`${types.LOCAL_ERROR} rejected locally with reason: ${JSON.stringify(error.message)}.`);
+  console.warn(`${types.LOCAL_ERROR} caught at action creator with reason: ${JSON.stringify(error.message)}.`);
 });

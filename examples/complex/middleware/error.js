@@ -25,7 +25,7 @@ export default function errorMiddleware() {
      */
     if (oneOfType(action.type, types)) {
       return result.catch(error => {
-        console.warn(`${action.type} rejected globally with reason: ${JSON.stringify(error.message)}.`);
+        console.warn(`${action.type} caught at middleware with reason: ${JSON.stringify(error.message)}.`);
 
         return error;
       });
