@@ -1,4 +1,9 @@
-# 2.0.0 to 3.0.0
+# 3.x to 4.0.0
+
+This release introduces changes to error handling.
+
+
+# 2.x to 3.0.0
 
 This release introduces some major changes to the functionality of the middleware:
 
