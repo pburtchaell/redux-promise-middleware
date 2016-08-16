@@ -7,6 +7,7 @@
     "start": "babel-node examples/server.js",
     "pretest": "npm run lint",
     "test": "make test_coverage",
+    "prelocal-test": "npm run lint",
     "local-test": "make test",
     "build": "npm run build:commonjs & npm run build:umd & npm run build:umd:min",
     "build:commonjs": "`npm bin`/babel src -d dist",
