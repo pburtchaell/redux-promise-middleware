@@ -9,7 +9,7 @@ import promiseMiddleware from '../src/index';
 
 chai.use(sinonChai);
 
-describe('Redux Promise Middleware:', () => {
+describe('Redux promise middleware:', () => {
   let store;
   let promiseAction;
   let pendingAction;
@@ -17,7 +17,7 @@ describe('Redux Promise Middleware:', () => {
   let rejectedAction;
 
   const promiseValue = 'foo';
-  const promiseReason = new Error('promiseReason');
+  const promiseReason = new Error('bar');
   const customPrefix = 'CUSTOM';
   const optimisticUpdateData = { foo: true };
   const metaData = { bar: true };
@@ -25,9 +25,7 @@ describe('Redux Promise Middleware:', () => {
 
   const defaultPromiseAction = {
     type: 'ACTION',
-    payload: {
-      promise: Promise.resolve(promiseValue)
-    }
+    payload: new Promise(resolve => resolve(promiseValue))
   };
 
   const defaultPendingAction = {
@@ -140,19 +138,32 @@ describe('Redux Promise Middleware:', () => {
       fulfilledAction = defaultFulfilledAction;
     });
 
-    it('dispatches a pending action for explicit promise payload', () => {
+    /**
+     * This tests is the middleware dispatches a pending action when the payload
+     * property has a Promise object as the value. This is considered an "implicit"
+     * promise payload.
+     */
+    it('dispatches a pending action for implicit promise payload', () => {
       store.dispatch(promiseAction);
       expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
     });
 
-    it('dispatches a pending action for implicit promise payload', () => {
+    /**
+     * This tests if the middleware dispatches a pending action
+     * when the payload has a `promise` property with a Promise object
+     * as the value. This is considered an "explicit" promise payload because
+     * the `promise` property explicitly describes the value.
+     */
+    it('dispatches a pending action for explicit promise payload', () => {
       store.dispatch({
         type: promiseAction.type,
-        payload: promiseAction.payload.promise
+        payload: {
+          promise: promiseAction.payload
+        }
       });
-
       expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
     });
+
 
     /**
      * If the promise action is dispatched with a data property, that property and value
@@ -160,54 +171,47 @@ describe('Redux Promise Middleware:', () => {
      * is used for optimistic updates.
      */
     it('pending action optionally contains optimistic update payload from data property', () => {
-      promiseAction.payload.data = optimisticUpdateData;
-      pendingAction.payload = optimisticUpdateData;
-
-      store.dispatch(promiseAction);
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
+      store.dispatch({
+        type: promiseAction.type,
+        payload: {
+          promise: promiseAction.payload,
+          data: optimisticUpdateData
+        }
+      });
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith({
+        ...pendingAction,
+        payload: optimisticUpdateData
+      });
     });
 
     /**
-     * If the promise action is dispatched with a meta property, that property and value
-     * must be included in the pending action the middleware dispatches.
+     * If the promise action is dispatched with a meta property, the meta property
+     * and value must be included in the pending action.
      */
-    it('pending action optionally contains meta property', () => {
-      promiseAction.meta = metaData;
-      pendingAction.meta = metaData;
-
-      store.dispatch(promiseAction);
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
+    it('pending action does contains meta property if included', () => {
+      store.dispatch(Object.assign({}, promiseAction, {
+        meta: metaData
+      }));
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(
+        Object.assign({}, pendingAction, {
+          meta: metaData
+        })
+      );
     });
 
     /**
-     * The middleware should allow global custom action types that are included
+     * The middleware should allow global custom action types included
      * in the config when the middleware is constructed.
      */
     it('allows global customisation of action.type suffixes', () => {
       store = makeStore({ promiseTypeSuffixes: [customPrefix, '', ''] });
       store.dispatch(promiseAction);
 
-      pendingAction.type = `${promiseAction.type}_${customPrefix}`;
-
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
-    });
-
-    /**
-     * The middleware should allow custom action type suffix(es) per dispatch
-     * if the suffix is included in the meta of the action.
-     */
-    it('allows local customisation of action.type suffixes', () => {
-      const actionMeta = { promiseTypeSuffixes: [customPrefix, '', ''] };
-
-      store.dispatch({
-        ...promiseAction,
-        meta: actionMeta
-      });
-
-      pendingAction.type = `${promiseAction.type}_${customPrefix}`;
-      pendingAction.meta = actionMeta;
-
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(
+        Object.assign({}, pendingAction, {
+          type: `${promiseAction.type}_${customPrefix}`
+        })
+      );
     });
   });
 
@@ -215,26 +219,36 @@ describe('Redux Promise Middleware:', () => {
     beforeEach(() => {
       promiseAction = {
         type: defaultPromiseAction.type,
-        payload: Promise.resolve(promiseValue)
+        payload: new Promise(resolve => resolve(promiseValue))
       };
 
       fulfilledAction = defaultFulfilledAction;
     });
 
+    /**
+     * This test ensures the original promise object is not mutated. In the case
+     * a promise library is used, adding methods to the promise class, the
+     * middleware should not remove those methods.
+     */
     it('propagates the original promise', done => {
       const actionDispatched = store.dispatch({
         type: defaultPromiseAction.type,
         payload: Bluebird.resolve(promiseValue)
       });
 
-      // Expect that the promise returned has bluebird functions available
+      // Expect the promise returned has orginal methods available
       expect(actionDispatched.any).to.be.a('function');
 
-      actionDispatched.then(({ value, action }) => {
-        expect(value).to.eql(promiseValue);
-        expect(action).to.eql(fulfilledAction);
-        done();
-      });
+      actionDispatched.then(
+        ({ value, action }) => {
+          expect(value).to.eql(promiseValue);
+          expect(action).to.eql(fulfilledAction);
+          done();
+        },
+        () => {
+          expect(true).to.equal(false); // Expect this is not called
+        }
+      );
     });
 
     context('When resolve reason is null:', () => {
@@ -243,37 +257,56 @@ describe('Redux Promise Middleware:', () => {
         payload: Promise.resolve(null)
       };
 
-      it('resolved action.type dispatched', done => {
+      it('resolved action is dispatched', done => {
         const actionDispatched = store.dispatch(nullResolveAction);
 
-        actionDispatched.then(({ value, action }) => {
-          expect(action).to.eql({
-            type: `${nullResolveAction.type}_FULFILLED`
-          });
-          done();
-        });
+        actionDispatched.then(
+          ({ value, action }) => {
+            expect(action).to.eql({
+              type: `${nullResolveAction.type}_FULFILLED`
+            });
+            done();
+          },
+          () => {
+            expect(true).to.equal(false); // Expect this is not called
+          }
+        );
       });
 
-      it('returns null value', done => {
+      it('promise returns `null` value', done => {
         const actionDispatched = store.dispatch(nullResolveAction);
 
-        actionDispatched.then(({ value, action }) => {
-          expect(value).to.be.null;
-          done();
-        });
+        actionDispatched.then(
+          ({ value, action }) => {
+            expect(value).to.be.null;
+            done();
+          },
+          () => {
+            expect(true).to.equal(false); // Expect this is not called
+          }
+        );
       });
 
-      it('action.payload is undefined', done => {
+      /**
+       * If the resolved promise value is null, then there should not be a
+       * payload on the dispatched resolved action.
+       */
+      it('resolved action `payload` property is undefined', done => {
         const actionDispatched = store.dispatch(nullResolveAction);
 
-        actionDispatched.then(({ value, action }) => {
-          expect(action.payload).to.be.undefined;
-          done();
-        });
+        actionDispatched.then(
+          ({ value, action }) => {
+            expect(action.payload).to.be.undefined;
+            done();
+          },
+          () => {
+            expect(true).to.equal(false); // Expect this is not called
+          }
+        );
       });
     });
 
-    it('persists meta from original action', async () => {
+    it('persists `meta` property from original action', async () => {
       await store.dispatch({
         type: promiseAction.type,
         payload: promiseAction.payload,
@@ -287,20 +320,25 @@ describe('Redux Promise Middleware:', () => {
       });
     });
 
-    it('returns value and action as parameters to `then()`', done => {
+    it('promise returns `value` and `action` as parameters', done => {
       const actionDispatched = store.dispatch({
         type: defaultPromiseAction.type,
         payload: Promise.resolve(promiseValue)
       });
 
-      actionDispatched.then(({ value, action }) => {
-        expect(value).to.eql(promiseValue);
-        expect(action).to.eql(fulfilledAction);
-        done();
-      });
+      actionDispatched.then(
+        ({ value, action }) => {
+          expect(value).to.eql(promiseValue);
+          expect(action).to.eql(fulfilledAction);
+          done();
+        },
+        () => {
+          expect(true).to.equal(false); // Expect this is not called
+        }
+      );
     });
 
-    it('allows global customisation of fulfilled action.type', done => {
+    it('allows global customisation of fulfilled action `type`', done => {
       store = makeStore({
         promiseTypeSuffixes: ['', customPrefix, '']
       });
@@ -312,7 +350,7 @@ describe('Redux Promise Middleware:', () => {
 
       const actionDispatched = store.dispatch(promiseAction);
 
-      actionDispatched.then(({ value, action }) => {
+      return actionDispatched.then(({ value, action }) => {
         expect(action).to.eql(fulfilledAction);
         expect(value).to.eql(promiseValue);
         done();
@@ -324,55 +362,72 @@ describe('Redux Promise Middleware:', () => {
     beforeEach(() => {
       promiseAction = {
         type: defaultPromiseAction.type,
-        payload: Promise.reject(promiseReason)
+        payload: new Promise(() => {
+          throw promiseReason
+        })
       };
 
       rejectedAction = defaultRejectedAction;
     });
 
-    it('allows errors to be handled with `catch()`', () => {
-      promiseAction = {
-        type: promiseAction.type,
-        payload: new Promise(() => {
-          throw promiseReason;
-        })
-      };
-
-      rejectedAction = {
-        type: defaultRejectedAction.type,
-        error: defaultRejectedAction.error,
-        payload: promiseReason
-      };
-
+    it('errors can be caught with `catch`', () => {
       const actionDispatched = store.dispatch(promiseAction);
 
       return actionDispatched
-        .then(() => expect(true).to.equal(false)) // be sure that catch is actually called
+        .then(() => expect(true).to.equal(false))
         .catch(error => {
           expect(error).to.be.instanceOf(Error);
+          expect(error.message).to.equal(promiseReason.message);
         });
     });
 
-    it('allows global customisation of rejected action.type', () => {
+    it('errors can be caught with `then`', () => {
+      const actionDispatched = store.dispatch(promiseAction);
+
+      return actionDispatched.then(
+        () => expect(true).to.equal(false),
+        error => {
+          expect(error).to.be.instanceOf(Error);
+          expect(error.message).to.equal(promiseReason.message);
+        }
+      );
+    });
+
+    it('rejected action `error` property is true', () => {
       const mockStore = configureStore([
-        promiseMiddleware({
-          promiseTypeSuffixes: ['', '', customPrefix]
-        }),
+        promiseMiddleware(),
       ]);
-      const expectedRejectAction = {
-        type: `${promiseAction.type}_${customPrefix}`,
-        error: rejectedAction.error,
-        payload: rejectedAction.payload,
-      };
+
       const store = mockStore({});
 
       return store.dispatch(promiseAction).catch(() => {
-        expect(store.getActions()).to.include(expectedRejectAction);
+        const rejectedAction = store.getActions()[1];
+        expect(rejectedAction.error).to.be.true;
       });
     });
 
-    it('throws original rejected error instance', () => {
-      const baseError = new Error('Base Error');
+    it('rejected action `payload` property is original rejected instance of Error', () => {
+      const baseErrorMessage = 'error';
+      const baseError = new Error(baseErrorMessage);
+
+      const store = configureStore([
+        promiseMiddleware(),
+      ])({});
+
+      return store.dispatch({
+        type: defaultPromiseAction.type,
+        payload: Promise.reject(baseError)
+      }).catch(() => {
+        const rejectedAction = store.getActions()[1];
+        expect(rejectedAction.payload).to.be.equal(baseError);
+        expect(rejectedAction.payload.message).to.be.equal(baseErrorMessage);
+      });
+    });
+
+    it('promise returns original rejected instance of Error', () => {
+      const baseErrorMessage = 'error';
+      const baseError = new Error(baseErrorMessage);
+
       const actionDispatched = store.dispatch({
         type: defaultPromiseAction.type,
         payload: Promise.reject(baseError)
@@ -380,6 +435,27 @@ describe('Redux Promise Middleware:', () => {
 
       return actionDispatched.catch(error => {
         expect(error).to.be.equal(baseError);
+        expect(error.message).to.be.equal(baseErrorMessage);
+      });
+    });
+
+    it('allows global customisation of rejected action `type`', () => {
+      const mockStore = configureStore([
+        promiseMiddleware({
+          promiseTypeSuffixes: ['', '', customPrefix]
+        }),
+      ]);
+
+      const expectedRejectAction = {
+        type: `${promiseAction.type}_${customPrefix}`,
+        error: rejectedAction.error,
+        payload: rejectedAction.payload,
+      };
+
+      const store = mockStore({});
+
+      return store.dispatch(promiseAction).catch(() => {
+        expect(store.getActions()).to.include(expectedRejectAction);
       });
     });
   });
