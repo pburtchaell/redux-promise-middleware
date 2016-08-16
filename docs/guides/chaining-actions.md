@@ -59,12 +59,10 @@ const bar = () => {
     return dispatch({
       type: 'BAR',
       payload: new Promise(reject => {
-        reject('bar'); // reject the promise for the reason 'bar'
+        reject(new Error('Something bad happened!')); // reject the promise for the reason 'bar'
       })
-    }).then(() => null, ({ reason, action }) => {
-      console.log(reason); // => 'bar'
-      console.log(action.type); // => 'BAR_REJECTED'
-      console.log(action.error); // => true
+    }).then(() => null, (error) => {
+      console.log(error); // => Error('Something bad happened!')
     });
   };
 }
@@ -85,10 +83,8 @@ const baz = () => {
     }).then(({value, action}) => {
       // handle fulfilled promise as you would normally
       // ...
-    }).catch(({ reason, action }) => {
-      console.log(typeof reason); // => 'Error'
-      console.log(action.type); // => 'BAZ_REJECTED'
-      console.log(action.error); // => true
+    }).catch((error) => {
+      console.log(typeof error); // => 'Error'
     });
   };
 }

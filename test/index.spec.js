@@ -17,7 +17,7 @@ describe('Redux Promise Middleware:', () => {
   let rejectedAction;
 
   const promiseValue = 'foo';
-  const promiseReason = 'bar';
+  const promiseReason = new Error('promiseReason');
   const customPrefix = 'CUSTOM';
   const optimisticUpdateData = { foo: true };
   const metaData = { bar: true };
@@ -116,9 +116,12 @@ describe('Redux Promise Middleware:', () => {
       });
     });
 
-    it('does not dispatch any other actions', done => {
+    it('does not dispatch any other actions', () => {
       const mockStore = configureStore([promiseMiddleware()]);
-      mockStore({}, [mockAction], done).dispatch(mockAction);
+      const store = mockStore({});
+      store.dispatch(mockAction);
+
+      expect([mockAction]).to.eql(store.getActions());
     });
   });
 
@@ -327,82 +330,7 @@ describe('Redux Promise Middleware:', () => {
       rejectedAction = defaultRejectedAction;
     });
 
-    // It is understood this is an antipattern, but nonetheless,
-    // we would like to ensure the middleware still functions.
-    context('When reject reason is null:', () => {
-      const nullRejectAction = {
-        type: defaultPromiseAction.type,
-        payload: Promise.reject(null)
-      };
-
-      it('rejected action.type is dispatched', done => {
-        const actionDispatched = store.dispatch(nullRejectAction);
-
-        actionDispatched.catch(({ action, reason }) => {
-          expect(action).to.eql({
-            type: `${nullRejectAction.type}_REJECTED`,
-            error: true
-          });
-          done();
-        });
-      });
-
-      it('returns null reason', done => {
-        const actionDispatched = store.dispatch(nullRejectAction);
-
-        actionDispatched.catch(({ reason, action }) => {
-          expect(reason).to.be.null;
-          done();
-        });
-      });
-
-      it('action.payload is undefined', done => {
-        const actionDispatched = store.dispatch(nullRejectAction);
-
-        actionDispatched.catch(({ reason, action }) => {
-          expect(action.payload).to.be.undefined;
-          done();
-        });
-      });
-    });
-
-    it('argument is instance of error', done => {
-      const actionDispatched = store.dispatch({
-        type: promiseAction.type,
-        payload: promiseAction.payload,
-        meta: metaData
-      });
-
-      actionDispatched.catch(error => {
-        expect(error).to.be.instanceOf(Error);
-        done();
-      });
-    });
-
-    it('persists meta from original action', done => {
-      const actionDispatched = store.dispatch({
-        type: promiseAction.type,
-        payload: promiseAction.payload,
-        meta: metaData
-      });
-
-      actionDispatched.catch(({ reason, action }) => {
-        expect(action.meta).to.eql(metaData);
-        done();
-      });
-    });
-
-    it('returns reason and action as parameters to `then()`', done => {
-      const actionDispatched = store.dispatch(promiseAction);
-
-      actionDispatched.then(() => null, ({ reason, action }) => {
-        expect(action).to.eql(rejectedAction);
-        expect(reason).to.eql(promiseReason);
-        done();
-      });
-    });
-
-    it('allows errors to be handled with `catch()`', done => {
+    it('allows errors to be handled with `catch()`', () => {
       promiseAction = {
         type: promiseAction.type,
         payload: new Promise(() => {
@@ -418,49 +346,41 @@ describe('Redux Promise Middleware:', () => {
 
       const actionDispatched = store.dispatch(promiseAction);
 
-      actionDispatched.catch(({ reason, action }) => {
-        expect(action).to.eql(rejectedAction);
-        expect(reason).to.eql(promiseReason);
-        done();
-      });
+      return actionDispatched
+        .then(() => expect(true).to.equal(false)) // be sure that catch is actually called
+        .catch(error => {
+          expect(error).to.be.instanceOf(Error);
+        });
     });
 
-    it('allows global customisation of rejected action.type', done => {
-      store = makeStore({
-        promiseTypeSuffixes: ['', '', customPrefix]
-      });
-
-      rejectedAction = {
+    it('allows global customisation of rejected action.type', () => {
+      const mockStore = configureStore([
+        promiseMiddleware({
+          promiseTypeSuffixes: ['', '', customPrefix]
+        }),
+      ]);
+      const expectedRejectAction = {
         type: `${promiseAction.type}_${customPrefix}`,
         error: rejectedAction.error,
-        payload: promiseReason
+        payload: rejectedAction.payload,
       };
+      const store = mockStore({});
 
-      const actionDispatched = store.dispatch(promiseAction);
-
-      actionDispatched.catch(({ reason, action }) => {
-        expect(action).to.eql(rejectedAction);
-        expect(reason).to.eql(promiseReason);
-        done();
+      return store.dispatch(promiseAction).catch(() => {
+        expect(store.getActions()).to.include(expectedRejectAction);
       });
     });
 
-    it('throws original rejected error instance', done => {
+    it('throws original rejected error instance', () => {
       const baseError = new Error('Base Error');
-
       const actionDispatched = store.dispatch({
         type: defaultPromiseAction.type,
         payload: Promise.reject(baseError)
       });
 
-      actionDispatched.catch(error => {
-        const { reason, action } = error;
-
-        expect(reason).to.be.equal(baseError);
-        expect(action.payload).to.be.equal(baseError);
-
-        done();
-      }).catch(done);
+      return actionDispatched.catch(error => {
+        expect(error).to.be.equal(baseError);
+      });
     });
   });
 });
