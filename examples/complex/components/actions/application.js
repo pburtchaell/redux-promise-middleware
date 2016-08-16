@@ -26,8 +26,7 @@ export function initialize() {
         dispatch({
           type: 'APPLICATION_CHECK_DELAY',
           payload: new Promise(resolve => setTimeout(resolve, 2000))
-        }),
-        dispatch(performServerCheck())
+        })
       ])
     })
   };

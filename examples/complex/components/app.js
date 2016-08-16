@@ -22,7 +22,7 @@ class App extends Component {
         <div className="body-wrapper">
           <div className="row">
             <div className="small-12 large-6 large-offset-3 end columns">
-              <h1>Redux Promise Middleware Example</h1>
+              <h4>Redux Promise Middleware Example</h4>
             </div>
             <div className="small-12 large-6 large-offset-3 end columns">
               {this.props.children}
