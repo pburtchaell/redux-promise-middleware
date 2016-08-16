@@ -363,7 +363,7 @@ describe('Redux promise middleware:', () => {
       promiseAction = {
         type: defaultPromiseAction.type,
         payload: new Promise(() => {
-          throw promiseReason
+          throw promiseReason;
         })
       };
 
