@@ -30,7 +30,7 @@ module.exports = function promiseMiddleware(config = {}) {
         PENDING,
         FULFILLED,
         REJECTED
-      ] = (meta || {}).promiseTypeSuffixes || promiseTypeSuffixes;
+      ] = promiseTypeSuffixes;
 
       /**
        * @function getAction
