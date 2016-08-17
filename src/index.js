@@ -7,7 +7,7 @@ const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
  * @description
  * @returns {function} thunk
  */
-module.exports = function promiseMiddleware(config = {}) {
+export default function promiseMiddleware(config = {}) {
   const promiseTypeSuffixes = config.promiseTypeSuffixes || defaultTypes;
 
   return ref => {
@@ -140,4 +140,4 @@ module.exports = function promiseMiddleware(config = {}) {
       return promise.then(handleFulfill, handleReject);
     };
   };
-};
+}
