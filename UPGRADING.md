@@ -2,6 +2,39 @@
 
 This release introduces changes to error handling.
 
+Previously, the parameter of the rejected promise callback was both the dispatched action and an error object. The middleware also *always* constructed a new error object, which caused unexpected mutation and circular references.
+
+**Now, the parameter of the rejected promise callback is the value of `reject`.** The middleware does not construct a new error; it is your responsibility to make sure the promise is rejected with an Error object.
+
+```js
+// before
+const bar = () => ({
+  type: 'FOO',
+  payload: new Promise(() => {
+    reject('foo');
+  })
+});.then(() => null, ({ reason, action }) => {
+  console.log(action.type): // => 'FOO'
+  console.log(reason.message); // => 'foo'
+});
+
+// after
+const bar = () => ({
+  type: 'FOO',
+  payload: new Promise(() => {
+
+    /**
+     * Make sure the promise is rejected with an error. You
+     * can also use `reject(new Error('foo'));`. It's a best
+     * practice to reject a promise with an Error object.
+     */
+    throw new Error('foo');
+  })
+});.then(() => null, error => {
+  console.log(error instanceof Error); // => true
+  console.log(error.message); // => 'foo'
+});
+```
 
 # 2.x to 3.0.0
 
@@ -9,7 +42,7 @@ This release introduces some major changes to the functionality of the middlewar
 
 **First, the middleware returns a promise instead of the action.**
 
-``` js
+```js
 // before
 const foo = () => ({
   type: 'FOO',
