@@ -11,15 +11,3 @@ applyMiddleware(
   })
 )
 ```
-
-Alternatively, you can locally describe the type suffixes to use.
-
-```js
-const foo = () => ({
-  type: 'TYPE',
-  payload: Promise.resolve(),
-  meta: {
-    promiseTypeSuffixes: ['PENDING', 'SUCCESS', 'ERROR']
-  }
-});
-```
