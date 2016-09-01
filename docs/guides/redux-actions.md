@@ -11,5 +11,5 @@ const fooAction = createAction('FOO', async () => {
 
 // use async action
 fooAction('123')
-// should now dispatch `SAVE_THING_PENDING` and `SAVE_THING_FULFILLED` with the data as the payload
+// should now dispatch `FOO_PENDING` and `FOO_FULFILLED` with the data as the payload
 ```
