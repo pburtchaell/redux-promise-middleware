@@ -1,7 +1,7 @@
 {
   "name": "redux-promise-middleware",
   "version": "4.0.0",
-  "description": "Redux middleware for handling promises and optimistic updates",
+  "description": "Re middleware for handling promises and optimistic updates",
   "main": "dist/index.js",
   "scripts": {
     "start": "babel-node examples/server.js",
