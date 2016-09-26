@@ -41,13 +41,9 @@ export default function promiseMiddleware(config = {}) {
        */
       const getAction = (newPayload, isRejected) => ({
         type: `${type}_${isRejected ? REJECTED : FULFILLED}`,
-        ...newPayload ? {
-          payload: newPayload
-        } : {},
+        ...newPayload ? { payload: newPayload } : {},
         ...!!meta ? { meta } : {},
-        ...isRejected ? {
-          error: true
-        } : {}
+        ...isRejected ? { error: true } : {}
       });
 
       /**
