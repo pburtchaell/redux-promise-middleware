@@ -306,6 +306,118 @@ describe('Redux promise middleware:', () => {
       });
     });
 
+    context('When resolve reason is false:', () => {
+      const falseResolveAction = {
+        type: defaultPromiseAction.type,
+        payload: Promise.resolve(false)
+      };
+
+      it('resolved action is dispatched', done => {
+        const actionDispatched = store.dispatch(falseResolveAction);
+
+        actionDispatched.then(
+          ({ value, action }) => {
+            expect(action).to.eql({
+              type: `${falseResolveAction.type}_FULFILLED`,
+              payload: false
+            });
+            done();
+          },
+          () => {
+            expect(true).to.equal(false); // Expect this is not called
+          }
+        );
+      });
+
+      it('promise returns `false` value', done => {
+        const actionDispatched = store.dispatch(falseResolveAction);
+
+        actionDispatched.then(
+          ({ value, action }) => {
+            expect(value).to.be.false;
+            done();
+          },
+          () => {
+            expect(true).to.equal(false); // Expect this is not called
+          }
+        );
+      });
+
+      /**
+       * If the resolved promise value is false, then there should still be a
+       * payload on the dispatched resolved action.
+       */
+      it('resolved action `payload` property is false', done => {
+        const actionDispatched = store.dispatch(falseResolveAction);
+
+        actionDispatched.then(
+          ({ value, action }) => {
+            expect(action.payload).to.be.false;
+            done();
+          },
+          () => {
+            expect(true).to.equal(false); // Expect this is not called
+          }
+        );
+      });
+    });
+
+    context('When resolve reason is zero:', () => {
+      const zeroResolveAction = {
+        type: defaultPromiseAction.type,
+        payload: Promise.resolve(0)
+      };
+
+      it('resolved action is dispatched', done => {
+        const actionDispatched = store.dispatch(zeroResolveAction);
+
+        actionDispatched.then(
+          ({ value, action }) => {
+            expect(action).to.eql({
+              type: `${zeroResolveAction.type}_FULFILLED`,
+              payload: 0
+            });
+            done();
+          },
+          () => {
+            expect(true).to.equal(false); // Expect this is not called
+          }
+        );
+      });
+
+      it('promise returns `0` value', done => {
+        const actionDispatched = store.dispatch(zeroResolveAction);
+
+        actionDispatched.then(
+          ({ value, action }) => {
+            expect(value).to.eq(0);
+            done();
+          },
+          () => {
+            expect(true).to.equal(false); // Expect this is not called
+          }
+        );
+      });
+
+      /**
+       * If the resolved promise value is zero, then there should still be a
+       * payload on the dispatched resolved action.
+       */
+      it('resolved action `payload` property is zero', done => {
+        const actionDispatched = store.dispatch(zeroResolveAction);
+
+        actionDispatched.then(
+          ({ value, action }) => {
+            expect(action.payload).to.eq(0);
+            done();
+          },
+          () => {
+            expect(true).to.equal(false); // Expect this is not called
+          }
+        );
+      });
+    });
+
     it('persists `meta` property from original action', async () => {
       await store.dispatch({
         type: promiseAction.type,
