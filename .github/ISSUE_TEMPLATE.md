@@ -1,21 +1,32 @@
-<!--
-WE BEG OF YOU, IF YOU DO ONE THING: PLEASE format your code and issue: help.github.com/categories/writing-on-github/. It will take a small amount of time and makes it much easier to read — and consequently understand — your issue. We respond quicker to formatted issues than to poorly composed, unformated issues.
-  
-This issue template is adopted from React Router.
+:wave: Hi! If you switch to "Preview" mode (using the button above), this is easier to read and you can click on links. This template exists to help you create an issue that is both valuable to you and to the GitHub community.
 
-Think you found a bug?
-The best bug report is a failing test in the repository as a pull request. Otherwise, please use the "BUG REPORT" template below.
+:point_right: **Found a bug?** [Read this](https://github.com/pburtchaell/redux-promise-middleware/blob/master/.github/CONTRIBUTING.md#found-a-bug).
+:point_right: **Have a feature request?** [Read this](https://github.com/pburtchaell/redux-promise-middleware/blob/master/.github/CONTRIBUTING.md#have-a-feature-request).
+:point_right: **Need help?** [Read this](https://github.com/pburtchaell/redux-promise-middleware/blob/master/.github/CONTRIBUTING.md#need-help).
 
-Have a feature request?
-Remove the template from below and provide commentary *and code samples* on what this feature means for you. What will it allow you to do that you can't do today? How will it make current work-arounds straightforward? What potential bugs and edge cases does it help to avoid? etc.
--->
+If you delete this template and do not provide the information we need to resolve your issue, *your issue will be closed* and you will be redirected to the contributing guide. :skull:
 
-<!-- BUG TEMPLATE -->
-## Version
+---
+
+For help, use this template:
+
+## Version Number
+
+## Code Example
+
+## Expected behavior
+
+## Actual Behavior
+
+---
+
+For bugs, use this template:
+
+## Version Number
 
 ## Test Case
 
-## Steps to reproduce
+## Steps to Reproduce
 
 ## Expected Behavior
 
