@@ -14,7 +14,7 @@ For help, use this template:
 
 ## Code Example
 
-## Expected behavior
+## Expected Behavior
 
 ## Actual Behavior
 
