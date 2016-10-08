@@ -41,13 +41,13 @@ export default function promiseMiddleware(config = {}) {
        */
       const getAction = (newPayload, isRejected) => ({
         type: `${type}_${isRejected ? REJECTED : FULFILLED}`,
-        ...newPayload ? {
+        ...(newPayload ? {
           payload: newPayload
-        } : {},
-        ...!!meta ? { meta } : {},
-        ...isRejected ? {
+        } : {}),
+        ...(!!meta ? { meta } : {}),
+        ...(isRejected ? {
           error: true
-        } : {}
+        } : {})
       });
 
       /**
@@ -74,8 +74,8 @@ export default function promiseMiddleware(config = {}) {
        */
       next({
         type: `${type}_${PENDING}`,
-        ...!!data ? { payload: data } : {},
-        ...!!meta ? { meta } : {}
+        ...(!!data ? { payload: data } : {}),
+        ...(!!meta ? { meta } : {})
       });
 
       /*
