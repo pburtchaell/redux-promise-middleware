@@ -1,6 +1,6 @@
 # Contributing
 
-**Imperative: pull requests must include tests and documentation and issues must follow guidelines.**
+**It is imperative that pull requests include tests and documentation and issues follow guidelines.** Please be familar with the [GitHub Community Guidelines](https://help.github.com/articles/github-community-guidelines/)before contributing to this project. :smile:
 
 ## Getting Started
 
@@ -9,7 +9,7 @@
 3. Run tests: `npm test`
 4. Run example: `npm start`
 
-## Need Help?
+## Need Help? :raise
 
 It's okay to ask for help via a GitHub issue, but first read the ["Filing an Issue"](#filing-an-issue) guide and consider:
 
