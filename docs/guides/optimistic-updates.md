@@ -18,8 +18,6 @@ Considering the action creator above, the pending action would be described as:
 // pending action
 {
   type: 'FOO_PENDING',
-  payload: {
-    data: ...
-  }
+  payload: data
 }
 ```
