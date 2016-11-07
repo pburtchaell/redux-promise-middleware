@@ -182,6 +182,19 @@ describe('Redux promise middleware:', () => {
         ...pendingAction,
         payload: optimisticUpdateData
       });
+
+      // Test handling of falsy data in particular.
+      store.dispatch({
+        type: promiseAction.type,
+        payload: {
+          promise: promiseAction.payload,
+          data: 0
+        }
+      });
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith({
+        ...pendingAction,
+        payload: 0
+      });
     });
 
     /**
@@ -195,6 +208,16 @@ describe('Redux promise middleware:', () => {
       expect(lastMiddlewareModfies.spy).to.have.been.calledWith(
         Object.assign({}, pendingAction, {
           meta: metaData
+        })
+      );
+
+      // Test handling of falsy meta in particular.
+      store.dispatch(Object.assign({}, promiseAction, {
+        meta: 0
+      }));
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(
+        Object.assign({}, pendingAction, {
+          meta: 0
         })
       );
     });
