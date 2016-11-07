@@ -58,7 +58,7 @@ const bar = () => {
 
     return dispatch({
       type: 'BAR',
-      payload: new Promise(reject => {
+      payload: new Promise((resolve, reject) => {
         throw new Error('foo'); // reject the promise for the reason 'bar'
       })
     }).then(() => null, error => {
@@ -78,7 +78,7 @@ const baz = () => {
 
     return dispatch({
       type: 'BAZ',
-      payload: new Promise(reject => {
+      payload: new Promise((resolve, reject) => {
         throw new Error(); // throw an error
       })
     }).catch((error) => {
