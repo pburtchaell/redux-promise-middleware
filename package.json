@@ -12,9 +12,7 @@
     "build-umd": "`npm bin`/webpack dist/ReduxPromiseMiddleware.js",
     "build-umd-min": "NODE_ENV=production `npm bin`/webpack dist/ReduxPromiseMiddleware.min.js",
     "pretest": "npm run lint",
-    "test": "make test_coverage",
-    "prelocal-test": "npm run lint",
-    "local-test": "make test",
+    "test": "./bin/test.sh",
     "lint": "`npm bin`/eslint src/**/*.js examples/**/*.js test/**/*.js",
     "start": "babel-node examples/server.js"
   },
