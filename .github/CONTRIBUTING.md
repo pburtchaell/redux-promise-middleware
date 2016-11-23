@@ -7,7 +7,7 @@
 ## Getting Started
 
 1. Clone the repository
-2. Install dependencies: `npm install`
+2. Install dependencies: `npm install`, or, if you use Yarn: `yarn`
 3. Run tests: `npm test`
 4. Run example: `npm start`
 
@@ -67,6 +67,8 @@ Please keep in mind that issues should *contribute* to the community. The primar
 4. If needed, add one or more unit test(s). **For new features and bug fixes, a unit test is required.** Follow the [red/green/refactor process](https://en.wikipedia.org/wiki/Test-driven_development#Development_style).
 5. Run tests and linter: `npm test`. Code is linted using ES Lint. Rules are located in `.eslintrc`. You must maintain the existing code style. **Tests must pass before the PR is merged.**
 6. Document new features and/or API changes.
+
+If you add a new dependency (for the package or development), you will need to use [Yarn](https://yarnpkg.com/) to update the `yarn.lock` file with the dependency version. By installing depdencies faster than npm, Yarn drastically decreases the time it takes to run builds on continuous integration.
 
 ## File organization
 
