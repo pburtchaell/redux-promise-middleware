@@ -23,7 +23,7 @@ runIstanbul()
 # If on Travis, run tests with Istanbul
 if [ -n "${TRAVIS_JOB_ID}" ]; then
 
-  echo -e "TravisCI job id set to ${TRAVIS_JOB_ID}. \nRunning tests with Istanbul..."
+  echo -e "Travis CI job id set to ${TRAVIS_JOB_ID}. \nRunning tests with Istanbul..."
   NODE_ENV=test runIstanbul
 
   echo "Sending coverage information to Coveralls..."
