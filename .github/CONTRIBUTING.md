@@ -1,5 +1,7 @@
 # Contributing
 
+[![Known Vulnerabilities](https://snyk.io/test/npm/redux-promise-middleware/badge.svg)](https://snyk.io/test/npm/redux-promise-middleware) [![Dependency Status](https://david-dm.org/pburtchaell/redux-promise-middleware.svg)](https://david-dm.org/pburtchaell/redux-promise-middleware) [![Build Status](https://travis-ci.org/pburtchaell/redux-promise-middleware.svg)](https://travis-ci.org/pburtchaell/redux-promise-middleware) [![Coverage Status](https://coveralls.io/repos/pburtchaell/redux-promise-middleware/badge.svg?branch=master&service=github)](https://coveralls.io/github/pburtchaell/redux-promise-middleware?branch=master)
+
 **It is imperative that pull requests include tests and documentation and issues follow guidelines.** Please be familar with the [GitHub Community Guidelines](https://help.github.com/articles/github-community-guidelines/) before contributing to this project. If you are new to open source, check out this 38 minute course on [how to contribute to open source on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github). It's free! :smile:
 
 ## Getting Started
@@ -14,7 +16,7 @@
 It's okay to ask for help via a GitHub issue, but first read the ["Filing an Issue"](#filing-an-issue) guide and consider:
 
 * Is my issue specific to this project?
-* Is [StackOverflow](http://stackoverflow.com/questions/ask) a better place to ask for help? If yes, use the **#react** and **#react-notification** tags.
+* Is [StackOverflow](http://stackoverflow.com/questions/ask) a better place to ask for help? If yes, use the **#redux** tags.
 * Can I reduce the code example to the bare minimum required to explain what I need help with?
 * Can I create a [JSBin](https://jsbin.com/?html,output) for the code example?
 * Can I explain what the expected behavior is?
