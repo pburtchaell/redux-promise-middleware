@@ -462,7 +462,7 @@ describe('Redux promise middleware:', () => {
 
       const actionDispatched = store.dispatch(promiseAction);
 
-      return actionDispatched.then(({ value, action }) => {
+      actionDispatched.then(({ value, action }) => {
         expect(action).to.eql(fulfilledAction);
         expect(value).to.eql(promiseValue);
         done();
