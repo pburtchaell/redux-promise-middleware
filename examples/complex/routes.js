@@ -1,5 +1,8 @@
+import component from './components/app';
+import indexRoute from './routes/home';
+
 export default [{
   path: '/',
-  component: require('./components/app').default,
-  indexRoute: require('./routes/home').default
+  component,
+  indexRoute
 }];
