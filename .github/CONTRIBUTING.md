@@ -11,7 +11,7 @@
 3. Run tests: `npm test`
 4. Run example: `npm start`
 
-## Need Help? :raise
+## Need Help? :raising_hand:
 
 It's okay to ask for help via a GitHub issue, but first read the ["Filing an Issue"](#filing-an-issue) guide and consider:
 
