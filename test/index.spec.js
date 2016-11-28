@@ -182,8 +182,9 @@ describe('Redux promise middleware:', () => {
         ...pendingAction,
         payload: optimisticUpdateData
       });
+    });
 
-      // Test handling of falsy data in particular.
+    it('pending action optionally contains falsy optimistic update payload', () => {
       store.dispatch({
         type: promiseAction.type,
         payload: {
@@ -201,7 +202,7 @@ describe('Redux promise middleware:', () => {
      * If the promise action is dispatched with a meta property, the meta property
      * and value must be included in the pending action.
      */
-    it('pending action does contains meta property if included', () => {
+    it('pending action does contain meta property if included', () => {
       store.dispatch(Object.assign({}, promiseAction, {
         meta: metaData
       }));
@@ -210,8 +211,9 @@ describe('Redux promise middleware:', () => {
           meta: metaData
         })
       );
+    });
 
-      // Test handling of falsy meta in particular.
+    it('pending action does contain falsy meta property if included', () => {
       store.dispatch(Object.assign({}, promiseAction, {
         meta: 0
       }));
