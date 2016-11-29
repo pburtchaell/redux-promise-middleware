@@ -184,17 +184,42 @@ describe('Redux promise middleware:', () => {
       });
     });
 
+    it('pending action optionally contains falsy optimistic update payload', () => {
+      store.dispatch({
+        type: promiseAction.type,
+        payload: {
+          promise: promiseAction.payload,
+          data: 0
+        }
+      });
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith({
+        ...pendingAction,
+        payload: 0
+      });
+    });
+
     /**
      * If the promise action is dispatched with a meta property, the meta property
      * and value must be included in the pending action.
      */
-    it('pending action does contains meta property if included', () => {
+    it('pending action does contain meta property if included', () => {
       store.dispatch(Object.assign({}, promiseAction, {
         meta: metaData
       }));
       expect(lastMiddlewareModfies.spy).to.have.been.calledWith(
         Object.assign({}, pendingAction, {
           meta: metaData
+        })
+      );
+    });
+
+    it('pending action does contain falsy meta property if included', () => {
+      store.dispatch(Object.assign({}, promiseAction, {
+        meta: 0
+      }));
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(
+        Object.assign({}, pendingAction, {
+          meta: 0
         })
       );
     });

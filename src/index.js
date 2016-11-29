@@ -44,7 +44,7 @@ export default function promiseMiddleware(config = {}) {
         ...((newPayload === null || typeof newPayload === 'undefined') ? {} : {
           payload: newPayload
         }),
-        ...(!!meta ? { meta } : {}),
+        ...(meta !== undefined ? { meta } : {}),
         ...(isRejected ? {
           error: true
         } : {})
@@ -64,7 +64,7 @@ export default function promiseMiddleware(config = {}) {
         data = payload.data;
       } else {
         promise = payload;
-        data = null;
+        data = undefined;
       }
 
       /**
@@ -74,8 +74,8 @@ export default function promiseMiddleware(config = {}) {
        */
       next({
         type: `${type}_${PENDING}`,
-        ...(!!data ? { payload: data } : {}),
-        ...(!!meta ? { meta } : {})
+        ...(data !== undefined ? { payload: data } : {}),
+        ...(meta !== undefined ? { meta } : {})
       });
 
       /*
