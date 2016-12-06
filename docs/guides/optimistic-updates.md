@@ -5,7 +5,7 @@
 > Optimistic UIs don't wait for an operation to finish to update to the final state. They immediately switch to the final state, showing fake data for the time while the real operation is still in-progress.
 > - Igor Mandrigin, UX Planet
 
-["Optimistic UI"](https://uxplanet.org/optimistic-1000-34d9eefe4c05#.twmtjnmaw), a short article by UX Planet, is a great summary if you are unfamiliar with the practice. In short, it is a way to update the UI when a request is pending, making the experience more fluid and enjoyable for users. Because promise middleware dispatches a "pending" action, it is easy to optimistically update the state.
+["Optimistic UI,"](https://uxplanet.org/optimistic-1000-34d9eefe4c05#.twmtjnmaw) a short article by UX Planet, is a great summary if you are unfamiliar with the practice. In short, it is a way to update the UI when a request is pending, making the experience more fluid and enjoyable for users. Because promise middleware dispatches a "pending" action, it is easy to optimistically update the state.
 
 ## Code
 
