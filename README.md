@@ -18,5 +18,9 @@ Redux promise middleware enables robust handling of async code in [Redux](http:/
 - [2.x](https://github.com/pburtchaell/redux-promise-middleware/tree/2.4.0)
 - [1.x](https://github.com/pburtchaell/redux-promise-middleware/tree/1.0.0)
 
+## Sponsor
+
+To help cover the cost of my time spent maintaining open source software (OSS) projects, **I'm looking for a small sponsor.** If your company is interested, [send me an email](mailto:patrick@pburtchaell.com) and we can chat! If you like my code and you're interested in buying me a drink, I have a [Gratipay](https://gratipay.com/~pburtchaell/). Thanks! I greatly appreciate your support and I'm grateful to be a part of the OSS and GitHub community.
+
 ---
 Copyright (c) 2015 Patrick Burtchaell. [Licensed with The MIT License (MIT)](https://raw.githubusercontent.com/pburtchaell/redux-promise-middleware/master/LICENSE). [Gratipay](https://gratipay.com/~pburtchaell/).
