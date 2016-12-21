@@ -188,5 +188,3 @@ const bar = () => {
   };
 };
 ```
-
-If you have questions, please feel free to create an issue on GitHub. All changes are [further documented](https://github.com/pburtchaell/redux-promise-middleware/tree/master/docs).
