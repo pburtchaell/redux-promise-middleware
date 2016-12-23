@@ -33,6 +33,6 @@ export default function errorMiddleware() {
       });
     }
 
-    return result;
+    return next(action);
   };
 }
