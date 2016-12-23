@@ -1,4 +1,4 @@
-# Promise Middleware Example
+# Redux Promise Middleware Example
 
 The examples demonstrate using promise middleware to make async requests. There is also a simple example with just Redux. Both examples use [a mocked JSON API](https://github.com/typicode/json-server) with [Faker data](https://github.com/marak/Faker.js/).
 
