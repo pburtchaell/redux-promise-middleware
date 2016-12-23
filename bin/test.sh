@@ -7,7 +7,7 @@ runTests()
   `npm bin`/mocha -b \
   --compilers js:babel-core/register \
   --reporter ${1-spec} \
-  test/polyfills.js test/*.js
+  test/setup.js test/*.js examples/**/*.spec.js
 }
 
 # Description: run tests with Istanbul coverage
