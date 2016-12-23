@@ -33,5 +33,7 @@ export const rejectPromiseWithLocalError = message => dispatch => dispatch({
     }, 1000);
   })
 }).catch(error => {
-  console.warn(`${types.LOCAL_ERROR} caught at action creator with reason: ${JSON.stringify(error.message)}.`);
+  if (process.env.NODE_ENV === 'development') {
+    console.warn(`${types.LOCAL_ERROR} caught at action creator with reason: ${JSON.stringify(error.message)}.`);
+  }
 });

@@ -25,7 +25,9 @@ export default function errorMiddleware() {
      */
     if (oneOfType(action.type, types)) {
       return result.catch(error => {
-        console.warn(`${action.type} caught at middleware with reason: ${JSON.stringify(error.message)}.`);
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(`${action.type} caught at middleware with reason: ${JSON.stringify(error.message)}.`);
+        }
 
         return error;
       });
