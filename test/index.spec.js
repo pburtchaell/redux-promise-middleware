@@ -1,15 +1,10 @@
 /* eslint no-unused-vars: 0, no-unused-expressions: 0, no-shadow: 0 */
-import chai, { expect } from 'chai';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
 import Bluebird from 'bluebird';
 import { createStore, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
 import promiseMiddleware from '../src/index';
 
-chai.use(sinonChai);
-
-describe('Redux promise middleware:', () => {
+describe('Redux Promise Middleware:', () => {
   let store;
   let promiseAction;
   let pendingAction;
@@ -69,7 +64,7 @@ describe('Redux promise middleware:', () => {
 
   // final middleware returns the action merged with dummy data
   function lastMiddlewareModfies(next) {
-    this.spy = sinon.spy(action => {
+    this.spy = sinon.spy((action) => {
       next(action);
 
       return {

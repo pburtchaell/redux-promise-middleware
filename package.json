@@ -76,7 +76,7 @@
     "redux": "^3.0.4",
     "redux-mock-store": "1.2.1",
     "redux-thunk": "^2.0.1",
-    "sinon": "^1.17.2",
+    "sinon": "^1.17.6",
     "sinon-chai": "^2.8.0",
     "webpack": "^1.12.14",
     "webpack-dev-middleware": "^1.5.1",
