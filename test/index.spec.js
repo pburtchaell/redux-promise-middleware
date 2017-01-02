@@ -63,7 +63,7 @@ describe('Redux Promise Middleware:', () => {
   }
 
   // final middleware returns the action merged with dummy data
-  function lastMiddlewareModfies(next) {
+  function lastMiddlewareModifies(next) {
     this.spy = sinon.spy((action) => {
       next(action);
 
@@ -82,7 +82,7 @@ describe('Redux Promise Middleware:', () => {
   const makeStore = (config) => applyMiddleware(
     ref => next => firstMiddlewareThunk.call(firstMiddlewareThunk, ref, next),
     promiseMiddleware(config),
-    () => next => lastMiddlewareModfies.call(lastMiddlewareModfies, next)
+    () => next => lastMiddlewareModifies.call(lastMiddlewareModifies, next)
   )(createStore)(() => null);
 
   beforeEach(() => {
@@ -91,7 +91,7 @@ describe('Redux Promise Middleware:', () => {
 
   afterEach(() => {
     firstMiddlewareThunk.spy.reset();
-    lastMiddlewareModfies.spy.reset();
+    lastMiddlewareModifies.spy.reset();
   });
 
   context('When action is not a promise:', () => {
@@ -99,7 +99,7 @@ describe('Redux Promise Middleware:', () => {
 
     it('invokes next with the action', () => {
       store.dispatch(mockAction);
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(mockAction);
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(mockAction);
     });
 
     it('returns the return from next middleware', () => {
@@ -140,7 +140,7 @@ describe('Redux Promise Middleware:', () => {
      */
     it('dispatches a pending action for implicit promise payload', () => {
       store.dispatch(promiseAction);
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(pendingAction);
     });
 
     /**
@@ -156,7 +156,7 @@ describe('Redux Promise Middleware:', () => {
           promise: promiseAction.payload
         }
       });
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(pendingAction);
     });
 
 
@@ -173,7 +173,7 @@ describe('Redux Promise Middleware:', () => {
           data: optimisticUpdateData
         }
       });
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith({
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith({
         ...pendingAction,
         payload: optimisticUpdateData
       });
@@ -187,7 +187,7 @@ describe('Redux Promise Middleware:', () => {
           data: 0
         }
       });
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith({
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith({
         ...pendingAction,
         payload: 0
       });
@@ -201,7 +201,7 @@ describe('Redux Promise Middleware:', () => {
       store.dispatch(Object.assign({}, promiseAction, {
         meta: metaData
       }));
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(
         Object.assign({}, pendingAction, {
           meta: metaData
         })
@@ -212,7 +212,7 @@ describe('Redux Promise Middleware:', () => {
       store.dispatch(Object.assign({}, promiseAction, {
         meta: 0
       }));
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(
         Object.assign({}, pendingAction, {
           meta: 0
         })
@@ -227,7 +227,7 @@ describe('Redux Promise Middleware:', () => {
       store = makeStore({ promiseTypeSuffixes: [customPrefix, '', ''] });
       store.dispatch(promiseAction);
 
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(
         Object.assign({}, pendingAction, {
           type: `${promiseAction.type}_${customPrefix}`
         })
@@ -445,7 +445,7 @@ describe('Redux Promise Middleware:', () => {
         meta: metaData
       });
 
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith({
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith({
         type: `${promiseAction.type}_FULFILLED`,
         payload: promiseValue,
         meta: metaData
@@ -509,7 +509,6 @@ describe('Redux Promise Middleware:', () => {
         .then(() => expect(true).to.equal(false))
         .catch(error => {
           expect(error).to.be.instanceOf(Error);
-          expect(error.message).to.equal(promiseReason.message);
         });
     });
 
