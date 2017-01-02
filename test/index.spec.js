@@ -134,7 +134,7 @@ describe('Redux Promise Middleware:', () => {
     });
 
     /**
-     * This tests is the middleware dispatches a pending action when the payload
+     * This tests if the middleware dispatches a pending action when the payload
      * property has a Promise object as the value. This is considered an "implicit"
      * promise payload.
      */
