@@ -1,6 +1,7 @@
 import isPromise from './isPromise';
 
 const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
+const defaultSeparator = '_';
 
 /**
  * @function promiseMiddleware
@@ -9,7 +10,8 @@ const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
  */
 export default function promiseMiddleware(config = {}) {
   const promiseTypeSuffixes = config.promiseTypeSuffixes || defaultTypes;
-
+  const promiseTypeSeparator = config.promiseTypeSeparator || defaultSeparator; 
+  
   return ref => {
     const { dispatch } = ref;
 
@@ -40,7 +42,7 @@ export default function promiseMiddleware(config = {}) {
        * @returns {object} action
        */
       const getAction = (newPayload, isRejected) => ({
-        type: `${type}_${isRejected ? REJECTED : FULFILLED}`,
+        type: `${type}${promiseTypeSeparator}${isRejected ? REJECTED : FULFILLED}`,
         ...((newPayload === null || typeof newPayload === 'undefined') ? {} : {
           payload: newPayload
         }),
@@ -73,7 +75,7 @@ export default function promiseMiddleware(config = {}) {
        * (for optimistic updates) and/or meta from the original action.
        */
       next({
-        type: `${type}_${PENDING}`,
+        type: `${type}${promiseTypeSeparator}${PENDING}`,
         ...(data !== undefined ? { payload: data } : {}),
         ...(meta !== undefined ? { meta } : {})
       });
