@@ -1,6 +1,10 @@
 import isPromise from './isPromise';
 
-const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
+export const DEFAULT_PENDING = 'PENDING';
+export const DEFAULT_FULFILLED = 'FULFILLED';
+export const DEFAULT_REJECTED = 'REJECTED';
+
+const defaultTypes = [DEFAULT_PENDING, DEFAULT_FULFILLED, DEFAULT_REJECTED];
 
 /**
  * @function promiseMiddleware
