@@ -59,3 +59,9 @@ After the promise is settled, a second action will be dispatched. If the the pro
   }
 }
 ```
+
+The default promise status suffix can be imported from this module.
+
+```js
+import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware'
+```
