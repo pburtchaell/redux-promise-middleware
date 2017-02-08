@@ -7,16 +7,14 @@
  * @returns {promise}
  */
 export default function request(url, options) {
-  return new Promise((resolve, reject) => {
-    if (!url) reject(new Error('URL parameter required'));
-    if (!options) reject(new Error('Options parameter required'));
+    if (!url) return Promise.reject(new Error('URL parameter required'));
+    if (!options) return Promise.reject(new Error('Options parameter required'));
 
-    fetch(url, options)
+    return fetch(url, options)
       .then(response => response.json())
       .then(response => {
-        if (response.errors) reject(response.errors);
-        else resolve(response);
-      })
-      .catch(reject);
+        if (response.errors) throw response.errors; //TODO: reconsider throwing stuff without stack traces
+        return response;
+      });
   });
 }
