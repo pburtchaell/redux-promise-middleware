@@ -13,23 +13,25 @@ const fooActionCreator = () => ({
 
 
 // reducer
-const fooReducer = (state = {}, action) => switch(action.type) {
-  case `${FOO_TYPE}_PENDING`:
-    return {};
+const fooReducer = (state = {}, action) => { 
+  switch(action.type) {
+    case `${FOO_TYPE}_PENDING`:
+      return {};
 
-  case `${FOO_TYPE}_FULFILLED`:
-    return {
-      isFulfilled: true,
-      data: action.payload
-    };
+    case `${FOO_TYPE}_FULFILLED`:
+      return {
+        isFulfilled: true,
+        data: action.payload
+      };
 
-  case `${FOO_TYPE}_REJECTED`:
-    return {
-      isRejected: true,
-      error: action.payload
-    };
+    case `${FOO_TYPE}_REJECTED`:
+      return {
+        isRejected: true,
+        error: action.payload
+      };
 
-  default: return state;
+    default: return state;
+  }
 }
 ```
 
