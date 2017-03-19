@@ -13,7 +13,7 @@ const fooActionCreator = () => ({
 
 
 // reducer
-const fooReducer = (state = {}, action) => {
+const fooReducer = (state = {}, action) => switch(action.type) {
   case `${FOO_TYPE}_PENDING`:
     return {};
 
