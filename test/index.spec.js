@@ -2,7 +2,7 @@
 import Bluebird from 'bluebird';
 import { createStore, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
-import promiseMiddleware, { DEFAULT_PENDING, DEFAULT_FULFILLED, DEFAULT_REJECTED } from '../src/index';
+import promiseMiddleware, { PENDING, FULFILLED, REJECTED } from '../src/index';
 
 describe('Redux Promise Middleware:', () => {
   let store;
@@ -41,9 +41,9 @@ describe('Redux Promise Middleware:', () => {
   const nextHandler = promiseMiddleware();
 
   it('must export correct default promise status', () => {
-    chai.assert.equal(DEFAULT_PENDING, 'PENDING');
-    chai.assert.equal(DEFAULT_FULFILLED, 'FULFILLED');
-    chai.assert.equal(DEFAULT_REJECTED, 'REJECTED');
+    chai.assert.equal(PENDING, 'PENDING');
+    chai.assert.equal(FULFILLED, 'FULFILLED');
+    chai.assert.equal(REJECTED, 'REJECTED');
   });
 
   it('must return a function to handle next', () => {
