@@ -65,3 +65,5 @@ The default promise status suffix can be imported from this module.
 ```js
 import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware'
 ```
+
+If you use [custom suffixes](https://github.com/pburtchaell/redux-promise-middleware/blob/master/docs/guides/custom-suffixes.md) you need to create your own export variables. 
