@@ -59,3 +59,5 @@ After the promise is settled, a second action will be dispatched. If the the pro
   }
 }
 ```
+
+Finally, it is important to note the middleware follows [Flux Standard Action (FSA)](https://github.com/acdlite/flux-standard-action), a standard for Flux/Redux action objects.
