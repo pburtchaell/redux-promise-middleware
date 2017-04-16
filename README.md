@@ -106,5 +106,10 @@ export function myAsyncActionCreator(data) {
 }
 ```
 
+The default promise status suffix can be imported from this module.
+
+```js
+import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware'
+```
 ---
 Licensed MIT. Copyright 2015 Patrick Burtchaell.

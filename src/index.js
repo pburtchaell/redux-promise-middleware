@@ -1,6 +1,10 @@
 import isPromise from './isPromise';
 
-const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
+export const PENDING = 'PENDING';
+export const FULFILLED = 'FULFILLED';
+export const REJECTED = 'REJECTED';
+
+const defaultTypes = [PENDING, FULFILLED, REJECTED];
 const IS_ERROR = true;
 
 export default function promiseMiddleware(config = {}) {
@@ -15,9 +19,9 @@ export default function promiseMiddleware(config = {}) {
       const { type, payload, meta } = action;
       const { promise, data } = payload;
       const [
-        PENDING,
-        FULFILLED,
-        REJECTED
+        _PENDING,
+        _FULFILLED,
+        _REJECTED
       ] = (meta || {}).promiseTypeSuffixes || promiseTypeSuffixes;
 
      /**
@@ -25,15 +29,16 @@ export default function promiseMiddleware(config = {}) {
       * reducer that an async action has been dispatched.
       */
       next({
-        type: `${type}_${PENDING}`,
+        type: `${type}_${_PENDING}`,
         ...!data ? {} : { payload: data },
         ...!meta ? {} : { meta }
       });
 
       const isThunk = resolved => typeof resolved === 'function';
+
       const getPartialAction = (isError) => ({
-        type: `${type}_${isError ? REJECTED : FULFILLED}`,
-        ...!meta ? {} : { meta },
+        type: `${type}_${isError ? _REJECTED : _FULFILLED}`,
+        ...meta === undefined ? {} : { meta },
         ...!isError ? {} : { error: true }
       });
 
@@ -50,7 +55,7 @@ export default function promiseMiddleware(config = {}) {
               ? resolved.bind(null, resolveAction)
               : {
                 ...resolveAction,
-                ...!resolved ? {} : { payload: resolved }
+                ...(resolved === undefined) ? {} : { payload: resolved }
               }
           );
         },
@@ -61,7 +66,7 @@ export default function promiseMiddleware(config = {}) {
               ? rejected.bind(null, rejectedAction)
               : {
                 ...rejectedAction,
-                ...!rejected ? {} : { payload: rejected }
+                ...(rejected === undefined) ? {} : { payload: rejected }
               }
           );
         },

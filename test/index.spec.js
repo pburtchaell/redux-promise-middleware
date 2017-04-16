@@ -3,11 +3,17 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import { createStore, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
-import promiseMiddleware from '../src';
+import promiseMiddleware, { PENDING, FULFILLED, REJECTED } from '../src';
 chai.use(sinonChai);
 
 describe('Promise Middleware:', () => {
   const nextHandler = promiseMiddleware();
+
+  it(`exports the default types`, () => {
+    expect(PENDING).to.eql('PENDING');
+    expect(FULFILLED).to.eql('FULFILLED');
+    expect(REJECTED).to.eql('REJECTED');
+  });
 
   it('must return a function to handle next', () => {
     expect(nextHandler).to.be.a('function');
@@ -141,7 +147,7 @@ describe('Promise Middleware:', () => {
       expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
     });
 
-    it('returns the new promise object', () => {
+    it('returns the original promise object from dispatch', () => {
       expect(store.dispatch(promiseAction)).to.eql(promiseAction.payload.promise);
     });
 
@@ -181,10 +187,11 @@ describe('Promise Middleware:', () => {
         );
       });
 
-      it('works when resolve is null', () => {
+      it('allows promise to reject resolve null', () => {
         rejectingPromiseAction.payload.promise = Promise.reject(null);
         rejectedAction = {
           type: `${rejectingPromiseAction.type}_REJECTED`,
+          payload: null,
           error: true
         };
         return store.dispatch(rejectingPromiseAction).catch(() =>
@@ -278,10 +285,11 @@ describe('Promise Middleware:', () => {
         expect(lastMiddlewareModfies.spy).to.have.been.calledWith(fulfillingAction);
       });
 
-      it('works when resolve is null', async () => {
+      it('allows payload to be null', async () => {
         fulfillingPromiseAction.payload.promise = Promise.resolve(null);
         fulfillingAction = {
-          type: `${fulfillingPromiseAction.type}_FULFILLED`
+          type: `${fulfillingPromiseAction.type}_FULFILLED`,
+          payload: null
         };
         await store.dispatch(fulfillingPromiseAction);
         expect(lastMiddlewareModfies.spy).to.have.been.calledWith(fulfillingAction);
