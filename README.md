@@ -63,17 +63,49 @@ const actionCreator = () => ({
 });
 ```
 
-It is also possible to use a function:
+### Resolving functions
+
+If you resolve a function, the middleware will invoke it with a partial action object:
+
+```js
+// partialAction type
+type PartialAction = {
+  type: String_{PENDING|FULFILLED},
+  meta?: any,
+  error?: boolean
+}
+
+const actionCreator = () => ({
+  type: 'FIRST_ACTION_TYPE',
+  payload: {
+    promise: fetchFromAPI()
+      .then(fetchResponse => {
+        // resolve a function that accpets the PartialAction
+        return (partialAction) => {
+          // build your own action object with your data and the partial action
+          return {
+            type: partialAction.type,
+            payload: fetchResponse,
+            meta: { customAction: true }
+          }
+        }
+      })
+      .catch(/* rejected follows same contract */)
+  }
+});
+```
+
+You can use this technique with redux-thunk to dispatch multiple actions after your fulfilled or rejected.
 
 ```js
 const actionCreator = () => ({
   type: 'FIRST_ACTION_TYPE',
   payload: {
-    promise: Promise.resolve((dispatch, getState) => {
-      dispatch({ type: 'SECEOND_ACTION_TYPE', payload: ... })
+    promise: Promise.resolve((partialAction, dispatch, getState) => {
+      dispatch({ ...partialAction, payload: 'my-payload' })
       dispatch(someActionCreator())
     })
-   }
+  }
 });
 ```
 
