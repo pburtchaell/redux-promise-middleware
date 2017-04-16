@@ -1,6 +1,6 @@
 import isPromise from './isPromise';
 
-const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
+const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED', 'FINALLY'];
 
 /**
  * @function promiseMiddleware
@@ -9,6 +9,7 @@ const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
  */
 export default function promiseMiddleware(config = {}) {
   const promiseTypeSuffixes = config.promiseTypeSuffixes || defaultTypes;
+  const dispatchFinally = config.dispatchFinallyAction || false;
 
   return ref => {
     const { dispatch } = ref;
@@ -29,23 +30,24 @@ export default function promiseMiddleware(config = {}) {
       const [
         PENDING,
         FULFILLED,
-        REJECTED
+        REJECTED,
+        FINALLY,
       ] = promiseTypeSuffixes;
 
       /**
        * @function getAction
        * @description Utility function for creating a rejected or fulfilled
        * flux standard action object.
-       * @param {boolean} Is the action rejected?
+       * @param {string} action state
        * @returns {object} action
        */
-      const getAction = (newPayload, isRejected) => ({
-        type: `${type}_${isRejected ? REJECTED : FULFILLED}`,
+      const getAction = (newPayload, state) => ({
+        type: `${type}_${state}`,
         ...((newPayload === null || typeof newPayload === 'undefined') ? {} : {
           payload: newPayload
         }),
         ...(meta !== undefined ? { meta } : {}),
-        ...(isRejected ? {
+        ...(state === REJECTED ? {
           error: true
         } : {})
       });
@@ -88,7 +90,7 @@ export default function promiseMiddleware(config = {}) {
        * @returns {object}
        */
       const handleReject = reason => {
-        const rejectedAction = getAction(reason, true);
+        const rejectedAction = getAction(reason, REJECTED);
         dispatch(rejectedAction);
         throw reason;
       };
@@ -102,10 +104,23 @@ export default function promiseMiddleware(config = {}) {
        * @returns {object}
        */
       const handleFulfill = (value = null) => {
-        const resolvedAction = getAction(value, false);
+        const resolvedAction = getAction(value, FULFILLED);
         dispatch(resolvedAction);
 
         return { value, action: resolvedAction };
+      };
+
+      /**
+       * @function handleFinally
+       * @description Dispatch the finally action and
+       * return a finally action object.
+       * @returns {object}
+       */
+      const handleFinally = () => {
+        const finallyAction = getAction(null, FINALLY);
+        dispatch(finallyAction);
+
+        return { value: null, action: finallyAction };
       };
 
       /**
@@ -137,7 +152,11 @@ export default function promiseMiddleware(config = {}) {
        *   }
        * }
        */
-      return promise.then(handleFulfill, handleReject);
+      const result = promise.then(handleFulfill, handleReject);
+      if (dispatchFinally && typeof Promise.prototype.finally === 'function') {
+        return result.finally(handleFinally);
+      }
+      return result;
     };
   };
 }
