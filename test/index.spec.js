@@ -94,6 +94,28 @@ describe('Redux Promise Middleware:', () => {
     lastMiddlewareModifies.spy.reset();
   });
 
+
+  context('When action is not a string:', () => {
+    it('will throw error from redux for action without type', () => {
+      const mockAction = {
+        payload: defaultPromiseAction.payload
+      };
+
+      expect(() => store.dispatch(mockAction)).to.throw;
+    });
+
+    it('will ignore action when it\'s type is not string', () => {
+      const mockAction = {
+        type: Symbol('ACTION'),
+        payload: defaultPromiseAction.payload
+      };
+
+      store.dispatch(mockAction);
+
+      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(mockAction);
+    });
+  });
+
   context('When action is not a promise:', () => {
     const mockAction = { type: 'ACTION' };
 
