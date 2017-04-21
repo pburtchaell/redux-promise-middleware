@@ -5,6 +5,10 @@
   "main": "dist/index.js",
   "scripts": {
     "pretest": "eslint ./src/*.js",
+    "build": "npm run build-commonjs & npm run build-umd & npm run build-umd-min",
+    "build-commonjs": "`npm bin`/babel src -d dist",
+    "build-umd": "`npm bin`/webpack dist/ReduxPromiseMiddleware.js",
+    "build-umd-min": "NODE_ENV=production `npm bin`/webpack dist/ReduxPromiseMiddleware.min.js",
     "test": "mocha --compilers js:babel/register --reporter spec test/*.js",
     "prepublish": "npm test && make js"
   },
@@ -30,6 +34,7 @@
   "devDependencies": {
     "babel": "^5.6.14",
     "babel-eslint": "^3.1.23",
+    "babel-loader": "^5.4.2",
     "chai": "^3.4.0",
     "escope": "^3.3.0",
     "eslint": "^0.24.1",
