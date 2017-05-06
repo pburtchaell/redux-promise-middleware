@@ -72,7 +72,7 @@ export default function promiseMiddleware(config = {}) {
        * describes the pending state of a promise and will include any data
        * (for optimistic updates) and/or meta from the original action.
        */
-      next({
+      dispatch({
         type: `${type}_${PENDING}`,
         ...(data !== undefined ? { payload: data } : {}),
         ...(meta !== undefined ? { meta } : {})
