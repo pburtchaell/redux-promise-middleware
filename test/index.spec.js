@@ -88,7 +88,7 @@ describe('Redux Promise Middleware:', () => {
   const makeStore = (config, reducer = () => null) => applyMiddleware(
     ref => next => firstMiddlewareThunk.call(firstMiddlewareThunk, ref, next),
     promiseMiddleware(config),
-    () => next => lastMiddlewareModfies.call(lastMiddlewareModfies, next)
+    () => next => lastMiddlewareModifies.call(lastMiddlewareModifies, next)
   )(createStore)(reducer);
 
   beforeEach(() => {
