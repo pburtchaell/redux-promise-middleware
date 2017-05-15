@@ -15,11 +15,23 @@
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 2,
+    "react/jsx-filename-extension": 0,
     "padded-blocks": 0,
     "block-scoped-var": 0,
-    "comma-dangle": 0
+    "comma-dangle": 0,
+    "arrow-parens": 0,
+    "no-extra-boolean-cast": 0,
+    "import/no-extraneous-dependencies": 0,
+    "import/first": 0,
+    "import/no-unresolved": 0,
+    "import/extensions": 0
   },
   "plugins": [
     "react"
-  ]
+  ],
+  "globals": {
+    "expect": true,
+    "chai": true,
+    "sinon": true
+  }
 }

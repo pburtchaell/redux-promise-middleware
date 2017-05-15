@@ -12,7 +12,7 @@ export const rejectPromiseWithGlobalError = message => dispatch => dispatch({
   payload: new Promise((resolve, reject) => {
     setTimeout(() => {
       reject(new Error(message))
-    }, 2000);
+    }, 1000);
   })
 }).catch(error => {
   // There is nothing to catch at the action creator because an error middleware handles it
@@ -30,8 +30,10 @@ export const rejectPromiseWithLocalError = message => dispatch => dispatch({
   payload: new Promise((resolve, reject) => {
     setTimeout(() => {
       reject(new Error(message))
-    }, 2000);
+    }, 1000);
   })
 }).catch(error => {
-  console.warn(`${types.LOCAL_ERROR} caught at action creator with reason: ${JSON.stringify(error.message)}.`);
+  if (process.env.NODE_ENV === 'development') {
+    console.warn(`${types.LOCAL_ERROR} caught at action creator with reason: ${JSON.stringify(error.message)}.`);
+  }
 });

@@ -1,15 +1,10 @@
 /* eslint no-unused-vars: 0, no-unused-expressions: 0, no-shadow: 0 */
-import chai, { expect } from 'chai';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
 import Bluebird from 'bluebird';
 import { createStore, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
-import promiseMiddleware from '../src/index';
+import promiseMiddleware, { PENDING, FULFILLED, REJECTED } from '../src/index';
 
-chai.use(sinonChai);
-
-describe('Redux promise middleware:', () => {
+describe('Redux Promise Middleware:', () => {
   let store;
   let promiseAction;
   let pendingAction;
@@ -45,6 +40,12 @@ describe('Redux promise middleware:', () => {
 
   const nextHandler = promiseMiddleware();
 
+  it('must export correct default promise status', () => {
+    chai.assert.equal(PENDING, 'PENDING');
+    chai.assert.equal(FULFILLED, 'FULFILLED');
+    chai.assert.equal(REJECTED, 'REJECTED');
+  });
+
   it('must return a function to handle next', () => {
     chai.assert.isFunction(nextHandler);
     chai.assert.strictEqual(nextHandler.length, 1);
@@ -68,8 +69,8 @@ describe('Redux promise middleware:', () => {
   }
 
   // final middleware returns the action merged with dummy data
-  function lastMiddlewareModfies(next) {
-    this.spy = sinon.spy(action => {
+  function lastMiddlewareModifies(next) {
+    this.spy = sinon.spy((action) => {
       next(action);
 
       return {
@@ -96,7 +97,7 @@ describe('Redux promise middleware:', () => {
 
   afterEach(() => {
     firstMiddlewareThunk.spy.reset();
-    lastMiddlewareModfies.spy.reset();
+    lastMiddlewareModifies.spy.reset();
   });
 
   context('When action is not a promise:', () => {
@@ -104,7 +105,7 @@ describe('Redux promise middleware:', () => {
 
     it('invokes next with the action', () => {
       store.dispatch(mockAction);
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(mockAction);
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(mockAction);
     });
 
     it('returns the return from next middleware', () => {
@@ -139,13 +140,13 @@ describe('Redux promise middleware:', () => {
     });
 
     /**
-     * This tests is the middleware dispatches a pending action when the payload
+     * This tests if the middleware dispatches a pending action when the payload
      * property has a Promise object as the value. This is considered an "implicit"
      * promise payload.
      */
     it('dispatches a pending action for implicit promise payload', () => {
       store.dispatch(promiseAction);
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(pendingAction);
     });
 
     /**
@@ -161,7 +162,7 @@ describe('Redux promise middleware:', () => {
           promise: promiseAction.payload
         }
       });
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(pendingAction);
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(pendingAction);
     });
 
 
@@ -178,9 +179,23 @@ describe('Redux promise middleware:', () => {
           data: optimisticUpdateData
         }
       });
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith({
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith({
         ...pendingAction,
         payload: optimisticUpdateData
+      });
+    });
+
+    it('pending action optionally contains falsy optimistic update payload', () => {
+      store.dispatch({
+        type: promiseAction.type,
+        payload: {
+          promise: promiseAction.payload,
+          data: 0
+        }
+      });
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith({
+        ...pendingAction,
+        payload: 0
       });
     });
 
@@ -188,13 +203,24 @@ describe('Redux promise middleware:', () => {
      * If the promise action is dispatched with a meta property, the meta property
      * and value must be included in the pending action.
      */
-    it('pending action does contains meta property if included', () => {
+    it('pending action does contain meta property if included', () => {
       store.dispatch(Object.assign({}, promiseAction, {
         meta: metaData
       }));
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(
         Object.assign({}, pendingAction, {
           meta: metaData
+        })
+      );
+    });
+
+    it('pending action does contain falsy meta property if included', () => {
+      store.dispatch(Object.assign({}, promiseAction, {
+        meta: 0
+      }));
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(
+        Object.assign({}, pendingAction, {
+          meta: 0
         })
       );
     });
@@ -207,7 +233,7 @@ describe('Redux promise middleware:', () => {
       store = makeStore({ promiseTypeSuffixes: [customPrefix, '', ''] });
       store.dispatch(promiseAction);
 
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith(
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(
         Object.assign({}, pendingAction, {
           type: `${promiseAction.type}_${customPrefix}`
         })
@@ -454,7 +480,7 @@ describe('Redux promise middleware:', () => {
         meta: metaData
       });
 
-      expect(lastMiddlewareModfies.spy).to.have.been.calledWith({
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith({
         type: `${promiseAction.type}_FULFILLED`,
         payload: promiseValue,
         meta: metaData
@@ -491,7 +517,7 @@ describe('Redux promise middleware:', () => {
 
       const actionDispatched = store.dispatch(promiseAction);
 
-      return actionDispatched.then(({ value, action }) => {
+      actionDispatched.then(({ value, action }) => {
         expect(action).to.eql(fulfilledAction);
         expect(value).to.eql(promiseValue);
         done();
@@ -518,7 +544,6 @@ describe('Redux promise middleware:', () => {
         .then(() => expect(true).to.equal(false))
         .catch(error => {
           expect(error).to.be.instanceOf(Error);
-          expect(error.message).to.equal(promiseReason.message);
         });
     });
 

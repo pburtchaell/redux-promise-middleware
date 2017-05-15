@@ -5,8 +5,7 @@ docs/
 .eslintrc
 .babelrc
 .travis.yml
-CONTRIBUTING.md
-Makefile
+.github
 .npmignore
 node_modules
 jspm_packages

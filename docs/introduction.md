@@ -39,7 +39,7 @@ A "pending" action is dispatched immediately with the original type string and a
 }
 ```
 
-After the promise is settled, a second action will be dispatched. If the the promise is resolved, e.g., if it was successful, a "fulfilled" action is dispatched. If the promise is rejected, e.g., if an error occurred, the "rejected" action is dispatched. The fulfilled and rejected type suffixes are `_FULFILLED` and `_REJECTED` respectively. The middleware will *always* dispatch one of these two actions.
+After the promise is settled, a second action will be dispatched. If the promise is resolved, e.g., if it was successful, a "fulfilled" action is dispatched. If the promise is rejected, e.g., if an error occurred, the "rejected" action is dispatched. The fulfilled and rejected type suffixes are `_FULFILLED` and `_REJECTED` respectively. The middleware will *always* dispatch one of these two actions.
 
 ```js
 // fulfilled action
@@ -59,3 +59,12 @@ After the promise is settled, a second action will be dispatched. If the the pro
   }
 }
 ```
+
+Optionally, the default promise suffixes can be imported from this module.
+
+```js
+import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware'
+```
+
+Finally, it's important to note the middleware follows [Flux Standard Action (FSA)](https://github.com/acdlite/flux-standard-action), a standard for Flux/Redux action objects.
+

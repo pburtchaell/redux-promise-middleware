@@ -33,7 +33,7 @@ const foo = () => {
 }
 ```
 
-When handling a promise with `then`, the parameter is an an object with two properties: (1) the "value" (if the promise is fulfilled) or the "reason" (if the promise is rejected) and (2) the object of the dispatched action.
+When handling a promise with `then`, the parameter is an object with two properties: (1) the "value" (if the promise is fulfilled) or the "reason" (if the promise is rejected) and (2) the object of the dispatched action.
 
 ```js
 // fulfilled promise
@@ -58,7 +58,7 @@ const bar = () => {
 
     return dispatch({
       type: 'BAR',
-      payload: new Promise(reject => {
+      payload: new Promise(() => {
         throw new Error('foo'); // reject the promise for the reason 'bar'
       })
     }).then(() => null, error => {
@@ -78,7 +78,7 @@ const baz = () => {
 
     return dispatch({
       type: 'BAZ',
-      payload: new Promise(reject => {
+      payload: new Promise(() => {
         throw new Error(); // throw an error
       })
     }).catch((error) => {

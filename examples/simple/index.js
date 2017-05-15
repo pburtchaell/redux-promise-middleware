@@ -1,5 +1,5 @@
-import store from './store';
 import 'isomorphic-fetch';
+import store from './store';
 
 // Request a post from the API with a 1s delay
 const getPost = id => ({

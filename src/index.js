@@ -1,6 +1,10 @@
 import isPromise from './isPromise';
 
-const defaultTypes = ['PENDING', 'FULFILLED', 'REJECTED'];
+export const PENDING = 'PENDING';
+export const FULFILLED = 'FULFILLED';
+export const REJECTED = 'REJECTED';
+
+const defaultTypes = [PENDING, FULFILLED, REJECTED];
 
 /**
  * @function promiseMiddleware
@@ -27,9 +31,9 @@ export default function promiseMiddleware(config = {}) {
 
       // Assign values for promise type suffixes
       const [
-        PENDING,
-        FULFILLED,
-        REJECTED
+        _PENDING,
+        _FULFILLED,
+        _REJECTED
       ] = promiseTypeSuffixes;
 
       /**
@@ -40,11 +44,11 @@ export default function promiseMiddleware(config = {}) {
        * @returns {object} action
        */
       const getAction = (newPayload, isRejected) => ({
-        type: `${type}_${isRejected ? REJECTED : FULFILLED}`,
+        type: `${type}_${isRejected ? _REJECTED : _FULFILLED}`,
         ...((newPayload === null || typeof newPayload === 'undefined') ? {} : {
           payload: newPayload
         }),
-        ...(!!meta ? { meta } : {}),
+        ...(meta !== undefined ? { meta } : {}),
         ...(isRejected ? {
           error: true
         } : {})
@@ -64,7 +68,7 @@ export default function promiseMiddleware(config = {}) {
         data = payload.data;
       } else {
         promise = payload;
-        data = null;
+        data = undefined;
       }
 
       /**
@@ -73,9 +77,9 @@ export default function promiseMiddleware(config = {}) {
        * (for optimistic updates) and/or meta from the original action.
        */
       next({
-        type: `${type}_${PENDING}`,
-        ...(!!data ? { payload: data } : {}),
-        ...(!!meta ? { meta } : {})
+        type: `${type}_${_PENDING}`,
+        ...(data !== undefined ? { payload: data } : {}),
+        ...(meta !== undefined ? { meta } : {})
       });
 
       /*

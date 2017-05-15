@@ -1,4 +1,4 @@
-/* eslint no-extra-semi: "off", no-unreachable: "off", semi: "off" */
+/* eslint-disable no-extra-semi, no-unreachable, semi */
 
 import { createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
