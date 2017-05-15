@@ -1,13 +1,13 @@
 # Redux Promise Middleware
 
-[![npm version](https://img.shields.io/npm/v/redux-promise-middleware.svg?style=flat)](https://www.npmjs.com/package/redux-promise-middleware) [![Build Status](https://travis-ci.org/pburtchaell/redux-promise-middleware.svg?branch=master)](https://travis-ci.org/pburtchaell/redux-promise-middleware) [![Coverage Status](https://coveralls.io/repos/pburtchaell/redux-promise-middleware/badge.svg?branch=master&service=github)](https://coveralls.io/github/pburtchaell/redux-promise-middleware?branch=master) [![npm downloads](https://img.shields.io/npm/dm/redux-promise-middleware.svg?style=flat)](https://www.npmjs.com/package/redux-promise-middleware)
+[![npm version](https://img.shields.io/npm/v/redux-promise-middleware.svg?style=flat)](https://www.npmjs.com/package/redux-promise-middleware) [![Build Status](https://travis-ci.org/pburtchaell/redux-promise-middleware.svg?branch=master)](https://travis-ci.org/pburtchaell/redux-promise-middleware) [![npm downloads](https://img.shields.io/npm/dm/redux-promise-middleware.svg?style=flat)](https://www.npmjs.com/package/redux-promise-middleware)
 
 Redux promise middleware enables robust handling of async code in [Redux](http://redux.js.org). The middleware enables optimistic updates and dispatches pending, fulfilled and rejected actions. It can be combined with [redux-thunk](https://github.com/gaearon/redux-thunk) to chain async actions. If you are curious to see how the middleware works, [browse the source code](https://sourcegraph.com/github.com/pburtchaell/redux-promise-middleware/-/blob/src/index.js) on Sourcegraph!
 
 ## Docs and Help
 
-- [Guides](/docs/guides/)
 - [Introduction](/docs/introduction.md)
+- [Guides](/docs/guides/)
 - [Examples](/examples)
 - [Releases](https://github.com/pburtchaell/redux-promise-middleware/releases)
 - [Upgrading versions](/UPGRADING.md)

@@ -60,10 +60,11 @@ After the promise is settled, a second action will be dispatched. If the promise
 }
 ```
 
-The default promise status suffix can be imported from this module.
+Optionally, the default promise suffixes can be imported from this module.
 
 ```js
 import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware'
 ```
 
-If you use [custom suffixes](https://github.com/pburtchaell/redux-promise-middleware/blob/master/docs/guides/custom-suffixes.md) you need to create your own export variables. 
+Finally, it's important to note the middleware follows [Flux Standard Action (FSA)](https://github.com/acdlite/flux-standard-action), a standard for Flux/Redux action objects.
+
