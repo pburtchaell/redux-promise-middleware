@@ -4,8 +4,8 @@ var config = {
   entry: './src/index',
 
   module: {
-    loaders: [
-      { test: /\.js$/, loaders: ['babel'], exclude: /node_modules/ }
+    rules: [
+      { test: /\.js$/, use: { loader: 'babel-loader' }, exclude: /node_modules/ }
     ]
   },
 
@@ -14,9 +14,7 @@ var config = {
     libraryTarget: 'umd'
   },
 
-  plugins: [
-    new webpack.optimize.OccurenceOrderPlugin()
-  ]
+  plugins: []
 };
 
 if (process.env.NODE_ENV === 'production') {
