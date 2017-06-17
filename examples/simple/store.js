@@ -13,7 +13,13 @@ const reducer = (state = {}, action) => {
 
     case 'GET_POST_FULFILLED':
       return {
-        body: action.payload.body
+        message: action.payload.body // The message body of the post
+      };
+
+    case 'GET_POST_REJECTED':
+      return {
+        reason: action.payload.message, // The error reason
+        error: true
       };
 
     default:
