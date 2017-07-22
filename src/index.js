@@ -93,6 +93,15 @@ export default function promiseMiddleware(config = {}) {
       };
 
       /*
+       * @function transformReject
+       * @description Ensures errors in render() are not swallowed
+       * @returns {object}
+       */
+      const transformReject = (reason = null) => {
+        throw reason;
+      };
+
+      /*
        * @function handleReject
        * @description Dispatch the rejected action.
        * @returns {void}
@@ -141,7 +150,7 @@ export default function promiseMiddleware(config = {}) {
        *   }
        * }
        */
-      const promiseValue = promise.then(transformFulfill);
+      const promiseValue = promise.then(transformFulfill, transformReject);
       const sideEffects = promiseValue.then(handleFulfill, handleReject);
       return sideEffects.then(() => promiseValue, () => promiseValue);
     };
