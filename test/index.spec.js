@@ -239,6 +239,49 @@ describe('Redux Promise Middleware:', () => {
         })
       );
     });
+
+    /**
+     * The middleware should allow global custom action type separators included
+     * in the config when the middleware is constructed.
+     */
+    it('allows global customisation of action.type separator', done => {
+      store = makeStore({
+        promiseTypeSeparator: '/'
+      });
+
+      fulfilledAction = {
+        type: `${promiseAction.type}/FULFILLED`,
+        payload: promiseValue
+      };
+
+      const actionDispatched = store.dispatch(promiseAction);
+
+      actionDispatched.then(({ value, action }) => {
+        expect(action).to.eql(fulfilledAction);
+        expect(value).to.eql(promiseValue);
+        done();
+      });
+    });
+
+    /**
+     * The middleware should be backward compatible and use '_' as separator by default.
+     */
+    it('uses default separator with empty config (backward compatibility)', done => {
+      store = makeStore({});
+
+      fulfilledAction = {
+        type: `${promiseAction.type}_FULFILLED`,
+        payload: promiseValue
+      };
+
+      const actionDispatched = store.dispatch(promiseAction);
+
+      actionDispatched.then(({ value, action }) => {
+        expect(action).to.eql(fulfilledAction);
+        expect(value).to.eql(promiseValue);
+        done();
+      });
+    });
   });
 
   context('When promise is fulfilled:', () => {
