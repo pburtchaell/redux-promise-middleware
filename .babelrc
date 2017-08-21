@@ -3,5 +3,14 @@
     "es2015",
     "stage-0",
     "react"
-  ]
+  ],
+  "env": {
+    "es": {
+      "presets": [
+        ["es2015", { "modules": false }],
+        "react",
+        "stage-0"
+      ]
+    }
+  }
 }
