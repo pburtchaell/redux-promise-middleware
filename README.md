@@ -12,7 +12,7 @@ Redux promise middleware enables robust handling of async code in [Redux](http:/
 ## Issues and Pull Requests 
 
 - [Contributing Guide](/.github/CONTRIBUTING.md)
-- [Code of Conduct](/CODE_OF_CONDUCT.md)
+- [Code of Conduct](/.github/CODE_OF_CONDUCT.md)
 
 ## Releases
 
