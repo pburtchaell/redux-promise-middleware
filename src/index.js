@@ -83,33 +83,34 @@ export default function promiseMiddleware(config = {}) {
       });
 
       /*
-       * @function transformFulfill
-       * @description Transforms a fulfilled value into a success object.
-       * @returns {object}
-       */
-      const transformFulfill = (value = null) => {
-        const resolvedAction = getAction(value, false);
-        return { value, action: resolvedAction };
-      };
-
-      /*
        * @function handleReject
-       * @description Dispatch the rejected action.
-       * @returns {void}
+       * @description Dispatch the rejected action and return
+       * an error object. The error object is the original error
+       * that was thrown. The user of the library is responsible for
+       * best practices in ensure that they are throwing an Error object.
+       * @params reason The reason the promise was rejected
+       * @returns {object}
        */
       const handleReject = reason => {
         const rejectedAction = getAction(reason, true);
         dispatch(rejectedAction);
+
+        throw reason;
       };
 
       /*
        * @function handleFulfill
-       * @description Dispatch the fulfilled action.
-       * @param successValue The value from transformFulfill
-       * @returns {void}
+       * @description Dispatch the fulfilled action and
+       * return the success object. The success object should
+       * contain the value and the dispatched action.
+       * @param value The value the promise was resloved with
+       * @returns {object}
        */
-      const handleFulfill = (successValue) => {
-        dispatch(successValue.action);
+      const handleFulfill = (value = null) => {
+        const resolvedAction = getAction(value, false);
+        dispatch(resolvedAction);
+
+        return { value, action: resolvedAction };
       };
 
       /**
@@ -141,9 +142,7 @@ export default function promiseMiddleware(config = {}) {
        *   }
        * }
        */
-      const promiseValue = promise.then(transformFulfill);
-      const sideEffects = promiseValue.then(handleFulfill, handleReject);
-      return sideEffects.then(() => promiseValue, () => promiseValue);
+      return promise.then(handleFulfill, handleReject);
     };
   };
 }
