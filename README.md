@@ -17,7 +17,7 @@ Redux promise middleware enables robust handling of async code in [Redux](http:/
 ## Releases
 
 - [Release Log](https://github.com/pburtchaell/redux-promise-middleware/releases)
-- [Version Upgrade Guide](/UPGRADING.md)
+- [Version Upgrade Guide](/docs/upgrading.md)
 
 **Older versions:**
 
