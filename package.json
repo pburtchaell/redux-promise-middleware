@@ -1,14 +1,14 @@
 {
   "name": "redux-promise-middleware",
   "description": "Redux middleware for handling promises and optimistic updates",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "main": "dist/index.js",
   "module": "dist/es/index.js",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "precommit": "echo 'Running pre-commit hooks...' && npm run test",
     "prebuild": "npm run test",
-    "build": "npm run build-commonjs & npm run build-es & npm run build-umd & npm run build-umd-min",
+    "build": "rm -rf dist & npm run build-commonjs & npm run build-es & npm run build-umd & npm run build-umd-min",
     "build-es": "BABEL_ENV=es `npm bin`/babel src -d dist/es",
     "build-commonjs": "`npm bin`/babel src -d dist",
     "build-umd": "`npm bin`/webpack dist/umd/redux-promise-middleware.js",
