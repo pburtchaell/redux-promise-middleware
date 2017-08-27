@@ -2,10 +2,12 @@ src/
 test/
 examples/
 docs/
+bin/
 .eslintrc
 .babelrc
 .travis.yml
 .github
 .npmignore
+webpack.config.js
 node_modules
 jspm_packages
