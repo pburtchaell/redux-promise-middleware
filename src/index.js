@@ -13,6 +13,7 @@ const defaultTypes = [PENDING, FULFILLED, REJECTED];
  */
 export default function promiseMiddleware(config = {}) {
   const promiseTypeSuffixes = config.promiseTypeSuffixes || defaultTypes;
+  const promiseTypeSeparator = config.promiseTypeSeparator || '_';
 
   return ref => {
     const { dispatch } = ref;
@@ -44,7 +45,7 @@ export default function promiseMiddleware(config = {}) {
        * @returns {object} action
        */
       const getAction = (newPayload, isRejected) => ({
-        type: `${type}_${isRejected ? _REJECTED : _FULFILLED}`,
+        type: [type, isRejected ? _REJECTED : _FULFILLED].join(promiseTypeSeparator),
         ...((newPayload === null || typeof newPayload === 'undefined') ? {} : {
           payload: newPayload
         }),
@@ -77,7 +78,7 @@ export default function promiseMiddleware(config = {}) {
        * (for optimistic updates) and/or meta from the original action.
        */
       next({
-        type: `${type}_${_PENDING}`,
+        type: [type, _PENDING].join(promiseTypeSeparator),
         ...(data !== undefined ? { payload: data } : {}),
         ...(meta !== undefined ? { meta } : {})
       });
