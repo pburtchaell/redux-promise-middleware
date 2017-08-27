@@ -1,4 +1,4 @@
-## Introduction
+# Introduction
 
 First, install with npm: `npm i redux-promise-middleware -S`
 
@@ -67,4 +67,3 @@ import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware'
 ```
 
 Finally, it's important to note the middleware follows [Flux Standard Action (FSA)](https://github.com/acdlite/flux-standard-action), a standard for Flux/Redux action objects.
-
