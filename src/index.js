@@ -22,15 +22,7 @@ export default function promiseMiddleware(config = {}) {
       let promise = null;
       let data = null;
 
-      // If it's already one of the intermediate actions we create, return
-      // early.
-      if (
-        action.type.endsWith(`${promiseTypeSeparator}${promiseTypeSuffixes[0]}`)
-        || action.type.endsWith(`${promiseTypeSeparator}${promiseTypeSuffixes[1]}`)
-        || action.type.endsWith(`${promiseTypeSeparator}${promiseTypeSuffixes[2]}`)
-      ) {
-        return next(action);
-      } else if (action.payload) {
+      if (action.payload) {
         data = action.payload.data;
 
         // If there is a payload and it has a promise attribute, we'll try
