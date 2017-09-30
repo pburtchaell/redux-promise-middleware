@@ -39,12 +39,9 @@ export default function promiseMiddleware(config = {}) {
         return next(action);
       }
 
-      // If the promise we're tracking is a native async or generator
-      // we can call it knowing full well the result will be a promise.
-      if (
-        promise.constructor.name === 'AsyncFunction'
-        || promise.constructor.name === 'GeneratorFunction'
-      ) {
+      // If the promise we're tracking is a native async we can call it knowing
+      // full well the result will be a promise.
+      if (promise.constructor.name === 'AsyncFunction') {
         promise = promise(dispatch, getState);
 
       // If it's a regular function, call it and see if it returns a promise.
