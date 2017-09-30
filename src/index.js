@@ -68,7 +68,11 @@ export default function promiseMiddleware(config = {}) {
         // TODO Should we always pass `action` or `functionResult` to `next`? Or
         // keep what's here.
         } else {
-          return next(functionResult != null ? functionResult : action);
+          return next({
+            type: action.type,
+            payload: functionResult,
+            ...(action.meta !== undefined ? action.meta : {})
+          });
         }
       }
 

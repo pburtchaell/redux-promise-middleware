@@ -577,6 +577,25 @@ describe('Redux Promise Middleware:', () => {
         expect(dispatchCalls[1].args[0].payload.message).to.eql(resolvedValue);
       }
     });
+
+    it('Does what it can when the return value is not a promise', () => {
+      const resolvedValue = Math.random();
+
+      store.dispatch({
+        type: 'FOO',
+        payload() {
+          return resolvedValue;
+        }
+      });
+
+      const callArgs = lastMiddlewareModifies.spy.getCalls().map(x => x.args[0]);
+
+      expect(lastMiddlewareModifies.spy.callCount).to.eql(1);
+      expect(callArgs[0]).to.eql({
+        type: 'FOO',
+        payload: resolvedValue
+      });
+    });
   });
 
   context('When promise is rejected:', () => {
