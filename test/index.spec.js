@@ -539,6 +539,46 @@ describe('Redux Promise Middleware:', () => {
     });
   });
 
+  context('Native Async', () => {
+    it('Works when fulfilled', done => {
+      const resolvedValue = Math.random();
+
+      store.dispatch({
+        type: 'FOO',
+        async payload(dispatch, getState) {
+          return resolvedValue;
+        }
+      })
+        .then(({ value, action }) => {
+          expect(value).to.eql(resolvedValue);
+          expect(action.type).to.eql('FOO_FULFILLED');
+          done();
+        })
+        .catch(done);
+    });
+
+    it('Works when thrown', async () => {
+      const resolvedValue = Math.random().toString();
+
+      try {
+        await store.dispatch({
+          type: 'FOO',
+          async payload(dispatch, getState) {
+            throw new Error(resolvedValue);
+          }
+        });
+
+        throw new Error('Should not get here.');
+      } catch (err) {
+        const dispatchCalls = store.dispatch.getCalls();
+        // expect(dispatchCalls[0].args[0].type).to.eql('FOO_PENDING');
+        expect(dispatchCalls[1].args[0].type).to.eql('FOO_REJECTED');
+        expect(dispatchCalls[1].args[0].error).to.eql(true);
+        expect(dispatchCalls[1].args[0].payload.message).to.eql(resolvedValue);
+      }
+    });
+  });
+
   context('When promise is rejected:', () => {
     beforeEach(() => {
       promiseAction = {

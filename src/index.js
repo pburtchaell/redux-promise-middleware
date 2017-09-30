@@ -16,19 +16,69 @@ export default function promiseMiddleware(config = {}) {
   const promiseTypeSeparator = config.promiseTypeSeparator || '_';
 
   return ref => {
-    const { dispatch } = ref;
+    const { dispatch, getState } = ref;
 
     return next => action => {
-      if (action.payload) {
-        if (!isPromise(action.payload) && !isPromise(action.payload.promise)) {
-          return next(action);
+      let promise = null;
+      let data = null;
+
+      // If it's already one of the intermediate actions we create, return
+      // early.
+      if (
+        action.type.endsWith(`${promiseTypeSeparator}${promiseTypeSuffixes[0]}`)
+        || action.type.endsWith(`${promiseTypeSeparator}${promiseTypeSuffixes[1]}`)
+        || action.type.endsWith(`${promiseTypeSeparator}${promiseTypeSuffixes[2]}`)
+      ) {
+        return next(action);
+      } else if (action.payload) {
+        data = action.payload.data;
+
+        // If there is a payload and it has a promise attribute, we'll try
+        // that
+        if (action.payload.promise) {
+          promise = action.payload.promise;
+
+        // Otherwise we'll try the payload
+        } else {
+          promise = action.payload;
         }
+      // If there's no payload just return early.
       } else {
         return next(action);
       }
 
+      // If the promise we're tracking is a native async or generator
+      // we can call it knowing full well the result will be a promise.
+      if (
+        promise.constructor.name === 'AsyncFunction'
+        || promise.constructor.name === 'GeneratorFunction'
+      ) {
+        promise = promise(dispatch, getState);
+
+      // If it's a regular function, call it and see if it returns a promise.
+      } else if (typeof promise === 'function') {
+        const functionResult = promise(dispatch, getState);
+
+        // If it is a promise, awesome, let's use it.
+        if (isPromise(functionResult)) {
+          promise = functionResult;
+
+        // Return early if otherwise. We might be messing with some other redux
+        // middleware at this point.
+        // TODO Should we always pass `action` or `functionResult` to `next`? Or
+        // keep what's here.
+        } else {
+          return next(functionResult != null ? functionResult : action);
+        }
+      }
+
+      // If at this point what we're tracking isn't a promise, just give up.
+      if (!isPromise(promise)) {
+        return next(action);
+      }
+
       // Deconstruct the properties of the original action object to constants
-      const { type, payload, meta } = action;
+      const { type, meta } = action;
 
       // Assign values for promise type suffixes
       const [
@@ -54,23 +104,6 @@ export default function promiseMiddleware(config = {}) {
           error: true
         } : {})
       });
-
-      /**
-       * Assign values for promise and data variables. In the case the payload
-       * is an object with a `promise` and `data` property, the values of those
-       * properties will be used. In the case the payload is a promise, the
-       * value of the payload will be used and data will be null.
-       */
-      let promise;
-      let data;
-
-      if (!isPromise(action.payload) && typeof action.payload === 'object') {
-        promise = payload.promise;
-        data = payload.data;
-      } else {
-        promise = payload;
-        data = undefined;
-      }
 
       /**
        * First, dispatch the pending action. This flux standard action object
