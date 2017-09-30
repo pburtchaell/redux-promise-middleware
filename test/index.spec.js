@@ -540,41 +540,56 @@ describe('Redux Promise Middleware:', () => {
   });
 
   context('Native Async', () => {
-    it('Works when fulfilled', done => {
+    it('Works when fulfilled', async () => {
       const resolvedValue = Math.random();
 
-      store.dispatch({
+      const { value, action } = await store.dispatch({
         type: 'FOO',
         async payload(dispatch, getState) {
           return resolvedValue;
         }
-      })
-        .then(({ value, action }) => {
-          expect(value).to.eql(resolvedValue);
-          expect(action.type).to.eql('FOO_FULFILLED');
-          done();
-        })
-        .catch(done);
+      });
+
+      const callArgs = lastMiddlewareModifies.spy.getCalls().map(x => x.args[0]);
+
+      expect(lastMiddlewareModifies.spy.callCount).to.eql(2);
+
+      expect(callArgs[0]).to.eql({
+        type: 'FOO_PENDING',
+      });
+
+      expect(callArgs[1]).to.eql({
+        type: 'FOO_FULFILLED',
+        payload: resolvedValue
+      });
     });
 
     it('Works when thrown', async () => {
-      const resolvedValue = Math.random().toString();
+      const error = new Error(Math.random().toString());
 
       try {
         await store.dispatch({
           type: 'FOO',
           async payload(dispatch, getState) {
-            throw new Error(resolvedValue);
+            throw error;
           }
         });
 
         throw new Error('Should not get here.');
       } catch (err) {
-        const dispatchCalls = store.dispatch.getCalls();
-        // expect(dispatchCalls[0].args[0].type).to.eql('FOO_PENDING');
-        expect(dispatchCalls[1].args[0].type).to.eql('FOO_REJECTED');
-        expect(dispatchCalls[1].args[0].error).to.eql(true);
-        expect(dispatchCalls[1].args[0].payload.message).to.eql(resolvedValue);
+        const callArgs = lastMiddlewareModifies.spy.getCalls().map(x => x.args[0]);
+
+        expect(lastMiddlewareModifies.spy.callCount).to.eql(2);
+
+        expect(callArgs[0]).to.eql({
+          type: 'FOO_PENDING',
+        });
+
+        expect(callArgs[1]).to.eql({
+          type: 'FOO_REJECTED',
+          error: true,
+          payload: error
+        });
       }
     });
 
