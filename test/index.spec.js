@@ -540,7 +540,33 @@ describe('Redux Promise Middleware:', () => {
   });
 
   context('Native Async', () => {
-    it('Works when fulfilled', async () => {
+    it('Works with payload.promise', async () => {
+      const resolvedValue = Math.random();
+
+      const { value, action } = await store.dispatch({
+        type: 'FOO',
+        payload: {
+          async promise(dispatch, getState) {
+            return resolvedValue;
+          }
+        }
+      });
+
+      const callArgs = lastMiddlewareModifies.spy.getCalls().map(x => x.args[0]);
+
+      expect(lastMiddlewareModifies.spy.callCount).to.eql(2);
+
+      expect(callArgs[0]).to.eql({
+        type: 'FOO_PENDING',
+      });
+
+      expect(callArgs[1]).to.eql({
+        type: 'FOO_FULFILLED',
+        payload: resolvedValue
+      });
+    });
+
+    it('Works with payload', async () => {
       const resolvedValue = Math.random();
 
       const { value, action } = await store.dispatch({
