@@ -17,16 +17,16 @@ runIstanbul()
   `npm bin`/_mocha \
   -- -u exports --compilers js:babel-core/register \
   --report lcovonly \
-  test/polyfills.js test/*.js
+  test/setup.js test/*.js examples/**/*.spec.js
 }
 
 # If on Travis, run tests with Istanbul
 if [ -n "${TRAVIS_JOB_ID}" ]; then
 
-  echo -e "Travis CI job id set to ${TRAVIS_JOB_ID}. \nRunning tests with Istanbul..."
+  echo -e "Travis CI job ID set to ${TRAVIS_JOB_ID}. \nRunning tests with Istanbul."
   NODE_ENV=test runIstanbul
 
-  echo "Sending coverage information to Coveralls..."
+  echo "Sending coverage information to Coveralls."
   cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js || true
   rm -rf ./coverage
 
