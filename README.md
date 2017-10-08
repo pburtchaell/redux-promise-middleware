@@ -27,4 +27,4 @@ Redux promise middleware enables robust handling of async code in [Redux](http:/
 - [1.x](https://github.com/pburtchaell/redux-promise-middleware/tree/1.0.0)
 
 ---
-Copyright (c) 2015 Patrick Burtchaell. [Licensed with The MIT License (MIT)](/LICENSE). [Code of Conduct](/CODE_OF_CONDUCT.md) strictly enforced.
+Copyright (c) 2015-Current Patrick Burtchaell. [Code licensed with the MIT License (MIT)](/LICENSE). [Documentation licensed with the CC BY-NC License](https://creativecommons.org/licenses/by-nc/4.0/).

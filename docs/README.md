@@ -1,13 +1,17 @@
 # Table of Contents
 
 - [Guides](guides)
-  - [Chaining actions](guides/chaining-actions.md)
+  - [Catching Errors Thrown by Rejected Promises](guides/rejected-promises.md)
+  - [Chaining Actions](guides/chaining-actions.md)
   - [Comparison to other promise middleware](guides/comparison.md)
-  - [Custom type suffixes](guides/custom-suffixes.md)
-  - [Custom type separator](guides/custom-separators.md)
-  - [Optimistic updates](guides/optimistic-updates.md)
-  - [Reducers](guides/reducers.md)
-  - [Handling rejected promises](guides/rejected-promises.md)
-  - [Using with Redux Actions](guides/redux-actions.md)
-  - [Null values](guides/null-values.md)
+  - [Custom Type Suffixes](guides/custom-suffixes.md)
+  - [Custom Type Separator](guides/custom-separators.md)
+  - [Optimistic Updates](guides/optimistic-updates.md)
+  - [Use with Reducers](guides/reducers.md)
+  - [Use with Redux Actions](guides/redux-actions.md)
+  - [Use with Promises Resolved with Null Values](guides/null-values.md)
 - [Introduction](introduction.md)
+- [Design Principles](guides/design-principles.md)
+
+---
+Copyright (c) 2017 Patrick Burtchaell. [Code licensed with the MIT License (MIT)](/LICENSE). [Documentation licensed with the CC BY-NC License](LICENSE).

@@ -1,8 +1,8 @@
-node_modules/
 dist/
-example/build
+example/build/
+node_modules/
+.idea/
 .coverage
 .coveralls.yml
-.idea/
-*.log
 .DS_Store
+*.log
