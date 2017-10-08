@@ -1,14 +1,12 @@
 :wave: Hi! If you switch to "Preview" mode using the button above, this is easier to read. This template exists to help you create an issue that is valuable to you, to the project, and to the GitHub community. :two_hearts:
 
-Step one:
-- :rotating_light: You must agree to and follow the project [Code of Conduct](https://github.com/pburtchaell/redux-promise-middleware/blob/master/CODE_OF_CONDUCT.md) for all contributions.
+Before submitting an issue, please make sure the following is done:
 
-Step two:
-- :point_right: **Found a bug?** [Read this](https://github.com/pburtchaell/redux-promise-middleware/blob/master/.github/CONTRIBUTING.md#found-a-bug).
-- :point_right: **Have a feature request?** [Read this](https://github.com/pburtchaell/redux-promise-middleware/blob/master/.github/CONTRIBUTING.md#have-a-feature-request).
-- :point_right: **Need help?** [Read this](https://github.com/pburtchaell/redux-promise-middleware/blob/master/.github/CONTRIBUTING.md#need-help).
+1. Agree the [code of conduct](/.github/CODE_OF_CONDUCT.md).
+2. Read the [contributing guide](/.github/CONTRIBUTING.md).
+3. Fill out the appropriate issue template.
 
-If you delete this template and do not provide the information we need to resolve your issue, your issue will be closed and you will be redirected to the contributing guide. :skull:
+If you don't provide the information we need to resolve your issue, your issue will be closed and you'll be directed to the contributing guide. :skull:
 
 Thank you!
 

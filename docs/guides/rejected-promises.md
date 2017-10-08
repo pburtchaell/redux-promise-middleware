@@ -1,29 +1,52 @@
-# Catching Rejected Promises
+# Catching Errors Thrown by Rejected Promises
 
-The middleware dispatches rejected actions but does not catch rejected promises. As a result, you may get an "uncaught" warning in the console. **This is expected behavior for an uncaught rejected promise.** It is your responsibility to catch the errors and not the responsibility of redux-promise-middleware.
+## The Principle
 
-To catch rejected promises, there are two common solutions:
+Redux promise middleware dispatches an action for a rejected promise, but does not catch the error thrown. **This is an expected behavior.** Because the error is not caught, you will (in most cases) get an "uncaught" warning in the developer console. Again, this is an expected behavior.
 
-1. Catch the rejected promise "globally" in your own middleware
-2. Catch the rejected promise "locally" at the action creator
+By principle, it's your applications's responsibility to catch the error thrown by the rejected promise. It's not the responsibility of the middleware.
 
-You will most likely employ both global and local error handling. It will make sense to use local error handling to directly control the "side-effect" of the error. This can be done by dispatching some specific action.
+## How to Catch Promises
+
+However, you probably want to catch the error. Here's some suggested approaches/solutions to this.
+
+1. Catch/handle the error "globally" in a error handling middleware
+2. Catch/handle the error "locally" at the action creator
+
+## Catching Errors Locally
+
+Generally, it'll make sense to use local error handling to directly control the "side effect(s)" of an error.
+
+This can be done by dispatching some specific action. Here's an example of handling an error locally at the action creator.
 
 ```js
-// Example of handling an error locally at the action creator
-// Note this requires thunk middleware to work
 export function foo() {
   return dispatch => dispatch({
     type: 'FOO_ACTION',
+
+    // Throw an error
     payload: new Promise(() => {
       throw new Error('foo');
     })
+
+  // Catch the error locally
   }).catch(error => {
-    // catch and handle error
+    console.log(error.message); // 'foo'
+
+    // Dispatch a second action in response to the error
+    dispatch(bar());
   });
 }
 ```
 
-In other cases, it will make sense to globally handle all errors or errors of a certain type. For example, you may want to show errors in a modal. You can use a combination of custom middleware and actions to catch the error and show the modal. [There is an example of how this middleware would work](https://github.com/pburtchaell/redux-promise-middleware/blob/master/examples/complex/middleware/error.js). Note that any middleware you write will see all rejected promises before they're passed up to action creators for handling.
+Please note this example requires [Redux Thunk](https://github.com/gaearon/redux-thunk).
 
-A third option is to handle _all_ rejected promises (not just Redux action promises) using an [`unhandledrejection`](https://developer.mozilla.org/en-US/docs/Web/Events/unhandledrejection) event—but this is outside of redux-promise-middleware's scope.
+## Catching Errors Globally
+
+In some cases, it might make sense to "globally" catch all errors or all errors of a certain action type. To give an example, you might want to show a alert modal whenever an error is thrown.
+
+[There is an example of how this middleware would work](https://github.com/pburtchaell/redux-promise-middleware/blob/master/examples/complex/middleware/error.js). Note that any middleware you write will see all rejected promises before they're passed up to action creators for handling.
+
+## The unhandledrejection Event
+
+A third option is to handle all rejected promises (not just promises used with Redux promise middleware) using an [`unhandledrejection`](https://developer.mozilla.org/en-US/docs/Web/Events/unhandledrejection) event. I wouldn't reccommend this because it assumes too much and could be difficult to debug, but there might be a case where it is useful for your program.

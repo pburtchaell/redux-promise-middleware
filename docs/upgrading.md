@@ -1,4 +1,4 @@
-# Uprading
+# Upgrading
 
 ## 3.x to 4.0.0
 
@@ -190,3 +190,6 @@ const bar = () => {
   };
 };
 ```
+
+---
+Copyright (c) 2017 Patrick Burtchaell. [Code licensed with the MIT License (MIT)](/LICENSE). [Documentation licensed with the CC BY-NC License](LICENSE).
