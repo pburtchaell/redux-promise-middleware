@@ -1,4 +1,4 @@
-import isPromise from './isPromise';
+import isPromise from './isPromise.js';
 
 export const PENDING = 'PENDING';
 export const FULFILLED = 'FULFILLED';
