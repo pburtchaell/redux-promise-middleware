@@ -19,7 +19,7 @@ See more: [Redux Documentation](http://redux.js.org/docs/basics/Actions.html).
 
 ## Asynchronous Action Objects Describe the Promise Object State
 
-Promise middleware dispatches "asynchronous" action objectcs describing the state of the promise:
+Promise middleware dispatches "asynchronous" action objects describing the state of the promise:
 
 1. Pending action
 2. Fullfilled or rejcted action (settled)
