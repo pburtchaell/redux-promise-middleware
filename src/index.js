@@ -3,6 +3,7 @@ import isPromise from './isPromise.js';
 export const PENDING = 'PENDING';
 export const FULFILLED = 'FULFILLED';
 export const REJECTED = 'REJECTED';
+export const STATEMACHINE = Symbol('ASYNC_STATE_MACHINE');
 
 const defaultTypes = [PENDING, FULFILLED, REJECTED];
 
@@ -14,6 +15,7 @@ const defaultTypes = [PENDING, FULFILLED, REJECTED];
 export default function promiseMiddleware(config = {}) {
   const promiseTypeSuffixes = config.promiseTypeSuffixes || defaultTypes;
   const promiseTypeSeparator = config.promiseTypeSeparator || '_';
+  const stateMachine = config.isOpenStateType;
 
   return ref => {
     const { dispatch } = ref;
@@ -56,6 +58,18 @@ export default function promiseMiddleware(config = {}) {
       });
 
       /**
+       * @function getStateAction
+       * @description Utility function for creating a action about the action state
+       * @param  {Boolean} isFetching now this action is fetching or end ?
+       * @return {object}  action
+       */
+      const getStateAction = isFetching => ({
+        type: STATEMACHINE,
+        actionType: type,
+        isFetching
+      });
+
+      /**
        * Assign values for promise and data variables. In the case the payload
        * is an object with a `promise` and `data` property, the values of those
        * properties will be used. In the case the payload is a promise, the
@@ -83,6 +97,13 @@ export default function promiseMiddleware(config = {}) {
         ...(meta !== undefined ? { meta } : {})
       });
 
+      /**
+       * if had the Configuration will dispatch a `true` action, to tell user this action's type
+       * is fetching data now. and on the end of the promise will dispatch the `false` action
+       * whether the promise is rejected or fulfilled
+       */
+      if (stateMachine) { next(getStateAction(true)); }
+
       /*
        * @function handleReject
        * @description Dispatch the rejected action and return
@@ -93,6 +114,8 @@ export default function promiseMiddleware(config = {}) {
        * @returns {object}
        */
       const handleReject = reason => {
+        if (stateMachine) { next(getStateAction(false)); }
+
         const rejectedAction = getAction(reason, true);
         dispatch(rejectedAction);
 
@@ -108,6 +131,8 @@ export default function promiseMiddleware(config = {}) {
        * @returns {object}
        */
       const handleFulfill = (value = null) => {
+        if (stateMachine) { next(getStateAction(false)); }
+
         const resolvedAction = getAction(value, false);
         dispatch(resolvedAction);
 
