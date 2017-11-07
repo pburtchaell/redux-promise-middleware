@@ -16,7 +16,7 @@ export default function promiseMiddleware(config = {}) {
   const promiseTypeSeparator = config.promiseTypeSeparator || '_';
 
   return ref => {
-    const { dispatch, getState } = ref;
+    const { dispatch } = ref;
 
     return next => action => {
       let promise = null;
@@ -39,14 +39,10 @@ export default function promiseMiddleware(config = {}) {
         return next(action);
       }
 
-      // If the promise we're tracking is a native async we can call it knowing
-      // full well the result will be a promise.
-      if (promise.constructor.name === 'AsyncFunction') {
-        promise = promise(dispatch, getState);
-
-      // If it's a regular function, call it and see if it returns a promise.
-      } else if (typeof promise === 'function') {
-        const functionResult = promise(dispatch, getState);
+      // If the promise we're tracking is a regular function, call it and see if
+      // it returns a promise.
+      if (typeof promise === 'function') {
+        const functionResult = promise();
 
         // If it is a promise, awesome, let's use it.
         if (isPromise(functionResult)) {

@@ -546,7 +546,7 @@ describe('Redux Promise Middleware:', () => {
       const { value, action } = await store.dispatch({
         type: 'FOO',
         payload: {
-          async promise(dispatch, getState) {
+          async promise() {
             return resolvedValue;
           }
         }
@@ -571,7 +571,7 @@ describe('Redux Promise Middleware:', () => {
 
       const { value, action } = await store.dispatch({
         type: 'FOO',
-        async payload(dispatch, getState) {
+        async payload() {
           return resolvedValue;
         }
       });
@@ -596,7 +596,7 @@ describe('Redux Promise Middleware:', () => {
       try {
         await store.dispatch({
           type: 'FOO',
-          async payload(dispatch, getState) {
+          async payload() {
             throw error;
           }
         });
