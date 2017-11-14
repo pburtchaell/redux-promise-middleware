@@ -13,7 +13,7 @@ const defaultTypes = [PENDING, FULFILLED, REJECTED];
  */
 export default function promiseMiddleware(config = {}) {
   const promiseTypeSuffixes = config.promiseTypeSuffixes || defaultTypes;
-  const promiseTypeSeparator = config.promiseTypeSeparator || '_';
+  const promiseTypeSeparator = config.promiseTypeSeparator !== undefined ? config.promiseTypeSeparator : '_';
 
   return ref => {
     const { dispatch } = ref;
