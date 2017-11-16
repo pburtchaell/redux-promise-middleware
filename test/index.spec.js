@@ -539,6 +539,106 @@ describe('Redux Promise Middleware:', () => {
     });
   });
 
+  context('Native Async', () => {
+    it('Works with payload.promise', async () => {
+      const resolvedValue = Math.random();
+
+      const { value, action } = await store.dispatch({
+        type: 'FOO',
+        payload: {
+          async promise() {
+            return resolvedValue;
+          }
+        }
+      });
+
+      const callArgs = lastMiddlewareModifies.spy.getCalls().map(x => x.args[0]);
+
+      expect(lastMiddlewareModifies.spy.callCount).to.eql(2);
+
+      expect(callArgs[0]).to.eql({
+        type: 'FOO_PENDING',
+      });
+
+      expect(callArgs[1]).to.eql({
+        type: 'FOO_FULFILLED',
+        payload: resolvedValue
+      });
+    });
+
+    it('Works with payload', async () => {
+      const resolvedValue = Math.random();
+
+      const { value, action } = await store.dispatch({
+        type: 'FOO',
+        async payload() {
+          return resolvedValue;
+        }
+      });
+
+      const callArgs = lastMiddlewareModifies.spy.getCalls().map(x => x.args[0]);
+
+      expect(lastMiddlewareModifies.spy.callCount).to.eql(2);
+
+      expect(callArgs[0]).to.eql({
+        type: 'FOO_PENDING',
+      });
+
+      expect(callArgs[1]).to.eql({
+        type: 'FOO_FULFILLED',
+        payload: resolvedValue
+      });
+    });
+
+    it('Works when thrown', async () => {
+      const error = new Error(Math.random().toString());
+
+      try {
+        await store.dispatch({
+          type: 'FOO',
+          async payload() {
+            throw error;
+          }
+        });
+
+        throw new Error('Should not get here.');
+      } catch (err) {
+        const callArgs = lastMiddlewareModifies.spy.getCalls().map(x => x.args[0]);
+
+        expect(lastMiddlewareModifies.spy.callCount).to.eql(2);
+
+        expect(callArgs[0]).to.eql({
+          type: 'FOO_PENDING',
+        });
+
+        expect(callArgs[1]).to.eql({
+          type: 'FOO_REJECTED',
+          error: true,
+          payload: error
+        });
+      }
+    });
+
+    it('Does what it can when the return value is not a promise', () => {
+      const resolvedValue = Math.random();
+
+      store.dispatch({
+        type: 'FOO',
+        payload() {
+          return resolvedValue;
+        }
+      });
+
+      const callArgs = lastMiddlewareModifies.spy.getCalls().map(x => x.args[0]);
+
+      expect(lastMiddlewareModifies.spy.callCount).to.eql(1);
+      expect(callArgs[0]).to.eql({
+        type: 'FOO',
+        payload: resolvedValue
+      });
+    });
+  });
+
   context('When promise is rejected:', () => {
     beforeEach(() => {
       promiseAction = {
