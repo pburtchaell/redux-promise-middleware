@@ -39,7 +39,7 @@ const fooReducer = (state = {}, action) => {
 Optionally, the default promise suffixes can be imported from this module. This can be useful in your reducers.
 
 ```js
-import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware'
+import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
 ```
 
 ## Large Applications
