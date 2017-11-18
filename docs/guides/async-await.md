@@ -2,7 +2,7 @@
 
 Instead of chaining your async code with `.then().then().then()`, you can use async/await.
 
-Conside this silly example. First, request `fooData`, then request `barData` and exit the function (also resolving the promise).
+Consider this silly example. First, request `fooData`, then request `barData` and exit the function (also resolving the promise).
 
 ```js
 {
