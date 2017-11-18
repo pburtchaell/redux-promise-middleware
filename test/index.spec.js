@@ -654,9 +654,13 @@ describe('Redux Promise Middleware:', () => {
 
     it('handles synchronous functions', () => {
       const resolvedValue = 'FOO_DATA';
+      const metaValue = {
+        foo: 'foo'
+      };
 
       store.dispatch({
         type: 'FOO',
+        meta: metaValue,
         payload() {
           return resolvedValue;
         }
@@ -667,6 +671,7 @@ describe('Redux Promise Middleware:', () => {
       expect(lastMiddlewareModifies.spy.callCount).to.eql(1);
       expect(callArgs[0]).to.eql({
         type: 'FOO',
+        meta: metaValue,
         payload: resolvedValue
       });
     });
