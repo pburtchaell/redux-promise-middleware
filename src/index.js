@@ -48,7 +48,7 @@ export default function promiseMiddleware(config = {}) {
           promise = PAYLOAD;
         }
 
-        // Step 1.2: Is the promise explicitly deifned?
+        // Step 1.2: Is the promise explicitly defined?
         else if (isPromise(PAYLOAD.promise)) {
           promise = PAYLOAD.promise;
           data = PAYLOAD.data;
@@ -73,7 +73,7 @@ export default function promiseMiddleware(config = {}) {
           }
         }
 
-        // Step 1.0.4: If there's no promise, move on to the next middleware.
+        // Step 1.4: If there's no promise, move on to the next middleware.
         else {
           return next(action);
         }
