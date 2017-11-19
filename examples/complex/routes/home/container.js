@@ -9,7 +9,6 @@ export default connect(
     },
     throwLocalError: message => {
       dispatch(errorActions.rejectPromiseWithLocalError(message))
-    },
-    getPost: id => console.log(id)
+    }
   })
 )(require('./component').default);

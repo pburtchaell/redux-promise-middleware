@@ -7,16 +7,12 @@ import request from './request';
  * @param {string} resource The resource used for config
  */
 const Network = resource => {
-  let buildURL = ({ id, resource } = {}) => {
-    let parameters = [
+  let buildURL = (path = null) => {
+    return [
       'http://localhost:8000',
-      'api'
-    ];
-
-    if (resource) parameters.concat([resource]);
-    if (id) parameters.concat([id]);
-
-    return parameters.join('/');
+      'api',
+      path
+    ].join('/');
   }
 
   // Default options used for every request
@@ -93,9 +89,7 @@ const Network = resource => {
         defaultOptions,
         { method: 'DELETE' }
       ));
-    },
-
-    ping: () => request(buildURL(), { method: 'GET' })
+    }
   };
 };
 

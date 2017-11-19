@@ -1,22 +1,34 @@
 /**
- * @private
- * @function request
- * @description Make a request to the server and return a promise.
- * @param {string} url
- * @param {object} options
- * @returns {promise}
+ * Function: request
+ * Description: Make a request to the server and return a promise.
  */
-export default function request(url, options) {
-  return new Promise((resolve, reject) => {
-    if (!url) reject(new Error('URL parameter required'));
-    if (!options) reject(new Error('Options parameter required'));
+async function request(url, options) {
+  if (!url) {
+    throw new Error('Preflight request error: URL parameter required');
+  }
 
-    fetch(url, options)
-      .then(response => response.json())
-      .then(response => {
-        if (response.errors) reject(response.errors);
-        else resolve(response);
-      })
-      .catch(reject);
-  });
+  if (!options) {
+    throw new Error('Preflight request error: options parameter required');
+  }
+
+  // Fetch returns a promise
+  return fetch(url, options)
+    .then(response => {
+      if (response.status > 200) {
+
+        // Errors such as this are passed up to the middleware
+        throw new Error(`Server error: ${response.status} status`);
+      }
+
+      return response.json();
+    })
+    .then(response => {
+      if (response.errors) {
+        throw new Error(`Server error: ${response.errors.message}`);
+      }
+
+      return response;
+    });
 }
+
+export default request;

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import AppWarning from './appWarning';
 import { application } from '../actions';
 
 class App extends Component {
@@ -19,7 +18,7 @@ class App extends Component {
      * then show the warning.
      */
     if (isInitialized) {
-      return isSupported ? (
+      return (
         <div className="body-wrapper">
           <div className="row">
             <div className="small-12 large-6 large-offset-3 end columns">
@@ -30,7 +29,7 @@ class App extends Component {
             </div>
           </div>
         </div>
-      ) : <AppWarning />;
+      );
     }
 
     // Show nothing while initializing
@@ -42,7 +41,6 @@ class App extends Component {
 
 App.propTypes = {
   initialize: PropTypes.func.isRequired,
-  isSupported: PropTypes.bool.isRequired,
   isInitialized: PropTypes.bool.isRequired
 };
 
