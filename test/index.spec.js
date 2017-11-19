@@ -229,7 +229,7 @@ describe('Redux Promise Middleware:', () => {
      * The middleware should allow global custom action types included
      * in the config when the middleware is constructed.
      */
-    it('allows global customisation of action.type suffixes', () => {
+    it('allows global customisation of action type suffixes', () => {
       store = makeStore({ promiseTypeSuffixes: [customPrefix, '', ''] });
       store.dispatch(promiseAction);
 
@@ -241,12 +241,12 @@ describe('Redux Promise Middleware:', () => {
     });
 
     /**
-     * The middleware should allow global custom action type separators included
+     * The middleware should allow global custom action type delimiter included
      * in the config when the middleware is constructed.
      */
-    it('allows global customisation of action.type separator', done => {
+    it('allows global customisation of action type delimiter', done => {
       store = makeStore({
-        promiseTypeSeparator: '/'
+        promiseTypeDelimiter: '/'
       });
 
       fulfilledAction = {

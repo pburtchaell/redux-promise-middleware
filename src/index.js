@@ -13,7 +13,7 @@ const defaultTypes = [PENDING, FULFILLED, REJECTED];
  */
 export default function promiseMiddleware(config = {}) {
   const PROMISE_TYPE_SUFFIXES = config.promiseTypeSuffixes || defaultTypes;
-  const PROMISE_TYPE_SEPARATOR = config.promiseTypeSeparator || '_';
+  const PROMISE_TYPE_DELIMITER = config.promiseTypeDelimiter || '_';
 
   return ref => {
     const { dispatch } = ref;
@@ -129,7 +129,7 @@ export default function promiseMiddleware(config = {}) {
         type: [
           TYPE,
           isRejected ? _REJECTED : _FULFILLED
-        ].join(PROMISE_TYPE_SEPARATOR),
+        ].join(PROMISE_TYPE_DELIMITER),
 
         // Include the payload property.
         ...((newPayload === null || typeof newPayload === 'undefined') ? {} : {
@@ -181,7 +181,7 @@ export default function promiseMiddleware(config = {}) {
        */
       next({
         // Concatentate the type string.
-        type: [TYPE, _PENDING].join(PROMISE_TYPE_SEPARATOR),
+        type: [TYPE, _PENDING].join(PROMISE_TYPE_DELIMITER),
 
         // Include payload (for optimistic updates) if it is defined.
         ...(data !== undefined ? { payload: data } : {}),
