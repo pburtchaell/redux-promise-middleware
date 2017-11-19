@@ -1,7 +1,7 @@
 {
   "name": "redux-promise-middleware",
-  "description": "Redux middleware for handling promises and optimistic updates",
-  "version": "4.4.2",
+  "description": "Redux middleware for handling promises, async functions, and optimistic updates",
+  "version": "5.0.0",
   "main": "dist/index.js",
   "module": "dist/es/index.js",
   "scripts": {
@@ -34,7 +34,7 @@
     "optimistic update",
     "optimistic updates",
     "async",
-    "example"
+    "async functions"
   ],
   "author": "Patrick Burtchaell <patrick@pburtchaell.com> (pburtchaell.com)",
   "contributors": [
