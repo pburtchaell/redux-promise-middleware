@@ -1,8 +1,8 @@
-# Async/Await
+# Use with Async/Await
 
 Instead of chaining your async code with `.then().then().then()`, you can use async/await.
 
-Consider this silly example. First, request `fooData`, then request `barData` and exit the function (also resolving the promise).
+Consider this example. First, request `fooData`, then request `barData` and exit the function (also resolving the promise).
 
 ```js
 {
@@ -12,6 +12,22 @@ Consider this silly example. First, request `fooData`, then request `barData` an
     const barData = await getBarData(fooData);
 
     return barData;
+  }
+}
+```
+
+Async/await can be combined with data for [optimistic updates](/optimistic-updates.md):
+
+```js
+{
+  type: 'OPTIMISTIC_TYPE',
+  payload: {
+    data: {
+      ...
+    },
+    async promise () {
+      ...
+    }
   }
 }
 ```
