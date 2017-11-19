@@ -7,6 +7,8 @@ import loggerMiddleware from './middleware/logger';
 
 const store = createStore(reducers, {}, applyMiddleware(
   thunkMiddleware,
+
+  // Custom error middleware should go before the promise middleware
   errorMiddleware,
   promiseMiddleware(),
   loggerMiddleware

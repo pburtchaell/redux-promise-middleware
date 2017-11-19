@@ -1,4 +1,5 @@
-import { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AppWarning from './appWarning';
 import { application } from '../actions';
@@ -34,7 +35,7 @@ class App extends Component {
 
     // Show nothing while initializing
     return (
-      <div>application loading...</div>
+      <div>Application loading...</div>
     );
   }
 }
@@ -43,12 +44,10 @@ App.propTypes = {
   initialize: PropTypes.func.isRequired,
   isSupported: PropTypes.bool.isRequired,
   isInitialized: PropTypes.bool.isRequired
-}
+};
 
 export default connect(
-  state => ({
-    ...state.application.support
-  }),
+  state => (state.application.support),
   dispatch => ({
     initialize: () => dispatch(application.initialize())
   })
