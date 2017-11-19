@@ -1,118 +1,157 @@
 import isPromise from './isPromise.js';
 
+// The default async action types
 export const PENDING = 'PENDING';
 export const FULFILLED = 'FULFILLED';
 export const REJECTED = 'REJECTED';
-
 const defaultTypes = [PENDING, FULFILLED, REJECTED];
 
 /**
- * @function promiseMiddleware
- * @description
- * @returns {function} thunk
+ * Function: promiseMiddleware
+ * Description: The main promiseMiddleware accepts a configuration
+ * object and returns the middleware.
  */
 export default function promiseMiddleware(config = {}) {
-  const promiseTypeSuffixes = config.promiseTypeSuffixes || defaultTypes;
-  const promiseTypeSeparator = config.promiseTypeSeparator || '_';
+  const PROMISE_TYPE_SUFFIXES = config.promiseTypeSuffixes || defaultTypes;
+  const PROMISE_TYPE_SEPARATOR = config.promiseTypeSeparator || '_';
 
   return ref => {
     const { dispatch } = ref;
 
     return next => action => {
-      let promise = null;
-      let data = null;
 
+      /**
+       * Instantiate variables to hold:
+       * (1) the promise
+       * (2) the data for optimistic updates
+       */
+      let promise;
+      let data;
+
+      /**
+       * There are multiple ways to dispatch a promise. The first step is to
+       * determine if the promise is defined:
+       * (a) explicitly (action.payload.promise is the promise)
+       * (b) implicitly (action.payload is the promise)
+       * (c) as an async function (returns a promise when called)
+       *
+       * If the promise is not defined in one of these three ways, we don't do
+       * anything and move on to the next middleware in the middleware chain.
+       */
+
+      // Step 1a: Is there a payload?
       if (action.payload) {
-        data = action.payload.data;
+        const PAYLOAD = action.payload;
 
-        // If there is a payload and it has a promise attribute, we'll try
-        // that
-        if (action.payload.promise) {
-          promise = action.payload.promise;
-
-        // Otherwise we'll try the payload
-        } else {
-          promise = action.payload;
+        // Step 1.1: Is the promise implicitly defined?
+        if (isPromise(PAYLOAD)) {
+          promise = PAYLOAD;
         }
-      // If there's no payload just return early.
+
+        // Step 1.2: Is the promise explicitly defined?
+        else if (isPromise(PAYLOAD.promise)) {
+          promise = PAYLOAD.promise;
+          data = PAYLOAD.data;
+        }
+
+        // Step 1.3: Is the promise returned by an async function?
+        else if (
+          typeof PAYLOAD === 'function' ||
+          typeof PAYLOAD.promise === 'function'
+        ) {
+          promise = PAYLOAD.promise ? PAYLOAD.promise() : PAYLOAD();
+          data = PAYLOAD.promise ? PAYLOAD.data : undefined;
+
+          // Step 1.3.1: Is the return of action.payload a promise?
+          if (!isPromise(promise)) {
+
+            // If not, move on to the next middleware.
+            return next({
+              ...action,
+              payload: promise
+            });
+          }
+        }
+
+        // Step 1.4: If there's no promise, move on to the next middleware.
+        else {
+          return next(action);
+        }
+
+      // Step 1b: If there's no payload, move on to the next middleware.
       } else {
         return next(action);
       }
 
-      // If the promise we're tracking is a regular function, call it and see if
-      // it returns a promise.
-      if (typeof promise === 'function') {
-        const functionResult = promise();
+      /**
+       * Instantiate and define constants for:
+       * (1) the action type
+       * (2) the action meta
+       */
+      const TYPE = action.type;
+      const META = action.meta;
 
-        // If it is a promise, awesome, let's use it.
-        if (isPromise(functionResult)) {
-          promise = functionResult;
-
-        // Return early if otherwise. We might be messing with some other redux
-        // middleware at this point.
-        // TODO Should we always pass `action` or `functionResult` to `next`? Or
-        // keep what's here.
-        } else {
-          return next({
-            type: action.type,
-            payload: functionResult,
-            ...(action.meta !== undefined ? action.meta : {})
-          });
-        }
-      }
-
-      // If at this point what we're tracking isn't a promise, just give up.
-      if (!isPromise(promise)) {
-        return next(action);
-      }
-
-      // Deconstruct the properties of the original action object to constants
-      const { type, meta } = action;
-
-      // Assign values for promise type suffixes
+      /**
+       * Instantiate and define constants for the action type suffixes.
+       * These are appended to the end of the action type.
+       */
       const [
         _PENDING,
         _FULFILLED,
         _REJECTED
-      ] = promiseTypeSuffixes;
+      ] = PROMISE_TYPE_SUFFIXES;
 
       /**
-       * @function getAction
-       * @description Utility function for creating a rejected or fulfilled
-       * flux standard action object.
-       * @param {boolean} Is the action rejected?
-       * @returns {object} action
+       * Function: getAction
+       * Description: This function constructs and returns a rejected
+       * or fulfilled action object. The action object is based off the Flux
+       * Standard Action (FSA).
+       *
+       * Given an original action with the type FOO:
+       *
+       * The rejected object model will be:
+       * {
+       *   error: true,
+       *   type: 'FOO_REJECTED',
+       *   payload: ...,
+       *   meta: ... (optional)
+       * }
+       *
+       * The fulfilled object model will be:
+       * {
+       *   type: 'FOO_FULFILLED',
+       *   payload: ...,
+       *   meta: ... (optional)
+       * }
        */
       const getAction = (newPayload, isRejected) => ({
-        type: [type, isRejected ? _REJECTED : _FULFILLED].join(promiseTypeSeparator),
+        // Concatentate the type string property.
+        type: [
+          TYPE,
+          isRejected ? _REJECTED : _FULFILLED
+        ].join(PROMISE_TYPE_SEPARATOR),
+
+        // Include the payload property.
         ...((newPayload === null || typeof newPayload === 'undefined') ? {} : {
           payload: newPayload
         }),
-        ...(meta !== undefined ? { meta } : {}),
+
+        // If the original action includes a meta property, include it.
+        ...(META !== undefined ? { meta: META } : {}),
+
+        // If the action is rejected, include an error property.
         ...(isRejected ? {
           error: true
         } : {})
       });
 
       /**
-       * First, dispatch the pending action. This flux standard action object
-       * describes the pending state of a promise and will include any data
-       * (for optimistic updates) and/or meta from the original action.
-       */
-      next({
-        type: [type, _PENDING].join(promiseTypeSeparator),
-        ...(data !== undefined ? { payload: data } : {}),
-        ...(meta !== undefined ? { meta } : {})
-      });
-
-      /*
-       * @function handleReject
-       * @description Dispatch the rejected action and return
-       * an error object. The error object is the original error
-       * that was thrown. The user of the library is responsible for
-       * best practices in ensure that they are throwing an Error object.
-       * @params reason The reason the promise was rejected
-       * @returns {object}
+       * Function: handleReject
+       * Calls: getAction to construct the rejected action
+       * Description: This function dispatches the rejected action and returns
+       * the original Error object. Please note the developer is responsible
+       * for constructing and throwing an Error object. The middleware does not
+       * construct any Errors.
        */
       const handleReject = reason => {
         const rejectedAction = getAction(reason, true);
@@ -121,13 +160,12 @@ export default function promiseMiddleware(config = {}) {
         throw reason;
       };
 
-      /*
-       * @function handleFulfill
-       * @description Dispatch the fulfilled action and
-       * return the success object. The success object should
+      /**
+       * Function: handleFulfill
+       * Calls: getAction to construct the fullfilled action
+       * Description: This function dispatches the fulfilled action and
+       * returns the success object. The success object should
        * contain the value and the dispatched action.
-       * @param value The value the promise was resloved with
-       * @returns {object}
        */
       const handleFulfill = (value = null) => {
         const resolvedAction = getAction(value, false);
@@ -137,33 +175,24 @@ export default function promiseMiddleware(config = {}) {
       };
 
       /**
-       * Second, dispatch a rejected or fulfilled action. This flux standard
-       * action object will describe the resolved state of the promise. In
-       * the case of a rejected promise, it will include an `error` property.
-       *
-       * In order to allow proper chaining of actions using `then`, a new
-       * promise is constructed and returned. This promise will resolve
-       * with two properties: (1) the value (if fulfilled) or reason
-       * (if rejected) and (2) the flux standard action.
-       *
-       * Rejected object:
-       * {
-       *   reason: ...
-       *   action: {
-       *     error: true,
-       *     type: 'ACTION_REJECTED',
-       *     payload: ...
-       *   }
-       * }
-       *
-       * Fulfilled object:
-       * {
-       *   value: ...
-       *   action: {
-       *     type: 'ACTION_FULFILLED',
-       *     payload: ...
-       *   }
-       * }
+       * First, dispatch the pending action:
+       * This object describes the pending state of a promise and will include
+       * any data (for optimistic updates) and/or meta from the original action.
+       */
+      next({
+        // Concatentate the type string.
+        type: [TYPE, _PENDING].join(PROMISE_TYPE_SEPARATOR),
+
+        // Include payload (for optimistic updates) if it is defined.
+        ...(data !== undefined ? { payload: data } : {}),
+
+        // Include meta data if it is defined.
+        ...(META !== undefined ? { meta: META } : {})
+      });
+
+      /**
+       * Second, dispatch a rejected or fulfilled action and move on to the
+       * next middleware.
        */
       return promise.then(handleFulfill, handleReject);
     };

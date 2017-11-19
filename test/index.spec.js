@@ -539,9 +539,9 @@ describe('Redux Promise Middleware:', () => {
     });
   });
 
-  context('Native Async', () => {
-    it('Works with payload.promise', async () => {
-      const resolvedValue = Math.random();
+  context('When using async functions:', () => {
+    it('supports async function as payload.promise', async () => {
+      const resolvedValue = 'FOO_DATA';
 
       const { value, action } = await store.dispatch({
         type: 'FOO',
@@ -557,7 +557,7 @@ describe('Redux Promise Middleware:', () => {
       expect(lastMiddlewareModifies.spy.callCount).to.eql(2);
 
       expect(callArgs[0]).to.eql({
-        type: 'FOO_PENDING',
+        type: 'FOO_PENDING'
       });
 
       expect(callArgs[1]).to.eql({
@@ -566,8 +566,8 @@ describe('Redux Promise Middleware:', () => {
       });
     });
 
-    it('Works with payload', async () => {
-      const resolvedValue = Math.random();
+    it('supports async function as payload', async () => {
+      const resolvedValue = 'FOO_DATA';
 
       const { value, action } = await store.dispatch({
         type: 'FOO',
@@ -590,7 +590,40 @@ describe('Redux Promise Middleware:', () => {
       });
     });
 
-    it('Works when thrown', async () => {
+    it('supports optimistic updates', async () => {
+      const resolvedValue = 'FOO_DATA';
+      const data = {
+        foo: 1,
+        bar: 1,
+        baz: 3
+      };
+
+      const { value, action } = await store.dispatch({
+        type: 'FOO',
+        payload: {
+          data,
+          async promise() {
+            return resolvedValue;
+          }
+        }
+      });
+
+      const callArgs = lastMiddlewareModifies.spy.getCalls().map(x => x.args[0]);
+
+      expect(lastMiddlewareModifies.spy.callCount).to.eql(2);
+
+      expect(callArgs[0]).to.eql({
+        type: 'FOO_PENDING',
+        payload: data
+      });
+
+      expect(callArgs[1]).to.eql({
+        type: 'FOO_FULFILLED',
+        payload: resolvedValue
+      });
+    });
+
+    it('supports rejected async functions', async () => {
       const error = new Error(Math.random().toString());
 
       try {
@@ -619,11 +652,15 @@ describe('Redux Promise Middleware:', () => {
       }
     });
 
-    it('Does what it can when the return value is not a promise', () => {
-      const resolvedValue = Math.random();
+    it('handles synchronous functions', () => {
+      const resolvedValue = 'FOO_DATA';
+      const metaValue = {
+        foo: 'foo'
+      };
 
       store.dispatch({
         type: 'FOO',
+        meta: metaValue,
         payload() {
           return resolvedValue;
         }
@@ -634,6 +671,7 @@ describe('Redux Promise Middleware:', () => {
       expect(lastMiddlewareModifies.spy.callCount).to.eql(1);
       expect(callArgs[0]).to.eql({
         type: 'FOO',
+        meta: metaValue,
         payload: resolvedValue
       });
     });
