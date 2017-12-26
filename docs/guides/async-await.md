@@ -16,7 +16,7 @@ Consider this example. First, request `fooData`, then request `barData` and exit
 }
 ```
 
-Async/await can be combined with data for [optimistic updates](/optimistic-updates.md):
+Async/await can be combined with data for [optimistic updates](optimistic-updates.md):
 
 ```js
 {
