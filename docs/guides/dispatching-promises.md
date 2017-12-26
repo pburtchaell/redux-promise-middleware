@@ -22,7 +22,7 @@ const foo = () => ({
 
 ## Async/Await
 
-For more on using async/await, [see the guide](/async-await.md).
+For more on using async/await, [see the guide](async-await.md).
 
 ```js
 const foo = () => ({
