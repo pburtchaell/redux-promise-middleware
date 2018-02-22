@@ -226,6 +226,36 @@ describe('Redux Promise Middleware:', () => {
     });
 
     /**
+     * If the promise action is dispatched with a myCustomMeta property, the myCustomMeta property
+     * and value must be included in the pending action.
+     */
+    it('pending action does contain myCustomMeta property if included', () => {
+      store.dispatch(
+        Object.assign({}, promiseAction, {
+          myCustomMeta: metaData
+        })
+      );
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(
+        Object.assign({}, pendingAction, {
+          myCustomMeta: metaData
+        })
+      );
+    });
+
+    it('pending action does contain falsy myCustomMeta property if included', () => {
+      store.dispatch(
+        Object.assign({}, promiseAction, {
+          myCustomMeta: 0
+        })
+      );
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith(
+        Object.assign({}, pendingAction, {
+          myCustomMeta: 0
+        })
+      );
+    });
+
+    /**
      * The middleware should allow global custom action types included
      * in the config when the middleware is constructed.
      */
@@ -501,6 +531,20 @@ describe('Redux Promise Middleware:', () => {
       });
     });
 
+    it('persists `myCustomMeta` property from original action', async () => {
+      await store.dispatch({
+        type: promiseAction.type,
+        payload: promiseAction.payload,
+        myCustomMeta: metaData
+      });
+
+      expect(lastMiddlewareModifies.spy).to.have.been.calledWith({
+        type: `${promiseAction.type}_FULFILLED`,
+        payload: promiseValue,
+        myCustomMeta: metaData
+      });
+    });
+
     it('promise returns `value` and `action` as parameters', done => {
       const actionDispatched = store.dispatch({
         type: defaultPromiseAction.type,
@@ -672,6 +716,32 @@ describe('Redux Promise Middleware:', () => {
       expect(callArgs[0]).to.eql({
         type: 'FOO',
         meta: metaValue,
+        payload: resolvedValue
+      });
+    });
+
+    it('handles synchronous functions with custom props', () => {
+      const resolvedValue = 'FOO_DATA';
+      const metaValue = {
+        foo: 'foo'
+      };
+
+      store.dispatch({
+        type: 'FOO',
+        myCustomMeta: metaValue,
+        payload() {
+          return resolvedValue;
+        }
+      });
+
+      const callArgs = lastMiddlewareModifies.spy
+        .getCalls()
+        .map(x => x.args[0]);
+
+      expect(lastMiddlewareModifies.spy.callCount).to.eql(1);
+      expect(callArgs[0]).to.eql({
+        type: 'FOO',
+        myCustomMeta: metaValue,
         payload: resolvedValue
       });
     });
