@@ -63,12 +63,26 @@ On the other hand, if the promise is rejected, a rejected action is dispatched.
 
 That's it!
 
+It is also possible to carry additional data through the stages of the action lifecycle. Any properties of the action object will be preserved except the 3 "reserved" properties ("type", "payload" and "error")
+
+```js
+{
+  type: 'FOO',
+  payload: new Promise(),
+  myCustomProperty: {
+    subProp1: 1,
+    subProp2: 'BAR'
+  }
+}
+```
+
 ## Further Reading
 
-- [Catching Errors Thrown by Rejected Promises](guides/rejected-promises.md)
-- [Use with Reducers](guides/reducers.md)
-- [Optimistic Updates](guides/optimistic-updates.md)
-- [Design Principles](guides/design-principles.md)
+* [Catching Errors Thrown by Rejected Promises](guides/rejected-promises.md)
+* [Use with Reducers](guides/reducers.md)
+* [Optimistic Updates](guides/optimistic-updates.md)
+* [Design Principles](guides/design-principles.md)
 
 ---
+
 Copyright (c) 2017 Patrick Burtchaell. [Code licensed with the MIT License (MIT)](/LICENSE). [Documentation licensed with the CC BY-NC License](LICENSE).

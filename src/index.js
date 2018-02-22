@@ -19,7 +19,6 @@ export default function promiseMiddleware(config = {}) {
     const { dispatch } = ref;
 
     return next => action => {
-
       /**
        * Instantiate variables to hold:
        * (1) the promise
@@ -46,39 +45,32 @@ export default function promiseMiddleware(config = {}) {
         // Step 1.1: Is the promise implicitly defined?
         if (isPromise(PAYLOAD)) {
           promise = PAYLOAD;
-        }
-
-        // Step 1.2: Is the promise explicitly defined?
-        else if (isPromise(PAYLOAD.promise)) {
+        } else if (isPromise(PAYLOAD.promise)) {
+          // Step 1.2: Is the promise explicitly defined?
           promise = PAYLOAD.promise;
           data = PAYLOAD.data;
-        }
-
-        // Step 1.3: Is the promise returned by an async function?
-        else if (
+        } else if (
           typeof PAYLOAD === 'function' ||
           typeof PAYLOAD.promise === 'function'
         ) {
+          // Step 1.3: Is the promise returned by an async function?
           promise = PAYLOAD.promise ? PAYLOAD.promise() : PAYLOAD();
           data = PAYLOAD.promise ? PAYLOAD.data : undefined;
 
           // Step 1.3.1: Is the return of action.payload a promise?
           if (!isPromise(promise)) {
-
             // If not, move on to the next middleware.
             return next({
               ...action,
               payload: promise
             });
           }
-        }
-
-        // Step 1.4: If there's no promise, move on to the next middleware.
-        else {
+        } else {
+          // Step 1.4: If there's no promise, move on to the next middleware.
           return next(action);
         }
 
-      // Step 1b: If there's no payload, move on to the next middleware.
+        // Step 1b: If there's no payload, move on to the next middleware.
       } else {
         return next(action);
       }
@@ -86,20 +78,18 @@ export default function promiseMiddleware(config = {}) {
       /**
        * Instantiate and define constants for:
        * (1) the action type
-       * (2) the action meta
+       * (2) all remaining properties except type, payload and error
        */
       const TYPE = action.type;
-      const META = action.meta;
+
+      // clone all properties except the "reserved" ones
+      const { type, payload, error, ...ACTION_CLONE } = action;
 
       /**
        * Instantiate and define constants for the action type suffixes.
        * These are appended to the end of the action type.
        */
-      const [
-        _PENDING,
-        _FULFILLED,
-        _REJECTED
-      ] = PROMISE_TYPE_SUFFIXES;
+      const [_PENDING, _FULFILLED, _REJECTED] = PROMISE_TYPE_SUFFIXES;
 
       /**
        * Function: getAction
@@ -114,35 +104,38 @@ export default function promiseMiddleware(config = {}) {
        *   error: true,
        *   type: 'FOO_REJECTED',
        *   payload: ...,
-       *   meta: ... (optional)
+       *   (all additional properties put in the initial action): ... (optional)
        * }
        *
        * The fulfilled object model will be:
        * {
        *   type: 'FOO_FULFILLED',
        *   payload: ...,
-       *   meta: ... (optional)
+       *   (all additional properties put in the initial action): ... (optional)
        * }
        */
       const getAction = (newPayload, isRejected) => ({
+        // include all properties except the "reserved" ones
+        ...(ACTION_CLONE || {}),
+
         // Concatentate the type string property.
-        type: [
-          TYPE,
-          isRejected ? _REJECTED : _FULFILLED
-        ].join(PROMISE_TYPE_DELIMITER),
+        type: [TYPE, isRejected ? _REJECTED : _FULFILLED].join(
+          PROMISE_TYPE_DELIMITER
+        ),
 
         // Include the payload property.
-        ...((newPayload === null || typeof newPayload === 'undefined') ? {} : {
-          payload: newPayload
-        }),
-
-        // If the original action includes a meta property, include it.
-        ...(META !== undefined ? { meta: META } : {}),
+        ...(newPayload === null || typeof newPayload === 'undefined'
+          ? {}
+          : {
+              payload: newPayload
+            }),
 
         // If the action is rejected, include an error property.
-        ...(isRejected ? {
-          error: true
-        } : {})
+        ...(isRejected
+          ? {
+              error: true
+            }
+          : {})
       });
 
       /**
@@ -180,14 +173,14 @@ export default function promiseMiddleware(config = {}) {
        * any data (for optimistic updates) and/or meta from the original action.
        */
       next({
+        // include all properties except the reserved ones
+        ...(ACTION_CLONE || {}),
+
         // Concatentate the type string.
         type: [TYPE, _PENDING].join(PROMISE_TYPE_DELIMITER),
 
         // Include payload (for optimistic updates) if it is defined.
-        ...(data !== undefined ? { payload: data } : {}),
-
-        // Include meta data if it is defined.
-        ...(META !== undefined ? { meta: META } : {})
+        ...(data !== undefined ? { payload: data } : {})
       });
 
       /**
