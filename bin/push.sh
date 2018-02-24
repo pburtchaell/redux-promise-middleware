@@ -11,6 +11,8 @@ setupGit() {
 commitFiles() {
   # Use Travis default environment variables to get the branch name
   # See more: https://docs.travis-ci.com/user/environment-variables/
+  git checkout master
+  git branch -d ${TRAVIS_PULL_REQUEST_BRANCH}
   git checkout -b ${TRAVIS_PULL_REQUEST_BRANCH}
   git add CONTRIBUTORS.md
   git commit --message "Update CONTRIBUTORS.md" --no-verify > /dev/null 2>&1
