@@ -14,14 +14,15 @@ setupGit() {
 commitFiles() {
   # Use Travis default environment variables to get the branch name
   # See more: https://docs.travis-ci.com/user/environment-variables/
-  git checkout ${TRAVIS_PULL_REQUEST_BRANCH}
+  echo "Checking out the branch ${TRAVIS_BRANCH}..."
+  git checkout ${TRAVIS_BRANCH}
   git add CONTRIBUTORS.md
   git commit --message "Update CONTRIBUTORS.md" --no-verify > /dev/null 2>&1
 }
 
 uploadFiles() {
   echo "Uploading commit to GitHub..."
-  git push --quiet --force origin-travis ${TRAVIS_PULL_REQUEST_BRANCH}
+  git push --quiet origin-travis ${TRAVIS_BRANCH}
 }
 
 if [ -n "${TRAVIS_PULL_REQUEST}" ]; then
