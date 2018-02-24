@@ -4,8 +4,8 @@ fetchContributors() {
 
 setupGit() {
   echo "Adding Patrick Burtchaell as a Git user..."
-  git config --global user.email "patrick@pburtchaell.com"
-  git config --global user.name "Patrick Burtchaell"
+  git config --global user.email "builds@travis-ci.org"
+  git config --global user.name "Travis CI"
 }
 
 commitFiles() {
