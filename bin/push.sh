@@ -4,7 +4,7 @@ fetchContributors() {
 
 setupGit() {
   echo "Adding Travis CI as the Git user..."
-  git config --global user.email "builds@travis-ci.org"
+  git config --global user.email "builds@pburtchaell.com"
   git config --global user.name "Travis CI"
 
   echo "Adding Git remote..."
