@@ -2,7 +2,9 @@
 
 [![Dependency Status](https://david-dm.org/pburtchaell/redux-promise-middleware.svg)](https://david-dm.org/pburtchaell/redux-promise-middleware) [![Build Status](https://travis-ci.org/pburtchaell/redux-promise-middleware.svg)](https://travis-ci.org/pburtchaell/redux-promise-middleware) [![Coverage Status](https://coveralls.io/repos/pburtchaell/redux-promise-middleware/badge.svg?branch=master&service=github)](https://coveralls.io/github/pburtchaell/redux-promise-middleware?branch=master)
 
-**It is imperative that pull requests include tests and documentation and issues follow guidelines.** Please be familar with the [GitHub Community Guidelines](https://help.github.com/articles/github-community-guidelines/) before contributing to this project. If you are new to open source, check out this 38 minute course on [how to contribute to open source on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github). It's free! :smile:
+**It is imperative that pull requests include tests and documentation and issues follow guidelines.**
+
+Please be familar with the [GitHub Community Guidelines](https://help.github.com/articles/github-community-guidelines/) before contributing to this project. If you are new to open source, check out this 38 minute course on [how to contribute to open source on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github). It's free! :smile:
 
 ## Getting Started
 
@@ -73,8 +75,3 @@ If you add a new dependency (for the package or development), you will need to u
 ## File organization
 
 All code, including tests, is written in next-generation JavaScript and transpiled using Babel. Source files are located in `src` and transpiled to `dist`, which is gitignored. Tests should be placed in a `test` directory.
-
-## Contributors
-
-- [Patrick Burtchaell](http://github.com/pburtchaell)
-- [Thomas Hudspith-Tatham](https://github.com/tomatau)

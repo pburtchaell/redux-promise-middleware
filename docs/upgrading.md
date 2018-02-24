@@ -194,7 +194,6 @@ const foo = () => ({
 const bar = () => {
   return (dispatch, getState) => {
 
-
     return dispatch({
       type: 'FOO',
       payload: Promise.resolve('foo')
@@ -214,4 +213,4 @@ const bar = () => {
 ```
 
 ---
-Copyright (c) 2017 Patrick Burtchaell. [Code licensed with the MIT License (MIT)](/LICENSE). [Documentation licensed with the CC BY-NC License](LICENSE).
+Copyright (c) 2015-Current Patrick Burtchaell. [Code licensed with the MIT License (MIT)](/LICENSE). [Documentation licensed with the CC BY-NC License](LICENSE).
