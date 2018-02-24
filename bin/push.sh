@@ -20,7 +20,7 @@ uploadFiles() {
   echo "Uploading commit to GitHub..."
   git remote add origin-travis https://${GITHUB_TOKEN}@github.com/pburtchaell/redux-promise-middleware.git > /dev/null 2>&1
 
-  git push --quiet origin-travis HEAD: ${TRAVIS_PULL_REQUEST_BRANCH}
+  git push --quiet origin-travis ${TRAVIS_PULL_REQUEST_BRANCH}
 }
 
 if [ -n "${TRAVIS_PULL_REQUEST}" ]; then
