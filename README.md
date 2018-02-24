@@ -19,15 +19,17 @@ const secondAction = (data) => ({
   payload: data,
 })
 
-const first = (dispatch) => {
-  const response = dispatch({
-    type: 'ONE',
-    payload: Promise.resolve(),
-  })
+const first = () => {
+  return (dispatch) => {
+    const response = dispatch({
+      type: 'ONE',
+      payload: Promise.resolve(),
+    })
 
-  response.then((data) => {
-    dispatch(secondAction(data))
-  })
+    response.then((data) => {
+      dispatch(secondAction(data))
+    })
+  }
 }
 ```
 
