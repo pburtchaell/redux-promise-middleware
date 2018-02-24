@@ -14,10 +14,12 @@ setupGit() {
 commitFiles() {
   # Use Travis default environment variables to get the branch name
   # See more: https://docs.travis-ci.com/user/environment-variables/
-  echo "Checking out the branch ${TRAVIS_BRANCH}..."
-  git checkout ${TRAVIS_BRANCH}
-  git add CONTRIBUTORS.md
-  git commit --message "Update CONTRIBUTORS.md" --no-verify > /dev/null 2>&1
+  if ! git diff-index --quiet HEAD --; then
+    echo "Checking out the branch ${TRAVIS_BRANCH}..."
+    git checkout ${TRAVIS_BRANCH}
+    git add CONTRIBUTORS.md
+    git commit --message "Update CONTRIBUTORS.md" --no-verify > /dev/null 2>&1
+  fi
 }
 
 uploadFiles() {
