@@ -19,6 +19,7 @@ commitFiles() {
     git checkout ${TRAVIS_BRANCH}
     git add CONTRIBUTORS.md
     git commit --message "Update CONTRIBUTORS.md" --no-verify > /dev/null 2>&1
+    uploadFiles
   fi
 }
 
@@ -31,5 +32,4 @@ if [ -n "${TRAVIS_PULL_REQUEST}" ]; then
   fetchContributors
   setupGit
   commitFiles
-  uploadFiles
 fi
