@@ -22,15 +22,13 @@ runIstanbul()
 
 # If on Travis, run tests with Istanbul
 if [ -n "${TRAVIS_JOB_ID}" ]; then
-
-  echo -e "Travis CI job ID set to ${TRAVIS_JOB_ID}. \nRunning tests with Istanbul."
+  echo "Running tests with Istanbul..."
   NODE_ENV=test runIstanbul
 
-  echo "Sending coverage information to Coveralls."
-  cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js || true
+  echo "Sending coverage information to Coveralls..."
+  cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js || true \
+  > /dev/null 2>&1
   rm -rf ./coverage
-
-# Otherwise, when local, run tests normally without Istanbul
 else
   NODE_ENV=test runTests ${REPORTER}
 fi

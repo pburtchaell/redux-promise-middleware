@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "module": "dist/es/index.js",
   "scripts": {
-    "fetch-contributors": "node ./bin/contributors.js",
+    "push-contributors": "./bin/push.sh",
     "prepare": "npm run build",
     "precommit": "echo 'Running pre-commit hooks...' && npm run test",
     "prebuild": "npm run test",
