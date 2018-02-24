@@ -14,7 +14,7 @@ setupGit() {
 commitFiles() {
   # Use Travis default environment variables to get the branch name
   # See more: https://docs.travis-ci.com/user/environment-variables/
-  if ! git diff-index --quiet HEAD --; then
+  if ! git diff-index --quiet HEAD; then
     echo "Checking out the branch ${TRAVIS_BRANCH}..."
     git checkout ${TRAVIS_BRANCH}
     git add CONTRIBUTORS.md
