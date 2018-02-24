@@ -4,8 +4,13 @@ const fs = require('fs');
 // The repository to pull data from
 const REPO = 'pburtchaell/redux-promise-middleware';
 
+const OPTIONS = {
+  id: process.env.GITHUB_CLIENT_ID,
+  secret: process.env.GITHUB_CLIENT_SECRET,
+};
+
 // Get the contributors from GitHub API and generate a Markdown file
-contributorsFromGitHub(REPO, {}, (githubError, data) => {
+contributorsFromGitHub(REPO, OPTIONS, (githubError, data) => {
   if (githubError) {
     throw githubError;
   }
