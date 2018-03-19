@@ -3,7 +3,7 @@ import reducers from './reducers';
 import promiseMiddleware from 'redux-promise-middleware';
 import thunkMiddleware from 'redux-thunk';
 import errorMiddleware from './middleware/error';
-import loggerMiddleware from './middleware/logger';
+import logger from 'redux-logger';
 
 const store = createStore(reducers, {}, applyMiddleware(
   thunkMiddleware,
@@ -11,7 +11,7 @@ const store = createStore(reducers, {}, applyMiddleware(
   // Custom error middleware should go before the promise middleware
   errorMiddleware,
   promiseMiddleware(),
-  loggerMiddleware
+  logger,
 ));
 
 export default store;
