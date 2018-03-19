@@ -27,3 +27,5 @@ With this configuration, given `FOO` async action, the type will be appended wit
   type: 'FOO/PENDING'
 }
 ```
+
+Finally, if you are using a library like [type-to-reducer](https://github.com/tomatau/type-to-reducer), you'll also need to [configure it to handle the custom delimiter]](https://github.com/tomatau/type-to-reducer#custom-type-delimiter).
