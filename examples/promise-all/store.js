@@ -6,14 +6,14 @@ import logger from 'redux-logger';
 
 const reducer = (state = {}, action) => {
   switch (action.type) {
-    case 'GET_POST_PENDING':
+    case 'GET_ALL_PENDING':
       return {
-        isPending: true
+        isPending: true,
       };
 
-    case 'GET_POST_FULFILLED':
+    case 'GET_ALL_FULFILLED':
       return {
-        body: action.payload.body
+        isPending: false,
       };
 
     default:

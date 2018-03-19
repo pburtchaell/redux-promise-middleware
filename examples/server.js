@@ -28,6 +28,10 @@ app.get('/simple', (req, res) => {
   res.sendFile(path.join(__dirname, 'simple', 'index.html'))
 });
 
+app.get('/promise-all', (req, res) => {
+  res.sendFile(path.join(__dirname, 'promise-all', 'index.html'))
+});
+
 // Mock API
 app.use(server.defaults());
 app.use('/api', router);
