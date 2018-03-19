@@ -4,6 +4,7 @@ import store from './store';
 const get = (id) => ({
   type: 'GET',
   payload: new Promise((resolve) => {
+    // "Simulate" a network by adding a delay to each promise
     setTimeout(() => resolve(id), 1000 * id);
   }),
 });
