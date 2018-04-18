@@ -1,11 +1,12 @@
 {
   "name": "redux-promise-middleware",
   "description": "Redux middleware for promises, async functions and conditional optimistic updates",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "main": "dist/index.js",
   "module": "dist/es/index.js",
   "scripts": {
     "push-contributors": "./bin/push.sh",
+    "generate-lockfile": "rm -rf package-lock.json && synp --source-file ./yarn.lock",
     "prepare": "npm run build",
     "precommit": "echo 'Running pre-commit hooks...' && npm run test",
     "prebuild": "npm run test",
@@ -78,7 +79,7 @@
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",
     "react-router": "3.0.5",
-    "redux": "^3.0.4",
+    "redux": "4.0.0",
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.2.2",
     "redux-thunk": "^2.0.1",
@@ -89,6 +90,6 @@
     "webpack-hot-middleware": "^2.18.0"
   },
   "peerDependencies": {
-    "redux": "^2.0.0 || ^3.0.0"
+    "redux": "^2.0.0 || ^3.0.0 || ^4.0.0"
   }
 }
