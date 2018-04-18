@@ -1,8 +1,9 @@
 import isPromise from './isPromise.js';
 
 /**
- * Note to contributors: Please also remember to check and make sure that `index.d.ts` is also up to date with
- * the implementation when you add new features or modify existing ones.
+ * Note to contributors: Please also remember to check and make sure 
+ * that `index.d.ts` is also up to date with the implementation when 
+ * you add new features or modify existing ones.
  */
 
 // The default async action types
