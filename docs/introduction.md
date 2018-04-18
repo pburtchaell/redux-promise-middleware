@@ -82,6 +82,10 @@ const foo = () => ({
 
 That's it!
 
+## TypeScript
+
+`redux-promise-middleware` also supports TypeScript.
+
 ## Further Reading
 
 - [Catching Errors Thrown by Rejected Promises](guides/rejected-promises.md)
