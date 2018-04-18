@@ -6,6 +6,7 @@
   "module": "dist/es/index.js",
   "scripts": {
     "push-contributors": "./bin/push.sh",
+    "generate-lockfile": "rm -rf package-lock.json && synp --source-file ./yarn.lock",
     "prepare": "npm run build",
     "precommit": "echo 'Running pre-commit hooks...' && npm run test",
     "prebuild": "npm run test",
