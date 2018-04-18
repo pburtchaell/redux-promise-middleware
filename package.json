@@ -1,7 +1,7 @@
 {
   "name": "redux-promise-middleware",
   "description": "Redux middleware for promises, async functions and conditional optimistic updates",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "main": "dist/index.js",
   "module": "dist/es/index.js",
   "scripts": {
