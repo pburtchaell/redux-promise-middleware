@@ -33,7 +33,7 @@ const first = () => {
 }
 ```
 
-## Docs and Help
+## Documentation and Help
 
 - [Introduction](/docs/introduction.md)
 - [Guides](/docs/guides/)
@@ -61,7 +61,7 @@ const first = () => {
 - Patrick Burtchaell (pburtchaell):
   - [Twitter](https://twitter.com/pburtchaell)
   - [GitHub](https://github.com/pburtchaell)
-- [Thomas Hudspith-Tatham (tomatau):
+- Thomas Hudspith-Tatham (tomatau):
   - [GitHub](https://github.com/tomatau)
 
 Please reach out to us if you have any questions!
