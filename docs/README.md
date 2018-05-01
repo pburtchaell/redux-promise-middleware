@@ -10,8 +10,6 @@
   - [Use with Reducers](guides/reducers.md)
   - [Use with Redux Actions](guides/redux-actions.md)
   - [Use with Promises Resolved with Null Values](guides/null-values.md)
-- [Introduction](introduction.md)
+- [Introduction](Introduction.md)
 - [Design Principles](guides/design-principles.md)
 
----
-Copyright (c) 2015-current Patrick Burtchaell. [Code licensed with the MIT License (MIT)](/LICENSE). [Documentation licensed with the CC BY-NC License](LICENSE).

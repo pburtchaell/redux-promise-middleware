@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/redux-promise-middleware.svg?style=flat)](https://www.npmjs.com/package/redux-promise-middleware) [![Build Status](https://travis-ci.org/pburtchaell/redux-promise-middleware.svg?branch=master)](https://travis-ci.org/pburtchaell/redux-promise-middleware) [![npm downloads](https://img.shields.io/npm/dm/redux-promise-middleware.svg?style=flat)](https://www.npmjs.com/package/redux-promise-middleware)
 
-Redux promise middleware enables robust handling of async action creators in [Redux](http://redux.js.org): it accepts a promise and dispatches pending, fulfilled and rejected actions.
+Redux Promise Middleware enables robust handling of async action creators in [Redux](http://redux.js.org): it accepts a promise and dispatches pending, fulfilled and rejected actions.
 
 ```js
 const promiseAction = () => ({
@@ -47,7 +47,7 @@ const first = () => {
 ## Releases
 
 - [Releases](https://github.com/pburtchaell/redux-promise-middleware/releases)
-- [Version Upgrade Guide](/docs/upgrading.md)
+- [Version Upgrade Guide](/docs/Upgrading.md)
 
 **Older versions:**
 
@@ -66,5 +66,8 @@ const first = () => {
 
 Please reach out to us if you have any questions!
 
----
-Copyright (c) 2015-Current Patrick Burtchaell. [Code licensed with the MIT License (MIT)](/LICENSE). [Documentation licensed with the CC BY-NC License](https://creativecommons.org/licenses/by-nc/4.0/).
+## License
+
+[Code licensed with the MIT License (MIT)](/LICENSE). 
+
+[Documentation licensed with the CC BY-NC License](https://creativecommons.org/licenses/by-nc/4.0/).
