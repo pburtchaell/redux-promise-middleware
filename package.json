@@ -6,7 +6,7 @@
   "module": "dist/es/index.js",
   "scripts": {
     "push-contributors": "./bin/push.sh",
-    "generate-lockfile": "rm -rf package-lock.json && synp --source-file ./yarn.lock",
+    "generate-lockfile": "rm -rf package-lock.json && `npm bin`/synp --source-file ./yarn.lock",
     "prepare": "npm run build",
     "precommit": "echo 'Running pre-commit hooks...' && npm run test",
     "prebuild": "npm run test",
@@ -17,6 +17,7 @@
     "build-umd-min": "NODE_ENV=production `npm bin`/webpack dist/umd/redux-promise-middleware.min.js",
     "pretest": "npm run lint",
     "test": "./bin/test.sh",
+    "postinstall": "npm run generate-lockfile",
     "lint": "`npm bin`/eslint src/**/*.js examples/**/*.js test/**/*.js",
     "start": "babel-node examples/server.js"
   },
@@ -85,6 +86,7 @@
     "redux-thunk": "^2.0.1",
     "sinon": "^2.3.4",
     "sinon-chai": "^2.11.0",
+    "synp": "^1.2.1",
     "webpack": "^2.6.1",
     "webpack-dev-middleware": "^1.10.2",
     "webpack-hot-middleware": "^2.18.0"
