@@ -92,6 +92,3 @@ That's it!
 - [Use with Reducers](guides/reducers.md)
 - [Optimistic Updates](guides/optimistic-updates.md)
 - [Design Principles](guides/design-principles.md)
-
----
-Copyright (c) 2015-current Patrick Burtchaell. [Code licensed with the MIT License (MIT)](/LICENSE). [Documentation licensed with the CC BY-NC License](LICENSE).
