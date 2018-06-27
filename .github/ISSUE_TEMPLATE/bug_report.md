@@ -1,19 +1,17 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-
 ---
+Hello! :wave: 
 
----
-
-Hello! :wave: This template exists to help you create an issue that is valuable for you, the project, and the GitHub community. :two_hearts:
+This template enables you to open an issue that is valuable for you, the project, and the GitHub community. :two_hearts:
 
 Before submitting an issue, please:
+1. Search for related issues.
+2. Agree the [code of conduct](/.github/CODE_OF_CONDUCT.md).
+3. Read the [contributing guide](/.github/CONTRIBUTING.md).
 
-1. Agree the [code of conduct](/.github/CODE_OF_CONDUCT.md).
-2. Read the [contributing guide](/.github/CONTRIBUTING.md).
-3. Fill out the appropriate issue template.
-
+If you are new to open source, check out this 38 minute course on [how to contribute to open source on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github). It's free! :smile:
 ---
 
 ## Version Number
@@ -23,6 +21,8 @@ If your issue involves other libraries, please include the names and versions of
 
 ## Test Case
 Some code or a fork to help us reproduce the behavior.
+
+Consider creating a [JSBin](https://jsbin.com/?html,output) for the code example.
 
 ## Steps to Reproduce
 Steps to reproduce the behavior:

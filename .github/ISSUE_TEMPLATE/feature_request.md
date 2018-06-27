@@ -1,19 +1,16 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-
 ---
+Hello! :wave: 
 
----
-
-Hello! :wave: This template exists to help you create an issue that is valuable for you, the project, and the GitHub community. :two_hearts:
+This template enables you to open an issue that is valuable for you, the project, and the GitHub community. :two_hearts:
 
 Before submitting an issue, please:
+1. Agree the [Code of Conduct](/.github/CODE_OF_CONDUCT.md).
+2. Read the [Contributing Guide](/.github/CONTRIBUTING.md).
 
-1. Agree the [code of conduct](/.github/CODE_OF_CONDUCT.md).
-2. Read the [contributing guide](/.github/CONTRIBUTING.md).
-3. Fill out the appropriate issue template.
-
+If you are new to open source, check out this 38 minute course on [how to contribute to open source on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github). It's free! :smile:
 ---
 
 ## Problem

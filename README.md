@@ -1,29 +1,31 @@
 # Redux Promise Middleware
 
-[![npm version](https://img.shields.io/npm/v/redux-promise-middleware.svg?style=flat)](https://www.npmjs.com/package/redux-promise-middleware) [![Build Status](https://travis-ci.org/pburtchaell/redux-promise-middleware.svg?branch=master)](https://travis-ci.org/pburtchaell/redux-promise-middleware) [![npm downloads](https://img.shields.io/npm/dm/redux-promise-middleware.svg?style=flat)](https://www.npmjs.com/package/redux-promise-middleware)
+[![Build Status](https://travis-ci.org/pburtchaell/redux-promise-middleware.svg?branch=master)](https://travis-ci.org/pburtchaell/redux-promise-middleware) [![npm downloads](https://img.shields.io/npm/dm/redux-promise-middleware.svg?style=flat)](https://www.npmjs.com/package/redux-promise-middleware)
 
-Redux Promise Middleware enables robust handling of async action creators in [Redux](http://redux.js.org): it accepts a promise and dispatches pending, fulfilled and rejected actions.
+Redux Promise Middleware enables simple, yet robust handling of async action creators in [Redux](http://redux.js.org). 
 
 ```js
-const promiseAction = () => ({
+const asyncAction = () => ({
   type: 'PROMISE',
-  payload: Promise.resolve(),
+  payload: new Promise(...),
 })
 ```
 
-The middleware can also be combined with [Redux Thunk](https://github.com/gaearon/redux-thunk) to chain action creators.
+Given a single action with an async payload, the middleware transforms the action to a separate a pending action and a separate fulfilled/rejected action, representing the states of the async action.
+
+The middleware can be combined with [Redux Thunk](https://github.com/gaearon/redux-thunk) to chain action creators.
 
 ```js
 const secondAction = (data) => ({
-  type: 'TWO',
-  payload: data,
+  type: 'SECOND',
+  payload: {...},
 })
 
-const first = () => {
+const firstAction = () => {
   return (dispatch) => {
     const response = dispatch({
-      type: 'ONE',
-      payload: Promise.resolve(),
+      type: 'FIRST',
+      payload: new Promise(...),
     })
 
     response.then((data) => {
@@ -34,37 +36,36 @@ const first = () => {
 ```
 
 ## Documentation and Help
-
 - [Introduction](/docs/introduction.md)
 - [Guides](/docs/guides/)
 - [Examples](/examples)
 
-## Issues and Pull Requests
+## Issues
+For bug reports and feature requests:
+- [File an issue]()
 
-- [Contributing Guide](/.github/CONTRIBUTING.md)
-- [Code of Conduct](/.github/CODE_OF_CONDUCT.md)
+For help:
+- [Ask a question on StackOverflow](https://stackoverflow.com/questions/tagged/redux-promise-middleware)
 
 ## Releases
-
 - [Releases](https://github.com/pburtchaell/redux-promise-middleware/releases)
-- [Version Upgrade Guide](/docs/Upgrading.md)
+- [Version Upgrading Guide](/docs/upgrading.md)
 
-**Older versions:**
-
+For older versions:
 - [4.x](https://github.com/pburtchaell/redux-promise-middleware/tree/4.4.0)
 - [3.x](https://github.com/pburtchaell/redux-promise-middleware/tree/3.3.0)
 - [2.x](https://github.com/pburtchaell/redux-promise-middleware/tree/2.4.0)
 - [1.x](https://github.com/pburtchaell/redux-promise-middleware/tree/1.0.0)
 
 ## Maintainers
+Please reach out to us if you have any questions or comments.
 
-- Patrick Burtchaell (pburtchaell):
-  - [Twitter](https://twitter.com/pburtchaell)
-  - [GitHub](https://github.com/pburtchaell)
-- Thomas Hudspith-Tatham (tomatau):
-  - [GitHub](https://github.com/tomatau)
+Patrick Burtchaell (pburtchaell):
+- [Twitter](https://twitter.com/pburtchaell)
+- [GitHub](https://github.com/pburtchaell)
 
-Please reach out to us if you have any questions!
+Thomas Hudspith-Tatham (tomatau):
+- [GitHub](https://github.com/tomatau)
 
 ## License
 
