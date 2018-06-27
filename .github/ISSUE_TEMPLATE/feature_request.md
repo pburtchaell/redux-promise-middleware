@@ -1,3 +1,7 @@
+---
+name: Feature request
+about: Suggest an idea for this project
+---
 Hello! :wave: 
 
 This template enables you to open an issue that is valuable for you, the project, and the GitHub community. :two_hearts:
@@ -9,10 +13,14 @@ Before submitting an issue, please:
 If you are new to open source, check out this 38 minute course on [how to contribute to open source on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github). It's free! :smile:
 ---
 
-Before submitting a pull request, please make sure the following is done:
+## Problem
+A clear and concise description of what the problem is and how it relates to the project.
 
-1. Add tests for new functionality or bug fixes, following the [red/green/refactor method](https://en.wikipedia.org/wiki/Test-driven_development#Development_style)
-2. Ensure all tests pass: `npm test`
-3. Update and/or add documentation
+## Solution(s)
+A clear and concise description of what you want to happen.
 
-**In order to merge your Pull Request, tests and documentation are required.** 
+## Alternatives
+A clear and concise description of any alternative solutions or features you've considered.
+
+## Additional Context
+Add any other context or screenshots about the feature request here.
