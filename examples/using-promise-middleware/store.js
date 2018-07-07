@@ -1,18 +1,20 @@
 import { createStore, applyMiddleware } from 'redux';
-import promiseMiddleware from '../../src/index';
-import thunkMiddleware from 'redux-thunk';
-import logger from 'redux-logger';
+import promise from '../../src/index';
+import { createLogger } from 'redux-logger';
 
-const reducer = (state = {}, action) => {
+const defaultState = {
+  isPending: true,
+  image: null,
+};
+
+const reducer = (state = defaultState, action) => {
   switch (action.type) {
-    case 'GET_POST_PENDING':
-      return {
-        isPending: true,
-      };
+    case 'GET_DOG_PENDING': return defaultState;
 
-    case 'GET_POST_FULFILLED':
+    case 'GET_DOG_FULFILLED':
       return {
-        body: action.payload.body,
+        isPending: false,
+        image: action.payload.message,
       };
 
     default: return state;
@@ -20,9 +22,8 @@ const reducer = (state = {}, action) => {
 };
 
 const store = createStore(reducer, {}, applyMiddleware(
-  thunkMiddleware,
-  promiseMiddleware(),
-  logger,
+  promise(),
+  createLogger({ collapsed: true }),
 ));
 
 export default store;

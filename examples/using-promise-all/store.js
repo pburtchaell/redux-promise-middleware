@@ -1,28 +1,28 @@
 import { createStore, applyMiddleware } from 'redux';
-import promiseMiddleware from '../../../src/index';
-import thunkMiddleware from 'redux-thunk';
-import logger from 'redux-logger';
+import promiseMiddleware from '../../src/index';
+import thunk from 'redux-thunk';
+import { createLogger } from 'redux-logger';
 
-const reducer = (state = {}, action) => {
-  switch (action.type) {
-    case 'GET_ALL_PENDING':
-      return {
-        isPending: true,
-      };
+const defaultState = {
+  images: [],
+};
 
-    case 'GET_ALL_FULFILLED':
-      return {
-        isPending: false,
-      };
+const reducer = (state = defaultState, action) => {
+  if (action.payload && action.payload.image) {
+    const { image } = action.payload;
 
-    default: return state;
+    return {
+      images: Array.isArray(state.images) ? [...state.images, image] : [image],
+    };
   }
+
+  return state;
 };
 
 const store = createStore(reducer, {}, applyMiddleware(
-  thunkMiddleware,
+  thunk,
   promiseMiddleware(),
-  logger,
+  createLogger({ collapsed: true }),
 ));
 
 export default store;

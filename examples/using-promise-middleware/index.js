@@ -1,33 +1,41 @@
-import 'isomorphic-fetch';
+/* eslint-disable no-param-reassign */
 import store from './store';
 
-// Request a post from the API with a 1s delay
-const getPost = id => ({
-  type: 'GET_POST',
-  payload: new Promise(resolve => {
-    setTimeout(() => fetch(`/api/posts/${id}`).then(response => {
-      resolve(response.json());
-    }), 1000);
-  })
+/*
+ * Function: getDog
+ * Description: Fetch an image of a dog from the [Dog API](https://dog.ceo/dog-api/)
+ */
+const getDog = () => ({
+  type: 'GET_DOG',
+  payload: fetch('https://dog.ceo/api/breeds/image/random')
+    .then(response => response.json()),
 });
 
+/*
+ * Function: render
+ * Description: Renders the given state to the given HTML DOM node
+ */
+const render = (mount, state) => {
+  if (state.isPending) {
+    mount.innerHTML = 'Loading...';
+  } else if (state.image) {
+    mount.innerHTML = `<img src=${state.image} />`;
+  }
+};
+
+/*
+ * Function: initializes
+ * Description: Renders the initial state of the example
+ */
 const initialize = () => {
   const mount = document.querySelector('#mount');
 
   // Load the post when button is clicked
   const button = document.querySelector('#load');
-  button.addEventListener('click', () => store.dispatch(getPost(1)));
+  button.addEventListener('click', () => store.dispatch(getDog()));
 
-  const render = (state = {}) => {
-    if (state.isPending) {
-      mount.innerHTML = 'Loading post...';
-    } else if (state.body) {
-      mount.innerHTML = state.body;
-    }
-  };
-
-  render();
-  store.subscribe(() => render(store.getState()));
+  render(mount, {});
+  store.subscribe(() => render(mount, store.getState()));
 };
 
 initialize();

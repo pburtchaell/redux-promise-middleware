@@ -1,8 +1,4 @@
-/**
- * webpack.config.js
- * Description: This file encapsulates a config for Webpack used
- * to generate UMD builds.
- */
+// ncapsulates a config for Webpack used to generate UMD builds
 const webpack = require('webpack');
 
 const config = {

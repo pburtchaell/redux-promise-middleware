@@ -1,31 +1,10 @@
+/* eslint-disable no-param-reassign */
+import * as actions from './actions';
 import store from './store';
 
-const get = (id) => ({
-  type: 'GET',
-  payload: new Promise((resolve) => {
-    // "Simulate" a network by adding a delay to each promise
-    setTimeout(() => resolve(id), 1000 * id);
-  }),
-});
-
-const getAll = () => {
-  return (dispatch) => {
-    return dispatch({
-      type: 'GET_ALL',
-      payload: Promise.all([
-        dispatch(get(1)),
-        dispatch(get(2)),
-        dispatch(get(3)),
-      ]),
-    });
-  };
-};
-
 const render = (mount, state) => {
-  if (state.isPending) {
-    mount.innerHTML = 'Loading...';
-  } else {
-    mount.innerHTML = 'Done';
+  if (state.images) {
+    mount.innerHTML = state.images.reduce((html, image) => `${html} <img src=${image} />`, '');
   }
 };
 
@@ -34,7 +13,13 @@ const initialize = () => {
 
   // Load the post when button is clicked
   const button = document.querySelector('#load');
-  button.addEventListener('click', () => store.dispatch(getAll()));
+  button.addEventListener('click', () => {
+    store.dispatch(actions.getAnimals([
+      actions.getFirstDog,
+      actions.getAnotherDog,
+      actions.getFinalDog,
+    ]));
+  });
 
   render(mount, {});
   store.subscribe(() => render(mount, store.getState()));

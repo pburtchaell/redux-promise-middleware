@@ -41,15 +41,14 @@ const firstAction = () => {
 - [Examples](/examples)
 
 ## Issues
-For bug reports and feature requests:
-- [File an issue]()
+For bug reports and feature requests, [file an issue on GitHub](https://github.com/pburtchaell/redux-promise-middleware/issues/new).
 
-For help:
-- [Ask a question on StackOverflow](https://stackoverflow.com/questions/tagged/redux-promise-middleware)
+For help, [ask a question on StackOverflow](https://stackoverflow.com/questions/tagged/redux-promise-middleware).
 
 ## Releases
-- [Releases](https://github.com/pburtchaell/redux-promise-middleware/releases)
-- [Version Upgrading Guide](/docs/upgrading.md)
+- [Release History](https://github.com/pburtchaell/redux-promise-middleware/releases)
+- [Upgrade from 4.x to 5.0.0](/upgrading/v5.md)
+- [Upgrade from 3.x to 4.0.0](/upgrading/v4.md)
 
 For older versions:
 - [4.x](https://github.com/pburtchaell/redux-promise-middleware/tree/4.4.0)

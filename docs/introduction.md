@@ -84,10 +84,9 @@ That's it!
 
 ## TypeScript
 
-`redux-promise-middleware` also supports TypeScript.
+The middleware does support TypeScript.
 
 ## Further Reading
-
 - [Catching Errors Thrown by Rejected Promises](guides/rejected-promises.md)
 - [Use with Reducers](guides/reducers.md)
 - [Optimistic Updates](guides/optimistic-updates.md)

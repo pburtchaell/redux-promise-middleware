@@ -7,7 +7,7 @@ runTests()
   `npm bin`/mocha -b \
   --compilers js:babel-core/register \
   --reporter ${1-spec} \
-  test/setup.js test/*.js examples/**/*.spec.js
+  test/setup.js test/*.js
 }
 
 # Description: run tests with Istanbul coverage
@@ -17,7 +17,7 @@ runIstanbul()
   `npm bin`/_mocha \
   -- -u exports --compilers js:babel-core/register \
   --report lcovonly \
-  test/setup.js test/*.js examples/**/*.spec.js
+  test/setup.js test/*.js
 }
 
 # If on Travis, run tests with Istanbul
