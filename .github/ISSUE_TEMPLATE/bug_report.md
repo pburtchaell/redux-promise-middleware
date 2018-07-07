@@ -12,6 +12,7 @@ Before submitting an issue, please:
 3. Read the [contributing guide](/.github/CONTRIBUTING.md).
 
 If you are new to open source, check out this 38 minute course on [how to contribute to open source on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github). It's free! :smile:
+
 ---
 
 ## Version Number
