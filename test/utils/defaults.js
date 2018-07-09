@@ -8,6 +8,9 @@ export const types = {
   OPTIMISTIC_UPDATE: 'OPTIMISTIC_UPDATE',
   PROMISE_FIELD: 'PROMISE_FIELD',
   BLUEBIRD: 'BLUEBIRD',
+  BOOLEAN_PROMISE: 'BOOLEAN_PROMISE',
+  NULL_PROMISE: 'NULL_PROMISE',
+  NUMBER_PROMISE: 'NUMBER_PROMISE',
   ASYNC_FUNCTION_WILL_RESOLVE: 'ASYNC_FUNCTION_WILL_RESOLVE',
   ASYNC_FUNCTION_WILL_REJECT: 'ASYNC_FUNCTION_WILL_REJECT',
   ASYNC_FUNCTION_PROMISE_FIELD: 'ASYNC_FUNC_PROMISE_FIELD',
@@ -15,6 +18,9 @@ export const types = {
   PENDING: 'PENDING',
   PENDING_OPTIMISTIC_UPDATE: 'PENDING_OPTIMISTIC_UPDATE',
   FULFILLED: 'FULFILLED',
+  FULFILLED_BOOLEAN_PROMISE: 'FULFILLED_BOOLEAN_PROMISE',
+  FULFILLED_NULL_PROMISE: 'FULFILLED_NULL_PROMISE',
+  FULFILLED_NUMBER_PROMISE: 'FULFILLED_NUMBER_PROMISE',
   REJECTED: 'REJECTED',
 };
 
@@ -55,6 +61,18 @@ const actions = {
     type: defaultAction.type,
     payload: Bluebird.resolve(defaultPayload),
   }),
+  [types.BOOLEAN_PROMISE]: () => ({
+    type: defaultAction.type,
+    payload: Promise.resolve(true),
+  }),
+  [types.NULL_PROMISE]: () => ({
+    type: defaultAction.type,
+    payload: Promise.resolve(null),
+  }),
+  [types.NUMBER_PROMISE]: () => ({
+    type: defaultAction.type,
+    payload: Promise.resolve(21),
+  }),
   [types.ASYNC_FUNCTION_WILL_RESOLVE]: () => ({
     type: defaultAction.type,
     async payload() {
@@ -94,6 +112,18 @@ const actions = {
   [types.FULFILLED]: () => ({
     type: `${defaultAction.type}_FULFILLED`,
     payload: defaultPayload,
+  }),
+  [types.FULFILLED_BOOLEAN_PROMISE]: () => ({
+    type: `${defaultAction.type}_FULFILLED`,
+    payload: true,
+  }),
+  [types.FULFILLED_NULL_PROMISE]: () => ({
+    type: `${defaultAction.type}_FULFILLED`,
+    payload: undefined,
+  }),
+  [types.FULFILLED_NUMBER_PROMISE]: () => ({
+    type: `${defaultAction.type}_FULFILLED`,
+    payload: 21,
   }),
   [types.REJECTED]: () => ({
     type: `${defaultAction.type}_REJECTED`,
