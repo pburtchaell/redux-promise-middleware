@@ -85,3 +85,20 @@ test('pending action contains given meta of type boolean', () => {
   expect(firstSpy.mock.calls[0]).toEqual([dispatched]);
   expect(lastSpy.mock.calls[0]).toEqual([expected]);
 });
+
+test('pending action dispatched with custom type', (done) => {
+  const { dispatch, lastSpy } = createStore({
+    promiseTypeSuffixes: ['LOADING', undefined, undefined]
+  });
+
+  const dispatched = getActionCreator(types.WILL_RESOLVE)();
+  const expected = {
+    ...getActionCreator(types.PENDING)(),
+    type: 'ACTION_LOADING',
+  };
+
+  return dispatch(dispatched).then(() => {
+    expect(lastSpy.mock.calls[0]).toEqual([expected]);
+    done();
+  });
+});
