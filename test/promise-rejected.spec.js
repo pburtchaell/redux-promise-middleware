@@ -67,7 +67,7 @@ test('promise returns original Error instance', () => {
   });
 });
 
-it('rejected action dispatched with custom type', () => {
+test('rejected action dispatched with custom type', () => {
   const { dispatch, lastSpy } = createStore({
     promiseTypeSuffixes: [undefined, undefined, 'ERROR']
   });
