@@ -13,7 +13,7 @@
     "build-umd": "`npm bin`/webpack dist/umd/redux-promise-middleware.js",
     "build-umd-min": "NODE_ENV=production `npm bin`/webpack dist/umd/redux-promise-middleware.min.js",
     "pretest": "npm run lint",
-    "test": "./test/test.sh",
+    "test": "`npm bin`/jest",
     "lint": "`npm bin`/eslint src/**/*.js test/**/*.js",
     "start": "babel-node examples/server.js"
   },
@@ -45,29 +45,28 @@
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.4",
-    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "bluebird": "^3.5.0",
-    "chai": "^3.5.0",
     "coveralls": "^2.13.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.3.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.1",
-    "isomorphic-fetch": "^2.2.1",
     "istanbul": "^1.0.0-alpha.2",
-    "mocha": "^3.4.2",
-    "mocha-lcov-reporter": "^1.2.0",
+    "jest": "^23.3.0",
     "redux": "4.0.0",
-    "redux-mock-store": "^1.2.2",
-    "redux-thunk": "^2.0.1",
-    "sinon": "^2.3.4",
-    "sinon-chai": "^2.11.0",
     "webpack": "^2.6.1"
   },
   "peerDependencies": {
     "redux": "^2.0.0 || ^3.0.0 || ^4.0.0"
+  },
+  "jest": {
+    "verbose": true,
+    "moduleNameMapper": {
+      "redux-promise-middleware": "<rootDir>/src/index.js"
+    }
   }
 }
