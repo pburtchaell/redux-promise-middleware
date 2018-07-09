@@ -10,7 +10,7 @@ beforeEach(() => { store = createStore(); });
  * property has a Promise object as the value. This is considered an "implicit"
  * promise payload.
  */
-test('Dispatches a pending action for "implicit" promise payload', () => {
+test('pending action dispatched for async payload', () => {
   const { dispatch, firstSpy, lastSpy } = store;
 
   const dispatched = getActionCreator(types.WILL_RESOLVE)();
@@ -28,11 +28,57 @@ test('Dispatches a pending action for "implicit" promise payload', () => {
  * as the value. This is considered an "explicit" promise payload because
  * the `promise` property explicitly describes the value.
  */
-test('Dispatches a pending action for "explicit" promise payload', () => {
+test('pending action dispatched for async payload.promise', () => {
   const { dispatch, firstSpy, lastSpy } = store;
 
   const dispatched = getActionCreator(types.PROMISE_FIELD)();
   const expected = getActionCreator(types.PENDING)();
+
+  dispatch(dispatched);
+
+  expect(firstSpy.mock.calls[0]).toEqual([dispatched]);
+  expect(lastSpy.mock.calls[0]).toEqual([expected]);
+});
+
+test('pending action contains given meta of type object', () => {
+  const { dispatch, firstSpy, lastSpy } = store;
+
+  const meta = {
+    foo: 'foo',
+    bar: 'bar',
+    baz: 'baz',
+  };
+
+  const dispatched = {
+    ...getActionCreator(types.WILL_RESOLVE)(),
+    meta,
+  };
+
+  const expected = {
+    ...getActionCreator(types.PENDING)(),
+    meta,
+  };
+
+  dispatch(dispatched);
+
+  expect(firstSpy.mock.calls[0]).toEqual([dispatched]);
+  expect(lastSpy.mock.calls[0]).toEqual([expected]);
+});
+
+test('pending action contains given meta of type boolean', () => {
+  const { dispatch, firstSpy, lastSpy } = store;
+
+  const meta = true;
+
+  const dispatched = {
+    ...getActionCreator(types.WILL_RESOLVE)(),
+    meta,
+  };
+
+  const expected = {
+    ...getActionCreator(types.PENDING)(),
+    meta,
+  };
 
   dispatch(dispatched);
 
