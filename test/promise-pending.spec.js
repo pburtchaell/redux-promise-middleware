@@ -10,7 +10,7 @@ beforeEach(() => { store = createStore(); });
  * property has a Promise object as the value. This is considered an "implicit"
  * promise payload.
  */
-test('pending action dispatched for async payload', () => {
+test('pending action dispatched for promise - payload', () => {
   const { dispatch, firstSpy, lastSpy } = store;
 
   const dispatched = getActionCreator(types.WILL_RESOLVE)();
@@ -28,7 +28,7 @@ test('pending action dispatched for async payload', () => {
  * as the value. This is considered an "explicit" promise payload because
  * the `promise` property explicitly describes the value.
  */
-test('pending action dispatched for async payload.promise', () => {
+test('pending action dispatched for promise - payload.promise', () => {
   const { dispatch, firstSpy, lastSpy } = store;
 
   const dispatched = getActionCreator(types.PROMISE_FIELD)();

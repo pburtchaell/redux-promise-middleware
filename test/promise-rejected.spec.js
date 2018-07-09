@@ -5,7 +5,7 @@ let store;
 
 beforeEach(() => { store = createStore(); });
 
-test('Errors are caught with Promise#catch', () => {
+test('errors caught with Promise#catch method', (done) => {
   const { dispatch, lastSpy } = store;
 
   const dispatched = getActionCreator(types.WILL_REJECT)();
@@ -22,10 +22,11 @@ test('Errors are caught with Promise#catch', () => {
     })
     .then(() => {
       expect(promiseSpy.mock.calls.length).toBe(0);
+      done();
     });
 });
 
-test('Errors are caught with Promise#then', () => {
+test('errors caught with Promise#then method', (done) => {
   const { dispatch, lastSpy } = store;
 
   const dispatched = getActionCreator(types.WILL_REJECT)();
@@ -41,10 +42,11 @@ test('Errors are caught with Promise#then', () => {
     })
     .then(() => {
       expect(promiseSpy.mock.calls.length).toBe(0);
+      done();
     });
 });
 
-it('Rejected action includes `error` property with value of `true`', () => {
+test('rejected action dispatched with truthy error property', () => {
   const { dispatch, lastSpy } = store;
 
   const action = dispatch(getActionCreator(types.WILL_REJECT)());
@@ -54,7 +56,7 @@ it('Rejected action includes `error` property with value of `true`', () => {
   });
 });
 
-it('Promise returns original rejected instance of Error', () => {
+test('promise returns original Error instance', () => {
   const { dispatch } = store;
 
   const dispatched = getActionCreator(types.WILL_REJECT)();
@@ -65,7 +67,7 @@ it('Promise returns original rejected instance of Error', () => {
   });
 });
 
-it('allows global customisation of rejected action `type`', () => {
+it('rejected action dispatched with custom type', () => {
   const { dispatch, lastSpy } = createStore({
     promiseTypeSuffixes: [undefined, undefined, 'ERROR']
   });

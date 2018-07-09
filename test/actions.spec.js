@@ -5,16 +5,14 @@ let store;
 
 beforeEach(() => { store = createStore(); });
 
-describe('When action does not have an async payload', () => {
-  test('Invokes store#next', () => {
-    const { dispatch, lastSpy } = store;
+test('dispatches sync actions with no mutations', () => {
+  const { dispatch, lastSpy } = store;
 
-    const dispatched = getActionCreator(types.DEFAULT)();
-    const expected = getActionCreator(types.DEFAULT)();
+  const dispatched = getActionCreator(types.DEFAULT)();
+  const expected = getActionCreator(types.DEFAULT)();
 
-    dispatch(dispatched);
+  dispatch(dispatched);
 
-    expect(lastSpy.mock.calls[0]).toEqual([expected]);
-    expect(lastSpy.mock.calls.length).toEqual(1);
-  });
+  expect(lastSpy.mock.calls[0]).toEqual([expected]);
+  expect(lastSpy.mock.calls.length).toEqual(1);
 });

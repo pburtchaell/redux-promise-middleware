@@ -6,7 +6,7 @@ import createStore from './utils/createStore';
  * a promise library is used, adding methods to the promise class, the
  * middleware should not remove those methods.
  */
-test('Propagates the original promise', () => {
+test('original promise is propagated', () => {
   const { dispatch, lastSpy } = createStore();
 
   const dispatched = getActionCreator(types.BLUEBIRD)();
