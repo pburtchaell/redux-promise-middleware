@@ -7,6 +7,7 @@ export const types = {
   WILL_REJECT: 'WILL_REJECT',
   OPTIMISTIC_UPDATE: 'OPTIMISTIC_UPDATE',
   PROMISE_FIELD: 'PROMISE_FIELD',
+  META_FIELD: 'META_FIELD',
   BLUEBIRD: 'BLUEBIRD',
   BOOLEAN_PROMISE: 'BOOLEAN_PROMISE',
   NULL_PROMISE: 'NULL_PROMISE',
@@ -16,8 +17,10 @@ export const types = {
   ASYNC_FUNCTION_PROMISE_FIELD: 'ASYNC_FUNC_PROMISE_FIELD',
   ASYNC_FUNCTION_OPTIMISTIC_UPDATE: 'ASYNC_FUNCTION_OPTIMISTIC_UPDATE',
   PENDING: 'PENDING',
+  PENDING_META_FIELD: 'PENDING_META_FIELD',
   PENDING_OPTIMISTIC_UPDATE: 'PENDING_OPTIMISTIC_UPDATE',
   FULFILLED: 'FULFILLED',
+  FULFILLED_META_FIELD: 'FULFILLED_META_FIELD',
   FULFILLED_BOOLEAN_PROMISE: 'FULFILLED_BOOLEAN_PROMISE',
   FULFILLED_NULL_PROMISE: 'FULFILLED_NULL_PROMISE',
   FULFILLED_NUMBER_PROMISE: 'FULFILLED_NUMBER_PROMISE',
@@ -56,6 +59,11 @@ const actions = {
     payload: {
       promise: Promise.resolve(defaultPayload),
     },
+  }),
+  [types.META_FIELD]: () => ({
+    type: defaultAction.type,
+    payload: Promise.resolve(defaultPayload),
+    meta: defaultMetadata,
   }),
   [types.BLUEBIRD]: () => ({
     type: defaultAction.type,
@@ -105,6 +113,10 @@ const actions = {
   [types.PENDING]: () => ({
     type: `${defaultAction.type}_PENDING`,
   }),
+  [types.PENDING_META_FIELD]: () => ({
+    type: `${defaultAction.type}_PENDING`,
+    meta: defaultMetadata,
+  }),
   [types.PENDING_OPTIMISTIC_UPDATE]: () => ({
     type: `${defaultAction.type}_PENDING`,
     payload: defaultMetadata,
@@ -112,6 +124,11 @@ const actions = {
   [types.FULFILLED]: () => ({
     type: `${defaultAction.type}_FULFILLED`,
     payload: defaultPayload,
+  }),
+  [types.FULFILLED_META_FIELD]: () => ({
+    type: `${defaultAction.type}_FULFILLED`,
+    payload: defaultPayload,
+    meta: defaultMetadata,
   }),
   [types.FULFILLED_BOOLEAN_PROMISE]: () => ({
     type: `${defaultAction.type}_FULFILLED`,
