@@ -18,13 +18,20 @@ const defaultTypes = [PENDING, FULFILLED, REJECTED];
  * object and returns the middleware.
  */
 export default function promiseMiddleware(config = {}) {
-  const PROMISE_TYPE_SUFFIXES = config.promiseTypeSuffixes || defaultTypes;
-  const PROMISE_TYPE_DELIMITER = config.promiseTypeDelimiter || '_';
+  let { dispatch, promiseTypeSuffixes, promiseTypeDelimiter } = config;
+
+  const PROMISE_TYPE_SUFFIXES = promiseTypeSuffixes || defaultTypes;
+  const PROMISE_TYPE_DELIMITER = promiseTypeDelimiter || '_';
+
+  if(dispatch && typeof dispatch === 'function') return fn;
 
   return ref => {
-    const { dispatch } = ref;
+    dispatch = ref.dispatch;
+    return fn;
+  }
 
-    return next => action => {
+  function fn(next) {
+    return action => {
 
       /**
        * Instantiate variables to hold:
@@ -202,5 +209,5 @@ export default function promiseMiddleware(config = {}) {
        */
       return promise.then(handleFulfill, handleReject);
     };
-  };
+  }
 }
