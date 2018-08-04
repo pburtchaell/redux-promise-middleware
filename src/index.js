@@ -13,25 +13,18 @@ export const REJECTED = 'REJECTED';
 const defaultTypes = [PENDING, FULFILLED, REJECTED];
 
 /**
- * Function: promiseMiddleware
+ * Function: createPromise
  * Description: The main promiseMiddleware accepts a configuration
  * object and returns the middleware.
  */
-export default function promiseMiddleware(config = {}) {
-  let { dispatch, promiseTypeSuffixes, promiseTypeDelimiter } = config;
-
-  const PROMISE_TYPE_SUFFIXES = promiseTypeSuffixes || defaultTypes;
-  const PROMISE_TYPE_DELIMITER = promiseTypeDelimiter || '_';
-
-  if(dispatch && typeof dispatch === 'function') return fn;
+export function createPromise(config = {}) {
+  const PROMISE_TYPE_SUFFIXES = config.promiseTypeSuffixes || defaultTypes;
+  const PROMISE_TYPE_DELIMITER = config.promiseTypeDelimiter || '_';
 
   return ref => {
-    dispatch = ref.dispatch;
-    return fn;
-  }
+    const { dispatch } = ref;
 
-  function fn(next) {
-    return action => {
+    return next => action => {
 
       /**
        * Instantiate variables to hold:
@@ -209,5 +202,29 @@ export default function promiseMiddleware(config = {}) {
        */
       return promise.then(handleFulfill, handleReject);
     };
+  };
+}
+
+/**
+ * 
+ * @param {Object} middlewareAPI An object with dispatch() and getState().
+ * @return {Function} return a promiseMiddleware with default config.
+ */
+export default function promiseMiddleware({dispatch} = {}) {
+
+  if(typeof dispatch === 'function') {
+    return createPromise()({dispatch});
   }
+  
+  // If calling promiseMiddleware() without dispatch function, throwing new Error.
+  console.error(`
+    [redux-promise-middleware] BREAKING CHANGE
+    [redux-promise-middleware] Since current version redux-promise-middleware exports
+    [redux-promise-middleware] by default promiseMiddleware with default settings.
+    [redux-promise-middleware] If you want to get a promiseMiddleware with custom config, 
+    [redux-promise-middleware] please change
+    [redux-promise-middleware] import createPromise from 'redux-promise-middleware'
+    [redux-promise-middleware] to
+    [redux-promise-middleware] import { createPromise } from 'redux-promise-middleware'
+  `);
 }

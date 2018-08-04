@@ -1,0 +1,13 @@
+{
+  "main": "index.js",
+  "scripts": {
+    "start": "`npm bin`/parcel index.html"
+  },
+  "dependencies": {
+    "redux": "^4.0.0",
+    "redux-logger": "^3.0.6"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.9.3"
+  }
+}
