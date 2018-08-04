@@ -6,3 +6,4 @@ node_modules/
 .coveralls.yml
 .DS_Store
 *.log
+**/*.dist.js

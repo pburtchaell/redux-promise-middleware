@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-import promise from '../../src/index';
+import reduxPromise from '../../src/index';
 import { createLogger } from 'redux-logger';
 
 const defaultState = {
@@ -22,7 +22,7 @@ const reducer = (state = defaultState, action) => {
 };
 
 const store = createStore(reducer, {}, applyMiddleware(
-  promise(),
+  reduxPromise,
   createLogger({ collapsed: true }),
 ));
 
