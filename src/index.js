@@ -206,17 +206,16 @@ export function createPromise(config = {}) {
 }
 
 /**
- * 
  * @param {Object} middlewareAPI An object with dispatch() and getState().
- * @return {Function} return a promiseMiddleware with default config.
  */
-export default function promiseMiddleware({dispatch} = {}) {
+export default function promiseMiddleware({ dispatch } = {}) {
 
-  if(typeof dispatch === 'function') {
-    return createPromise()({dispatch});
+  if (typeof dispatch === 'function') {
+    return createPromise()({ dispatch });
   }
-  
+
   // If calling promiseMiddleware() without dispatch function, throwing new Error.
+  // eslint-disable-next-line no-console
   console.error(`
     [redux-promise-middleware] BREAKING CHANGE
     [redux-promise-middleware] Since current version redux-promise-middleware exports

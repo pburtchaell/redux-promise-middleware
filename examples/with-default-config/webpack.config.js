@@ -5,4 +5,4 @@ module.exports = {
     path: __dirname,
     filename: 'dist.js'
   }
-}
+};
