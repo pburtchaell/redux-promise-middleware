@@ -5,7 +5,7 @@ import store from './store';
  * Function: getDog
  * Description: Fetch an image of a dog from the [Dog API](https://dog.ceo/dog-api/)
  */
-const getDog = () => ({
+const getDogImage = () => ({
   type: 'GET-DOG',
   payload: fetch('https://dog.ceo/api/breeds/image/random')
     .then(response => response.json()),
@@ -32,7 +32,7 @@ const initialize = () => {
 
   // Load the post when button is clicked
   const button = document.querySelector('#load');
-  button.addEventListener('click', () => store.dispatch(getDog()));
+  button.addEventListener('click', () => store.dispatch(getDogImage()));
 
   render(mount, {});
   store.subscribe(() => render(mount, store.getState()));
