@@ -9,4 +9,4 @@ In the example, the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API
 - Clone this repository to your computer
 - Open the folder for this example
 - Run `npm i` to install dependencies
-- Open `npm start` in a web browser
+- Run `npm start`, then auto open in web browser
