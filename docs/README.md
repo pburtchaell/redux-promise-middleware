@@ -13,6 +13,7 @@
 - [Use with Async/Await](guides/async-await.md)
 - [Use with Reducers](guides/reducers.md)
 - [Use with Redux Actions](guides/redux-actions.md)
+- [Use with Redux Promise Actions](guides/redux-promise-middleware-actions.md)
 - [Use with Promises Resolved with Null Values](guides/null-values.md)
 
 ## Upgrade Guides
