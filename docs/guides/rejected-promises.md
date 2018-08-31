@@ -45,7 +45,7 @@ Please note this example requires [Redux Thunk](https://github.com/gaearon/redux
 
 In some cases, it might make sense to "globally" catch all errors or all errors of a certain action type. To give an example, you might want to show a alert modal whenever an error is thrown.
 
-[There is an example of how this middleware would work](https://github.com/pburtchaell/redux-promise-middleware/blob/master/examples/complex/middleware/error.js). Note that any middleware you write will see all rejected promises before they're passed up to action creators for handling.
+[There is an example of how this middleware would work](https://github.com/pburtchaell/redux-promise-middleware/tree/master/examples/catching-errors-with-middleware/middleware.js). Note that any middleware you write will see all rejected promises before they're passed up to action creators for handling.
 
 ## The unhandledrejection Event
 
