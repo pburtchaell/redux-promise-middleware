@@ -29,10 +29,5 @@
   },
   "plugins": [
     "react"
-  ],
-  "globals": {
-    "expect": true,
-    "chai": true,
-    "sinon": true
-  }
+  ]
 }
