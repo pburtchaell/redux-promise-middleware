@@ -47,8 +47,8 @@ For help, [ask a question on StackOverflow](https://stackoverflow.com/questions/
 
 ## Releases
 - [Release History](https://github.com/pburtchaell/redux-promise-middleware/releases)
-- [Upgrade from 4.x to 5.0.0](/upgrading/v5.md)
-- [Upgrade from 3.x to 4.0.0](/upgrading/v4.md)
+- [Upgrade from 4.x to 5.0.0](docs/upgrading/v5.md)
+- [Upgrade from 3.x to 4.0.0](docs/upgrading/v4.md)
 
 For older versions:
 - [4.x](https://github.com/pburtchaell/redux-promise-middleware/tree/4.4.0)

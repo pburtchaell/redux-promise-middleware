@@ -9,6 +9,7 @@
 - [Chaining Actions](guides/chaining-actions.md)
 - [Comparison to other promise middleware](guides/comparison.md)
 - [Custom Type Delimiters](guides/custom-delimiters.md)
+- [Custom Types](guides/custom-suffixes.md)
 - [Optimistic Updates](guides/optimistic-updates.md)
 - [Use with Async/Await](guides/async-await.md)
 - [Use with Reducers](guides/reducers.md)
