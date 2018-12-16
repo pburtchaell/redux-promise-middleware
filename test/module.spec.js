@@ -1,4 +1,6 @@
-import promise, { createPromise, PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
+import promise, {
+    createPromise, PENDING, FULFILLED, REJECTED
+} from 'redux-promise-middleware';
 
 const middleware = createPromise();
 

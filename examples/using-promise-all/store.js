@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
-import promise from '../../src/index';
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
+import promise from '../../src/index';
 
 const defaultState = {
   images: [],
