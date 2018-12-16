@@ -1,9 +1,13 @@
-import promiseMiddleware, { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
+import promise, { createPromise, PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
 
-const middleware = promiseMiddleware();
+const middleware = createPromise();
 
 test('module exports function', () => {
   expect(middleware.length).toBe(1);
+});
+
+test('module exports middleware with defaults', () => {
+  expect(promise.length).toBe(0);
 });
 
 test('module exports promise types', () => {

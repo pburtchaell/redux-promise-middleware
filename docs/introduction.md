@@ -22,7 +22,7 @@ Import the middleware and include it in `applyMiddleware` when creating the Redu
 import promiseMiddleware from 'redux-promise-middleware'
 
 composeStoreWithMiddleware = applyMiddleware(
-  promiseMiddleware(),
+  promiseMiddleware,
 )(createStore)
 ```
 
@@ -90,4 +90,5 @@ The middleware does support TypeScript.
 - [Catching Errors Thrown by Rejected Promises](guides/rejected-promises.md)
 - [Use with Reducers](guides/reducers.md)
 - [Optimistic Updates](guides/optimistic-updates.md)
+- [Custom Types](guides/custom-suffixes.md)
 - [Design Principles](guides/design-principles.md)

@@ -8,7 +8,7 @@ const reducer = (state) => state;
 // Custom error middleware should go before the promise middleware
 const store = createStore(reducer, null, applyMiddleware(
   thunk,
-  promise(),
+  promise,
   createLogger({ collapsed: true }),
 ));
 

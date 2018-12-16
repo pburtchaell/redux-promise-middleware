@@ -14,7 +14,7 @@ import { getDog } from './actions';
 const reducer = asyncReducer(getDog);
 
 const store = createStore(reducer, {}, applyMiddleware(
-  promise(),
+  promise,
   createLogger({ collapsed: true }),
 ));
 
