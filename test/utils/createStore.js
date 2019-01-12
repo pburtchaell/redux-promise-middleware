@@ -1,5 +1,5 @@
 import { createStore as createReduxStore, applyMiddleware } from 'redux';
-import promiseMiddleware from 'redux-promise-middleware';
+import { createPromise } from 'redux-promise-middleware';
 import spyMiddleware from './spyMiddleware';
 
 /*
@@ -13,7 +13,7 @@ const createStore = (config, restMiddlewares = []) => {
 
   const middlewares = [
     spyMiddleware(firstSpy),
-    promiseMiddleware(config),
+    createPromise(config),
     spyMiddleware(lastSpy),
     ...restMiddlewares,
   ];

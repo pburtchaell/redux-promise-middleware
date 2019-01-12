@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
-import promiseMiddleware from '../../src/index';
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
+import promise from '../../src/index';
 
 const defaultState = {
   images: [],
@@ -21,7 +21,7 @@ const reducer = (state = defaultState, action) => {
 
 const store = createStore(reducer, {}, applyMiddleware(
   thunk,
-  promiseMiddleware(),
+  promise,
   createLogger({ collapsed: true }),
 ));
 

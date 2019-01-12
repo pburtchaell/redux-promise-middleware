@@ -22,7 +22,7 @@ const reducer = (state = defaultState, action) => {
 };
 
 const store = createStore(reducer, {}, applyMiddleware(
-  promise(),
+  promise,
   createLogger({ collapsed: true }),
 ));
 

@@ -13,11 +13,11 @@ export const REJECTED = 'REJECTED';
 const defaultTypes = [PENDING, FULFILLED, REJECTED];
 
 /**
- * Function: promiseMiddleware
- * Description: The main promiseMiddleware accepts a configuration
+ * Function: createPromise
+ * Description: The main createPromise accepts a configuration
  * object and returns the middleware.
  */
-export default function promiseMiddleware(config = {}) {
+export function createPromise(config = {}) {
   const PROMISE_TYPE_SUFFIXES = config.promiseTypeSuffixes || defaultTypes;
   const PROMISE_TYPE_DELIMITER = config.promiseTypeDelimiter || '_';
 
@@ -203,4 +203,25 @@ export default function promiseMiddleware(config = {}) {
       return promise.then(handleFulfill, handleReject);
     };
   };
+}
+
+
+// eslint-disable-next-line consistent-return
+export default function promiseMiddleware({ dispatch } = {}) {
+
+  if (typeof dispatch === 'function') {
+    return createPromise()({ dispatch });
+  }
+
+  // eslint-disable-next-line no-console
+  console.error(`
+    [redux-promise-middleware] BREAKING CHANGE
+    [redux-promise-middleware] The current version redux-promise-middleware exports
+    [redux-promise-middleware] the promiseMiddleware with default settings.
+    [redux-promise-middleware] If you want to get a promiseMiddleware with custom config, 
+    [redux-promise-middleware] please change
+    [redux-promise-middleware] import createPromise from 'redux-promise-middleware'
+    [redux-promise-middleware] to
+    [redux-promise-middleware] import { createPromise } from 'redux-promise-middleware'
+  `);
 }
