@@ -209,16 +209,25 @@ export default function middleware({ dispatch } = {}) {
     return createPromise()({ dispatch });
   }
 
-  // eslint-disable-next-line no-console
-  console.error(`
-    [redux-promise-middleware] BREAKING CHANGE
-    [redux-promise-middleware] The current version redux-promise-middleware exports
-    [redux-promise-middleware] the promiseMiddleware with default settings.
-    [redux-promise-middleware] If you want to get a promiseMiddleware with custom config, 
-    [redux-promise-middleware] please change
-    [redux-promise-middleware] import createPromise from 'redux-promise-middleware'
-    [redux-promise-middleware] to
-    [redux-promise-middleware] import { createPromise } from 'redux-promise-middleware'
-  `);
+  if (process && process.env && (process.env.NODE_ENV === 'development' || 'test')) {
+    // eslint-disable-next-line no-console
+    console.warn(`Redux Promise Middleware: As of version 6.0.0, the \
+middleware library supports both preconfigured and custom configured \
+middleware. To use a custom configuration, use the "createPromise" export \
+and call this function with your configuration property. To use a \
+preconfiguration, use the default export. For more help, check the upgrading \
+guide: https://docs.psb.codes/redux-promise-middleware/upgrade-guides/v6
+
+For custom configuration:
+import { createPromise } from 'redux-promise-middleware';
+const promise = createPromise({ types: { fulfilled: 'success' } });
+applyMiddleware(promise);
+
+For preconfiguration:
+import promise from 'redux-promise-middleware';
+applyMiddleware(promise);
+    `);
+  }
+
   return null;
 }
