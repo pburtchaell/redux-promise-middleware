@@ -1,16 +1,14 @@
 import isPromise from './isPromise.js';
 
 /**
- * Note to contributors: Please also remember to check and make sure
- * that `index.d.ts` is also up to date with the implementation when
- * you add new features or modify existing ones.
+ * For TypeScript support: Remember to check and make sure
+ * that `index.d.ts` is also up to date with the implementation.
  */
-
-// The default async action types
-export const PENDING = 'PENDING';
-export const FULFILLED = 'FULFILLED';
-export const REJECTED = 'REJECTED';
-const defaultTypes = [PENDING, FULFILLED, REJECTED];
+export const ActionType = {
+  Pending: 'PENDING',
+  Fulfilled: 'FULFILLED',
+  Rejected: 'REJECTED',
+};
 
 /**
  * Function: createPromise
@@ -18,6 +16,7 @@ const defaultTypes = [PENDING, FULFILLED, REJECTED];
  * object and returns the middleware.
  */
 export function createPromise(config = {}) {
+  const defaultTypes = [ActionType.Pending, ActionType.Fulfilled, ActionType.Rejected];
   const PROMISE_TYPE_SUFFIXES = config.promiseTypeSuffixes || defaultTypes;
   const PROMISE_TYPE_DELIMITER = config.promiseTypeDelimiter || '_';
 
@@ -102,9 +101,9 @@ export function createPromise(config = {}) {
        * These are appended to the end of the action type.
        */
       const [
-        _PENDING,
-        _FULFILLED,
-        _REJECTED
+        PENDING,
+        FULFILLED,
+        REJECTED
       ] = PROMISE_TYPE_SUFFIXES;
 
       /**
@@ -134,7 +133,7 @@ export function createPromise(config = {}) {
         // Concatentate the type string property.
         type: [
           TYPE,
-          isRejected ? _REJECTED : _FULFILLED
+          isRejected ? REJECTED : FULFILLED
         ].join(PROMISE_TYPE_DELIMITER),
 
         // Include the payload property.
@@ -187,7 +186,7 @@ export function createPromise(config = {}) {
        */
       next({
         // Concatentate the type string.
-        type: [TYPE, _PENDING].join(PROMISE_TYPE_DELIMITER),
+        type: [TYPE, PENDING].join(PROMISE_TYPE_DELIMITER),
 
         // Include payload (for optimistic updates) if it is defined.
         ...(data !== undefined ? { payload: data } : {}),
@@ -205,10 +204,7 @@ export function createPromise(config = {}) {
   };
 }
 
-
-// eslint-disable-next-line consistent-return
-export default function promiseMiddleware({ dispatch } = {}) {
-
+export default function middleware({ dispatch } = {}) {
   if (typeof dispatch === 'function') {
     return createPromise()({ dispatch });
   }
@@ -224,4 +220,5 @@ export default function promiseMiddleware({ dispatch } = {}) {
     [redux-promise-middleware] to
     [redux-promise-middleware] import { createPromise } from 'redux-promise-middleware'
   `);
+  return null;
 }
