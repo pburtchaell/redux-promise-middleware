@@ -40,6 +40,8 @@ const firstAction = () => {
 - [Guides](/docs/guides/)
 - [Examples](/examples)
 
+**Heads Up:** Version 6 included changes to the public API. Check the [upgrading guide](docs/upgrading/v6.md) for help.
+
 ## Issues
 For bug reports and feature requests, [file an issue on GitHub](https://github.com/pburtchaell/redux-promise-middleware/issues/new).
 
@@ -47,10 +49,12 @@ For help, [ask a question on StackOverflow](https://stackoverflow.com/questions/
 
 ## Releases
 - [Release History](https://github.com/pburtchaell/redux-promise-middleware/releases)
+- [Upgrade from 5.x to 6.0.0](docs/upgrading/v6.md)
 - [Upgrade from 4.x to 5.0.0](docs/upgrading/v5.md)
 - [Upgrade from 3.x to 4.0.0](docs/upgrading/v4.md)
 
 For older versions:
+- [5.x](https://github.com/pburtchaell/redux-promise-middleware/tree/5.0.1)
 - [4.x](https://github.com/pburtchaell/redux-promise-middleware/tree/4.4.0)
 - [3.x](https://github.com/pburtchaell/redux-promise-middleware/tree/3.3.0)
 - [2.x](https://github.com/pburtchaell/redux-promise-middleware/tree/2.4.0)
