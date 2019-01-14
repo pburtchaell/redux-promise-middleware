@@ -1,0 +1,18 @@
+{
+  "main": "index.js",
+  "scripts": {
+    "start": "`npm bin`/parcel index.html"
+  },
+  "dependencies": {
+    "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
+    "redux-promise-middleware": "^5.1.1"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.9.3",
+    "typescript": "^3.2.2"
+  },
+  "alias": {
+    "redux-promise-middleware": "../.."
+  }
+}
