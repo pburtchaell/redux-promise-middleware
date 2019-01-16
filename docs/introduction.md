@@ -2,28 +2,21 @@
 
 ## Installation
 
-First, install the middleware with npm:
+First, install the middleware.
 
-```
-npm i redux-promise-middleware -s
-```
-
-Or with Yarn:
-
-```
-yarn add redux-promise-middleware
-```
+npm: `npm i redux-promise-middleware -S`
+yarn: `yarn add redux-promise-middleware`
 
 ## Setup
 
 Import the middleware and include it in `applyMiddleware` when creating the Redux store:
 
 ```js
-import promiseMiddleware from 'redux-promise-middleware'
+import promiseMiddleware from 'redux-promise-middleware';
 
 composeStoreWithMiddleware = applyMiddleware(
-  promiseMiddleware,
-)(createStore)
+  promiseMiddleware()
+)(createStore);
 ```
 
 ## Use
@@ -33,8 +26,8 @@ Dispatch a promise as the value of the `payload` property of the action.
 ```js
 const foo = () => ({
   type: 'FOO',
-  payload: new Promise(),
-})
+  payload: new Promise()
+});
 ```
 
 A pending action is immediately dispatched.
@@ -68,27 +61,14 @@ On the other hand, if the promise is rejected, a rejected action is dispatched.
 }
 ```
 
-If you need to send extra information not included in the `payload` property, you can use the `meta` property.
-
-```js
-const foo = () => ({
-  type: 'FOO',
-  payload: new Promise(),
-  meta: {
-    ...
-  },
-})
-```
-
 That's it!
 
-## TypeScript
-
-The middleware does support TypeScript.
-
 ## Further Reading
+
 - [Catching Errors Thrown by Rejected Promises](guides/rejected-promises.md)
 - [Use with Reducers](guides/reducers.md)
 - [Optimistic Updates](guides/optimistic-updates.md)
-- [Custom Types](guides/custom-suffixes.md)
 - [Design Principles](guides/design-principles.md)
+
+---
+Copyright (c) 2017 Patrick Burtchaell. [Code licensed with the MIT License (MIT)](/LICENSE). [Documentation licensed with the CC BY-NC License](LICENSE).
