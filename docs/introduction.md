@@ -8,12 +8,6 @@ First, install the middleware with npm:
 npm i redux-promise-middleware -s
 ```
 
-Or with Yarn:
-
-```
-yarn add redux-promise-middleware
-```
-
 ## Setup
 
 Import the middleware and include it in `applyMiddleware` when creating the Redux store:
