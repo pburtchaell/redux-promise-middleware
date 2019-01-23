@@ -1,3 +1,4 @@
+/* eslint no-console: ["error", { allow: ["warn"] }] */
 import promise from 'redux-promise-middleware';
 
 // For migration from version 5.x to version 6.0.0

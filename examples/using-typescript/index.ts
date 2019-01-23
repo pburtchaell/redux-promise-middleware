@@ -23,7 +23,7 @@ const render = (mount: HTMLElement | null, state: State) => {
   }
 };
 
-/** 
+/**
  * @private
  * Renders the initial state of the example
  */
