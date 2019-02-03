@@ -13,8 +13,10 @@ For example, given `FOO` async action, `PENDING` type will be appended with a un
 To change the default, supply an optional configuration object to the middleware with the `promiseTypeDelimiter` property. This property accepts a new string to use as the delimiter.
 
 ```js
+import { createPromise } from 'redux-promise-middleware';
+
 applyMiddleware(
-  promiseMiddleware({
+  createPromise({
     promiseTypeDelimiter: '/'
   })
 )

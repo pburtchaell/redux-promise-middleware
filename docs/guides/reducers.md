@@ -34,12 +34,20 @@ const fooReducer = (state = {}, action) => {
 }
 ```
 
-### Promise Suffixes
+### Action Types
 
-Optionally, the default promise suffixes can be imported from this module. This can be useful in your reducers.
+Optionally, the default promise suffixes can be imported from this module. 
 
 ```js
-import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
+import { ActionType } from 'redux-promise-middleware';
+```
+
+This can be useful in your reducers to ensure types are more robust.
+
+```js
+const FOO_PENDING = `FOO_${ActionTypes.Pending}`;
+const FOO_FULFILLED = `FOO_${ActionTypes.Fulfilled}`;
+const FOO_REJECTED = `FOO_${ActionTypes.Rejected}`;
 ```
 
 ## Large Applications

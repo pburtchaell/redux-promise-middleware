@@ -40,7 +40,7 @@ const firstAction = () => {
 - [Guides](/docs/guides/)
 - [Examples](/examples)
 
-**Heads Up:** Version 6 included changes to the public API. Check the [upgrading guide](docs/upgrading/v6.md) for help.
+**Heads Up:** Version 6 includes some breaking changes. Check the [upgrading guide](docs/upgrading/v6.md) for help.
 
 ## Issues
 For bug reports and feature requests, [file an issue on GitHub](https://github.com/pburtchaell/redux-promise-middleware/issues/new).
