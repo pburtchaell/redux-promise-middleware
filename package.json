@@ -1,8 +1,9 @@
 {
   "name": "redux-promise-middleware",
   "description": "Enables simple, yet robust handling of async action creators in Redux",
-  "version": "5.1.1",
+  "version": "6.0.0",
   "main": "dist/index.js",
+  "types": "src/index.d.ts",
   "module": "dist/es/index.js",
   "scripts": {
     "prepare": "npm run build",

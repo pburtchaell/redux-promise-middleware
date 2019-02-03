@@ -4,19 +4,20 @@
 
 First, install the middleware.
 
-npm: `npm i redux-promise-middleware -S`
-yarn: `yarn add redux-promise-middleware`
+```
+npm i redux-promise-middleware -s
+```
 
 ## Setup
 
 Import the middleware and include it in `applyMiddleware` when creating the Redux store:
 
 ```js
-import promiseMiddleware from 'redux-promise-middleware';
+import promise from 'redux-promise-middleware'
 
 composeStoreWithMiddleware = applyMiddleware(
-  promiseMiddleware()
-)(createStore);
+  promise,
+)(createStore)
 ```
 
 ## Use
