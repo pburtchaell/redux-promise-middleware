@@ -11,3 +11,4 @@ test/
 .npmignore
 .travis.yml
 webpack.config.js
+!src/index.d.ts
