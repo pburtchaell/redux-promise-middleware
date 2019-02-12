@@ -3,17 +3,16 @@
 // Definitions by: Patrick Burtchaell <patrick@pburtchaell.com>
 import { Middleware, Action as CoreReduxAction } from 'redux';
 
-export declare interface ActionTypes {
-  Pending: string;
-  Fulfilled: string;
-  Rejected: string;
+export declare enum ActionType {
+  Pending = 'PENDING',
+  Fulfilled = 'FULFILLED',
+  Rejected = 'REJECTED',
 }
 
 // Action type types
-declare type ActionType = string;
-declare type PendingActionType = ActionType;
-declare type FulfilledActionType = ActionType;
-declare type RejectedActionType = ActionType;
+declare type PendingActionType = ActionType.Pending | string;
+declare type FulfilledActionType = ActionType.Fulfilled | string;
+declare type RejectedActionType = ActionType.Rejected | string;
 
 // Action payload types
 declare type AsyncFunction<> = () => Promise<any>;
