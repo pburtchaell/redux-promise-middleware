@@ -45,9 +45,9 @@ import { ActionType } from 'redux-promise-middleware';
 This can be useful in your reducers to ensure types are more robust.
 
 ```js
-const FOO_PENDING = `FOO_${ActionTypes.Pending}`;
-const FOO_FULFILLED = `FOO_${ActionTypes.Fulfilled}`;
-const FOO_REJECTED = `FOO_${ActionTypes.Rejected}`;
+const FOO_PENDING = `FOO_${ActionType.Pending}`;
+const FOO_FULFILLED = `FOO_${ActionType.Fulfilled}`;
+const FOO_REJECTED = `FOO_${ActionType.Rejected}`;
 ```
 
 ## Large Applications
