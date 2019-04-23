@@ -4,13 +4,13 @@
 
 Redux promise middleware dispatches an action for a rejected promise, but does not catch the error thrown. **This is an expected behavior.** Because the error is not caught, you will (in most cases) get an "uncaught" warning in the developer console. Again, this is an expected behavior.
 
-By principle, it's your applications's responsibility to catch the error thrown by the rejected promise. It's not the responsibility of the middleware.
+By principle, it's your application's responsibility to catch the error thrown by the rejected promise. It's not the responsibility of the middleware.
 
 ## How to Catch Promises
 
 However, you probably want to catch the error. Here's some suggested approaches/solutions to this.
 
-1. Catch/handle the error "globally" in a error handling middleware
+1. Catch/handle the error "globally" in error handling middleware
 2. Catch/handle the error "locally" at the action creator
 
 ## Catching Errors Locally
