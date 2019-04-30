@@ -130,7 +130,7 @@ export function createPromise(config = {}) {
        * }
        */
       const getAction = (newPayload, isRejected) => ({
-        // Concatentate the type string property.
+        // Concatenate the type string property.
         type: [
           TYPE,
           isRejected ? REJECTED : FULFILLED
@@ -185,7 +185,7 @@ export function createPromise(config = {}) {
        * any data (for optimistic updates) and/or meta from the original action.
        */
       next({
-        // Concatentate the type string.
+        // Concatenate the type string.
         type: [TYPE, PENDING].join(PROMISE_TYPE_DELIMITER),
 
         // Include payload (for optimistic updates) if it is defined.
