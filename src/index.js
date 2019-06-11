@@ -216,7 +216,7 @@ middleware library supports both preconfigured and custom configured \
 middleware. To use a custom configuration, use the "createPromise" export \
 and call this function with your configuration property. To use a \
 preconfiguration, use the default export. For more help, check the upgrading \
-guide: https://docs.psb.codes/redux-promise-middleware/upgrade-guides/v6
+guide: https://docs.psb.design/redux-promise-middleware/upgrade-guides/v6
 
 For custom configuration:
 import { createPromise } from 'redux-promise-middleware';
