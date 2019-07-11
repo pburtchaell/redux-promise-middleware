@@ -21,7 +21,7 @@ This can be done by dispatching some specific action. Here's an example of handl
 
 ```js
 export function foo() {
-  return dispatch => dispatch({
+  return dispatch => ({
     type: 'FOO_ACTION',
 
     // Throw an error
