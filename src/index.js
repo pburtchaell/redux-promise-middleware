@@ -209,7 +209,7 @@ export default function middleware({ dispatch } = {}) {
     return createPromise()({ dispatch });
   }
 
-  if (process && process.env && (process.env.NODE_ENV === 'development' || 'test')) {
+  if (process && process.env && process.env.NODE_ENV !== 'production') {
     // eslint-disable-next-line no-console
     console.warn(`Redux Promise Middleware: As of version 6.0.0, the \
 middleware library supports both preconfigured and custom configured \
