@@ -1,31 +1,19 @@
 {
+  "presets": [["@babel/env"], "@babel/react"],
   "env": {
-    "development": {
-      "presets": [
-        "env",
-        "stage-0",
-        "react"
-      ]
-    },
-    "production": {
-      "presets": [
-        "env",
-        "stage-0",
-        "react"
-      ]
+    "es": {
+      "presets": [["@babel/env", { "modules": false }]]
     },
     "test": {
       "presets": [
-        "env",
-        "stage-0",
-        "react"
-      ]
-    },
-    "es": {
-      "presets": [
-        ["env", { "modules": false }],
-        "react",
-        "stage-0"
+        [
+          "@babel/env",
+          {
+            "targets": {
+              "node": "current"
+            }
+          }
+        ]
       ]
     }
   }

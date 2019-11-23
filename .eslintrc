@@ -7,9 +7,12 @@
     "es6": true,
     "mocha": true
   },
-  "ecmaFeatures": {
-    "jsx": true,
-    "modules": true
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "rules": {
     "react/jsx-uses-react": 2,
