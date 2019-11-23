@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - "node" # latest stable release
-  - "v8.9.0"
+  - "v8.10.0"
 cache: yarn
 script:
   - yarn test
