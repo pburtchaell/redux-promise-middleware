@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
 import * as actions from './actions';
 import store from './store';
@@ -32,7 +32,7 @@ class App extends Component {
     const { isPending, error } = this.state;
 
     return (
-      <Fragment>
+      <>
         <header>
           <h1>Catching Errors</h1>
           <p>This example demonstrates how to catch a rejected promise.</p>
@@ -49,7 +49,7 @@ class App extends Component {
             Error Message: {`${error}`}
           </div>
         </main>
-      </Fragment>
+      </>
     );
   }
 }
