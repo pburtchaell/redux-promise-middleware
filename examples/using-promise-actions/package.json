@@ -9,6 +9,7 @@
     "redux-promise-middleware-actions": "^1.0.0"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.9.7"
+    "@babel/core": "^7.7.4",
+    "parcel-bundler": "^1.12.4"
   }
 }
