@@ -1,7 +1,7 @@
 // ncapsulates a config for Webpack used to generate UMD builds
-const webpack = require('webpack');
 
 const config = {
+  mode: 'production',
   entry: './src/index',
 
   // Compile JS files with Babel
@@ -14,20 +14,15 @@ const config = {
   output: {
     library: 'ReduxPromiseMiddleware',
     libraryTarget: 'umd'
-  },
-
-  plugins: []
+  }
 };
 
+
 // If the environment is set to production, compress the output file
-if (process.env.NODE_ENV === 'production') {
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
-    })
-  );
+if (process.env.NODE_ENV !== 'production') {
+  config.optimization = {
+    minimize: false
+  };
 }
 
 module.exports = config;

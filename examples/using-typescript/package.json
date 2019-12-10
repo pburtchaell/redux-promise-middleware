@@ -9,7 +9,8 @@
     "redux-promise-middleware": "^5.1.1"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.9.3",
+    "@babel/core": "^7.7.4",
+    "parcel-bundler": "^1.12.4",
     "typescript": "^3.2.2"
   },
   "alias": {

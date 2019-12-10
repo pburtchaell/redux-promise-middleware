@@ -61,8 +61,8 @@ export function createPromise(config = {}) {
 
         // Step 1.3: Is the promise returned by an async function?
         else if (
-          typeof PAYLOAD === 'function' ||
-          typeof PAYLOAD.promise === 'function'
+          typeof PAYLOAD === 'function'
+          || typeof PAYLOAD.promise === 'function'
         ) {
           promise = PAYLOAD.promise ? PAYLOAD.promise() : PAYLOAD();
           data = PAYLOAD.promise ? PAYLOAD.data : undefined;

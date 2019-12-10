@@ -14,6 +14,7 @@
     "underscore": "^1.9.1"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.9.3"
+    "@babel/core": "^7.7.4",
+    "parcel-bundler": "^1.12.4"
   }
 }
