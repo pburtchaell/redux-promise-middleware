@@ -4,6 +4,14 @@ When a promise is resolved, one might want to dispatch additional actions in res
 
 First, note this behavior uses thunks. You will need to include [Redux Thunk](https://github.com/gaearon/redux-thunk) in your middleware stack.
 
+Redux Thunk allows you to return a function instead of an action(object).
+Redux Thunk will automatically pass dispatch(and some more params) to this function and then call it<br>
+Note! even thought using Redux Thunk you are not obligated to return the inner dispatch,
+With redux-promise-middleware you must.
+The reason is that redux-promise-middleware actually returns the promise inside payload.
+That is very useful for chaining and testing
+
+
 ```js
 const foo = () => {
   return dispatch => {
