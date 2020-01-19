@@ -220,7 +220,7 @@ guide: https://docs.psb.design/redux-promise-middleware/upgrade-guides/v6
 
 For custom configuration:
 import { createPromise } from 'redux-promise-middleware';
-const promise = createPromise({ types: { fulfilled: 'success' } });
+const promise = createPromise({ promiseTypeSuffixes: ['LOADING', 'SUCCESS', 'ERROR'] });
 applyMiddleware(promise);
 
 For preconfiguration:
