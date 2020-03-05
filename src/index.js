@@ -137,9 +137,7 @@ export function createPromise(config = {}) {
         ].join(PROMISE_TYPE_DELIMITER),
 
         // Include the payload property.
-        ...((newPayload === null || typeof newPayload === 'undefined') ? {} : {
-          payload: newPayload
-        }),
+        payload: newPayload,
 
         // If the original action includes a meta property, include it.
         ...(META !== undefined ? { meta: META } : {}),

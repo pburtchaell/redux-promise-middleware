@@ -136,7 +136,7 @@ const actions = {
   }),
   [types.FULFILLED_NULL_PROMISE]: () => ({
     type: `${defaultAction.type}_FULFILLED`,
-    payload: undefined,
+    payload: null,
   }),
   [types.FULFILLED_NUMBER_PROMISE]: () => ({
     type: `${defaultAction.type}_FULFILLED`,

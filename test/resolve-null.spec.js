@@ -31,7 +31,7 @@ describe('given a promise resolved with a null value', () => {
 
     action.then(({ value, action: actionFromPromise }) => {
       expect(value).toEqual(null);
-      expect(actionFromPromise.payload).toEqual(undefined);
+      expect(actionFromPromise.payload).toEqual(null);
       done();
     });
   });
