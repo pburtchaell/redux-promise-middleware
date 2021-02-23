@@ -7,6 +7,7 @@
 ## Guides
 - [Catching Errors Thrown by Rejected Promises](guides/rejected-promises.md)
 - [Chaining Actions](guides/chaining-actions.md)
+- [Passing extra values to reducer](guides/passing-extra-values-to-reducer.md)
 - [Comparison to other promise middleware](guides/comparison.md)
 - [Custom Type Delimiters](guides/custom-delimiters.md)
 - [Custom Types](guides/custom-suffixes.md)
