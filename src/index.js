@@ -18,7 +18,9 @@ export const ActionType = {
 export function createPromise(config = {}) {
   const defaultTypes = [ActionType.Pending, ActionType.Fulfilled, ActionType.Rejected];
   const PROMISE_TYPE_SUFFIXES = config.promiseTypeSuffixes || defaultTypes;
-  const PROMISE_TYPE_DELIMITER = config.promiseTypeDelimiter || '_';
+  const PROMISE_TYPE_DELIMITER = (
+    config.promiseTypeDelimiter === undefined ? '_' : config.promiseTypeDelimiter
+  );
 
   return ref => {
     const { dispatch } = ref;
