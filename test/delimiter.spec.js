@@ -34,3 +34,21 @@ test('actions dispatched with custom delimiter', (done) => {
     done();
   });
 });
+
+// The middleware should allow empty string delimiter
+test('actions dispatched with custom delimiter', (done) => {
+  store = createStore({ promiseTypeDelimiter: '' });
+
+  const dispatched = getActionCreator(types.WILL_RESOLVE)();
+
+  const expected = {
+    ...getActionCreator(types.FULFILLED)(),
+    type: `${dispatched.type}FULFILLED`,
+  };
+
+  return store.dispatch(dispatched).then(({ value, action }) => {
+    expect(value).toEqual(expected.payload);
+    expect(action).toEqual(expected);
+    done();
+  });
+});
