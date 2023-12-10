@@ -9,13 +9,13 @@
     "prepare": "npm run build",
     "prebuild": "npm run test",
     "build": "rm -rf dist & npm run build-commonjs & npm run build-es & npm run build-umd & npm run build-umd-min",
-    "build-es": "BABEL_ENV=es `npm bin`/babel src -d dist/es",
-    "build-commonjs": "`npm bin`/babel src -d dist",
-    "build-umd": "`npm bin`/webpack --output-filename umd/redux-promise-middleware.js",
-    "build-umd-min": "NODE_ENV=production `npm bin`/webpack --output-filename umd/redux-promise-middleware.min.js",
+    "build-es": "BABEL_ENV=es babel src -d dist/es",
+    "build-commonjs": "babel src -d dist",
+    "build-umd": "webpack --output-filename umd/redux-promise-middleware.js",
+    "build-umd-min": "NODE_ENV=production webpack --output-filename umd/redux-promise-middleware.min.js",
     "pretest": "npm run lint",
-    "test": "`npm bin`/jest",
-    "lint": "`npm bin`/eslint src/**/*.js test/**/*.js",
+    "test": "jest",
+    "lint": "eslint src/**/*.js test/**/*.js",
     "start": "babel-node examples/server.js"
   },
   "repository": {
@@ -59,12 +59,12 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "istanbul": "^1.0.0-alpha.2",
     "jest": "^24.9.0",
-    "redux": "4.0.0",
+    "redux": "5.0.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },
   "peerDependencies": {
-    "redux": "^2.0.0 || ^3.0.0 || ^4.0.0"
+    "redux": "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0"
   },
   "jest": {
     "verbose": true,
