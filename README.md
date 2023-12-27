@@ -64,7 +64,6 @@ For older versions:
 Please reach out to us if you have any questions or comments.
 
 Patrick Burtchaell (pburtchaell):
-- [Twitter](https://twitter.com/pburtchaell)
 - [GitHub](https://github.com/pburtchaell)
 
 Thomas Hudspith-Tatham (tomatau):
