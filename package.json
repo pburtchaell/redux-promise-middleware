@@ -7,16 +7,15 @@
   "module": "dist/es/index.js",
   "scripts": {
     "prepare": "npm run build",
-    "prebuild": "npm run test",
-    "build": "rm -rf dist & npm run build-commonjs & npm run build-es & npm run build-umd & npm run build-umd-min",
+    "start": "babel-node examples/server.js",
     "build-es": "BABEL_ENV=es babel src -d dist/es",
     "build-commonjs": "babel src -d dist",
     "build-umd": "webpack --output-filename umd/redux-promise-middleware.js",
     "build-umd-min": "NODE_ENV=production webpack --output-filename umd/redux-promise-middleware.min.js",
-    "pretest": "npm run lint",
+    "build": "rm -rf dist & npm run build-commonjs & npm run build-es & npm run build-umd & npm run build-umd-min",
+    "prebuild": "npm run test",
     "test": "jest",
-    "lint": "eslint src/**/*.js test/**/*.js",
-    "start": "babel-node examples/server.js"
+    "lint": "eslint src/**/*.js test/**/*.js"
   },
   "repository": {
     "type": "git",
