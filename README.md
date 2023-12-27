@@ -1,6 +1,6 @@
 # Redux Promise Middleware
 
-[![Build Status](https://travis-ci.org/pburtchaell/redux-promise-middleware.svg?branch=master)](https://travis-ci.org/pburtchaell/redux-promise-middleware) [![npm downloads](https://img.shields.io/npm/dm/redux-promise-middleware.svg?style=flat)](https://www.npmjs.com/package/redux-promise-middleware)
+[![npm downloads](https://img.shields.io/npm/dm/redux-promise-middleware.svg?style=flat)](https://www.npmjs.com/package/redux-promise-middleware)
 
 Redux Promise Middleware enables simple, yet robust handling of async action creators in [Redux](http://redux.js.org). 
 
