@@ -70,9 +70,3 @@ Patrick Burtchaell (pburtchaell):
 
 Thomas Hudspith-Tatham (tomatau):
 - [GitHub](https://github.com/tomatau)
-
-## License
-
-[Code licensed with the MIT License (MIT)](/LICENSE). 
-
-[Documentation licensed with the CC BY-NC License](https://creativecommons.org/licenses/by-nc/4.0/).
